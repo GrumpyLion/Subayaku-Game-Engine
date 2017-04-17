@@ -89,7 +89,7 @@ namespace Scene
 		{
 			CMeshRenderer *temp = m_Renderarbles.find(a_Parent)->second;			
 			//The Renderer need to notice the deletion			
-			Core::Engine::StaticClass()->GetRenderer()->AddRenderable(temp);
+			Core::Engine::StaticClass()->GetRenderer()->RemoveRenderable(temp);
 			m_Renderarbles.erase(a_Parent);
 		}
 		else
