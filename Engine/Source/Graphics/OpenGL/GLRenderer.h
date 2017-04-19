@@ -20,15 +20,19 @@ namespace Graphics
 			SRendererDesc m_Desc{};
 			HGLRC m_Context{};
 
+
 			std::unordered_map<Scene::CMeshRenderer*, GLEntity*> m_Entities;
 
 		public:
+			Scene::CCamera *Camera = nullptr;
+
 			bool Initialize(SRendererDesc &a_Desc) override;
 			void Render() override;
 			void Shutdown() override;
 
 			void AddRenderable(Scene::CMeshRenderer *a_MeshRenderer) override; 
 			void RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer) override;
+			void SetCamera(Scene::CCamera *a_Camera) override;
 		};
 	}
 }

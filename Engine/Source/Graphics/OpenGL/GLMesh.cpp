@@ -1,5 +1,6 @@
 #include "GLMesh.h"
 #include "Graphics\Mesh.h"
+#include "Math\Math.h"
 
 namespace Graphics
 {
@@ -24,7 +25,7 @@ namespace Graphics
 				glGenBuffers(1, &m_VBOs[0]);
 				glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[0]);
 
-				glBufferData(GL_ARRAY_BUFFER, a_Mesh->Vertices.size() * sizeof(GLfloat), a_Mesh->Vertices.data(), GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, a_Mesh->Vertices.size() * sizeof(Vector3f), a_Mesh->Vertices.data(), GL_STATIC_DRAW);
 				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 				glEnableVertexAttribArray(0);
 			}
@@ -34,7 +35,7 @@ namespace Graphics
 				glGenBuffers(1, &m_VBOs[1]);
 				glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[1]);
 
-				glBufferData(GL_ARRAY_BUFFER, a_Mesh->Normals.size() * sizeof(GLfloat), a_Mesh->Normals.data(), GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, a_Mesh->Normals.size() * sizeof(Vector3f), a_Mesh->Normals.data(), GL_STATIC_DRAW);
 				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 				glEnableVertexAttribArray(1);
 			}
@@ -44,7 +45,7 @@ namespace Graphics
 				glGenBuffers(1, &m_VBOs[2]);
 				glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[2]);
 
-				glBufferData(GL_ARRAY_BUFFER, a_Mesh->TexCoords.size() * sizeof(GLfloat), a_Mesh->TexCoords.data(), GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, a_Mesh->TexCoords.size() * sizeof(Vector2f), a_Mesh->TexCoords.data(), GL_STATIC_DRAW);
 				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 				glEnableVertexAttribArray(2);
 			}

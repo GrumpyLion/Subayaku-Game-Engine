@@ -6,6 +6,9 @@ struct Vector3f
 {
 	float x = 0.0f, y = 0.0f, z = 0.0f;
 
+	Vector3f()
+	{ }
+
 	Vector3f(float a_X, float a_Y, float a_Z)
 		: x(a_X), y(a_Y), z(a_Z) {}
 	
@@ -86,6 +89,14 @@ struct Vector3f
 		x *= -1;
 		y *= -1;
 		z *= -1;
+	}
+
+	void Normalize()
+	{
+		float len = Length();
+		x /= len;
+		y /= len;
+		z /= len;
 	}
 
 	float Dot(const Vector3f &a_Vec)

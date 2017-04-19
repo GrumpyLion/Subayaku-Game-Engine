@@ -7,6 +7,8 @@ namespace Scene
 	class CCamera : public IComponent
 	{
 	public:
+		float FOV, Near, Far;
+		
 		bool Initialize(GameObject *a_Parent) override;
 		void Update() override;
 		void Shutdown() override;

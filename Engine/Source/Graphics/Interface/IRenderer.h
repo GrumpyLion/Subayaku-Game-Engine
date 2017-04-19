@@ -2,6 +2,7 @@
 
 #include "SRendererDesc.h"
 #include "Scene\GameObject\Components\CMeshRenderer.h"
+#include "Scene\GameObject\Components\CCamera.h"
 
 namespace Graphics
 {
@@ -15,5 +16,6 @@ namespace Graphics
 		virtual void Shutdown() = 0;
 		virtual void AddRenderable(Scene::CMeshRenderer *a_MeshRenderer) = 0;
 		virtual void RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer) = 0;
+		virtual void SetCamera(Scene::CCamera *a_Camera) = 0;
 	};
 }

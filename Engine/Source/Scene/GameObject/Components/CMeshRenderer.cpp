@@ -4,6 +4,7 @@
 #include "Graphics\Mesh.h"
 #include "Core\Engine.h"
 #include "Scene\Scene.h"
+#include "Graphics\AssimpLoader.h"
 
 namespace Scene
 {
@@ -11,34 +12,11 @@ namespace Scene
 	{
 		IComponent::Initialize(a_Parent);
 
-		//TODO load from file
-
 		m_Mesh = new Graphics::Mesh();
+		//TODO MOVE THIS
+		loadAssimp("teapot.obj", m_Mesh->Indices, m_Mesh->Vertices, m_Mesh->TexCoords, m_Mesh->Normals);
+
 		m_Material = new Graphics::Material();
-
-		m_Mesh->Vertices.push_back(-0.5f);
-		m_Mesh->Vertices.push_back(-0.5f);
-		m_Mesh->Vertices.push_back(0);
-
-		m_Mesh->Vertices.push_back(0.5f);
-		m_Mesh->Vertices.push_back(-0.5f);
-		m_Mesh->Vertices.push_back(0);
-
-		m_Mesh->Vertices.push_back(0.5f);
-		m_Mesh->Vertices.push_back(0.5f);
-		m_Mesh->Vertices.push_back(0);
-
-		m_Mesh->Vertices.push_back(-0.5f);
-		m_Mesh->Vertices.push_back(0.5f);
-		m_Mesh->Vertices.push_back(0);
-
-		m_Mesh->Indices.push_back(0);
-		m_Mesh->Indices.push_back(1);
-		m_Mesh->Indices.push_back(2);
-
-		m_Mesh->Indices.push_back(0);
-		m_Mesh->Indices.push_back(2);
-		m_Mesh->Indices.push_back(3);
 
 		m_Material->FragmentShader = "Test.frag";
 		m_Material->VertexShader = "Test.vert";

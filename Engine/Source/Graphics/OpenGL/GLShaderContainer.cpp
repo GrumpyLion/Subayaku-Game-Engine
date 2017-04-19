@@ -46,6 +46,7 @@ namespace Graphics
 			glLinkProgram(m_Program);
 			if (GetError())
 				return false;
+			
 
 			return true;
 		}
@@ -58,6 +59,27 @@ namespace Graphics
 		void GLShaderContainer::UnbindProgram()
 		{
 			glUseProgram(0);
+		}
+
+		GLint GLShaderContainer::GetUniform(const char* a_Name)
+		{
+			GLint result = glGetUniformLocation(m_Program, a_Name);
+			if (result == -1)
+			{
+				LogErr("Uniform not found");
+				LogErr(a_Name);
+			}
+			return result;
+		}
+
+		void GLShaderContainer::SetVector3f(const char* a_UniformName, const Vector3f &a_Vec)
+		{
+			glUniform3f(GetUniform(a_UniformName), a_Vec.x, a_Vec.y, a_Vec.z);
+		}
+
+		void GLShaderContainer::SetMatrix4f(const char* a_UniformName, Matrix4f &a_Mat)
+		{
+			glUniformMatrix4fv(GetUniform(a_UniformName), 1, GL_FALSE, &a_Mat.m11);
 		}
 
 		bool GLShaderContainer::GetError()

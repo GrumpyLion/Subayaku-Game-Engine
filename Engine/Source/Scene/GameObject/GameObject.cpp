@@ -19,6 +19,7 @@ namespace Scene
 		if (a_ToAdd == nullptr)	
 			return false;
 
+		a_ToAdd->Initialize(this);
 		m_Components.push_back(a_ToAdd);
 		return true;
 	}
@@ -50,6 +51,7 @@ namespace Scene
 
 	void GameObject::Shutdown()
 	{
+		SAFE_DELETE(Transform);
 		RemoveAllComponents();
 	}
 }

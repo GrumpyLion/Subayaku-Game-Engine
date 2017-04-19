@@ -98,6 +98,11 @@ namespace Graphics
 			//..
 		}
 
+		void D3DRenderer::SetCamera(Scene::CCamera *a_Camera)
+		{
+			//..
+		}
+
 		void D3DRenderer::Shutdown()
 		{
 			NSafeRelease(m_DeviceContext);

@@ -5,5 +5,9 @@ in vec3 pos;
 
 void main()
 {
-	Color = vec4(pos,1);
+	vec3 lightDir = normalize(vec3(0.25, -1, 0.25));
+
+	float d = clamp(dot(-lightDir, pos), 0.0, 1.0);
+	
+	Color = vec4(vec3(d),1);
 }

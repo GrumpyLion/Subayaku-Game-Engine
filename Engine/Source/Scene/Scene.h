@@ -12,11 +12,14 @@ namespace Graphics
 namespace Scene
 {
 	class GameObject;
+	class CCamera;
 	class CMeshRenderer;
 
 	class Scene
 	{
 	private:
+		CCamera *m_Camera = nullptr;
+
 		//The Name of the GameObject will be the key
 		std::unordered_map<std::string, GameObject*> m_GameObjects{};
 
@@ -34,6 +37,9 @@ namespace Scene
 		bool AddGameObject(GameObject *a_ToAdd);
 		void RemoveGameObject(std::string &a_Name);
 		void ClearScene();
+
+		void SetCamera(CCamera *a_Camera);
+		CCamera* GetCamera();
 
 		std::unordered_map<GameObject*, CMeshRenderer*> GetRenderables();
 	};

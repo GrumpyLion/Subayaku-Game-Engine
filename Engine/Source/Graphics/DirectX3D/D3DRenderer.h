@@ -28,6 +28,7 @@ namespace Graphics
 			void Shutdown() override;
 			void AddRenderable(Scene::CMeshRenderer *a_MeshRenderer) override;
 			void RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer) override;
+			void SetCamera(Scene::CCamera *a_Camera) override;
 		};
 	}
 }

@@ -5,18 +5,23 @@
 #include "Graphics\Interface\IRenderer.h"
 
 #include "GameObject\GameObject.h"
+#include "GameObject\Components\Transformation.h"
 #include "GameObject\Components\CMeshRenderer.h"
 #include "GameObject\Components\CCamera.h"
-
 
 namespace Scene
 {
 	bool Scene::Initialize()
 	{
 		GameObject *temp = new GameObject();
+		temp->Transform = new Transformation();
+		temp->Transform->Position = Vector3f(0, -40, -150);
+		
 		CMeshRenderer *mesh = new CMeshRenderer();
-		mesh->Initialize(temp);
 		temp->AddComponent(mesh);
+
+		CCamera *camera = new CCamera();
+		temp->AddComponent(camera);
 
 		AddGameObject(temp);
 
@@ -121,6 +126,12 @@ namespace Scene
 		}
 		m_GameObjects.clear();
 	}
+
+	void Scene::SetCamera(CCamera *a_Camera)
+	{	m_Camera = a_Camera;	}
+	
+	CCamera* Scene::GetCamera()
+	{	return m_Camera;	}
 
 	std::unordered_map<GameObject*, CMeshRenderer*> Scene::GetRenderables()
 	{	return m_Renderarbles;	}

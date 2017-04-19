@@ -22,6 +22,7 @@
     <ClInclude Include="Source\Core\Engine.h" />
     <ClInclude Include="Source\Core\SEngineContext.h" />
     <ClInclude Include="Source\Core\SubayakuCore.h" />
+    <ClInclude Include="Source\Graphics\AssimpLoader.h" />
     <ClInclude Include="Source\Graphics\DirectX3D\D3DHelper.h" />
     <ClInclude Include="Source\Graphics\DirectX3D\D3DRenderer.h" />
     <ClInclude Include="Source\Graphics\Interface\IRenderer.h" />
@@ -36,8 +37,11 @@
     <ClInclude Include="Source\Graphics\OpenGL\GLRenderer.h" />
     <ClInclude Include="Source\Graphics\OpenGL\GLShader.h" />
     <ClInclude Include="Source\Graphics\OpenGL\GLShaderContainer.h" />
+    <ClInclude Include="Source\Graphics\Primitives.h" />
     <ClInclude Include="Source\Input\Keyboard.h" />
     <ClInclude Include="Source\Math\Math.h" />
+    <ClInclude Include="Source\Math\Matrix4f.h" />
+    <ClInclude Include="Source\Math\Vector2f.h" />
     <ClInclude Include="Source\Math\Vector3f.h" />
     <ClInclude Include="Source\Scene\GameObject\Components\CCamera.h" />
     <ClInclude Include="Source\Scene\GameObject\Components\CMeshRenderer.h" />
@@ -52,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Engine.cpp" />
+    <ClCompile Include="Source\Graphics\AssimpLoader.cpp" />
     <ClCompile Include="Source\Graphics\DirectX3D\D3DRenderer.cpp" />
     <ClCompile Include="Source\Graphics\OpenGL\GLEntity.cpp" />
     <ClCompile Include="Source\Graphics\OpenGL\GLMaterial.cpp" />
@@ -148,7 +153,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;dxgi.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;dxgi.lib;assimp.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -165,7 +170,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies/Lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;dxgi.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;dxgi.lib;assimp.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -186,7 +191,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;dxgi.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;dxgi.lib;assimp.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -206,7 +211,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;dxgi.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;dxgi.lib;assimp.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies/Lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>

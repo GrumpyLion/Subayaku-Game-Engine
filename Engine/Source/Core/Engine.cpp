@@ -1,4 +1,5 @@
 #include "SubayakuCore.h"
+#include <chrono>
 
 namespace Core
 {
@@ -48,32 +49,69 @@ namespace Core
 	{
 		bool done = false;
 
+		//For keeping the updates to the desired amount in one second
+		auto lastTime = std::chrono::high_resolution_clock::now();
+		auto deltaTimer = std::chrono::high_resolution_clock::now();
+		long lastTimer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
+		double delta = 0;
+		double nsPerTick = 1000000000 / 60;
+
+		int frames = 0;
+		int updates = 0;
+
 		while (!done)
 		{
 			//We need to check for messages if we get an Quit message we end the loop
 			if (!m_Window->Update())
 				done = true;
 
-			m_Scene->Update();
+			auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - deltaTimer);
+			deltaTimer = std::chrono::high_resolution_clock::now();
+
+			//Time calculations
+			auto now = std::chrono::high_resolution_clock::now();
+			delta += std::chrono::duration_cast<std::chrono::nanoseconds>(now - lastTime).count() / nsPerTick;
+			lastTime = std::chrono::high_resolution_clock::now();
+
+			while (delta >= 1)
+			{
+				if (delta > 2) delta = 0;
+
+				updates++;
+				if (GetKeyboard()->IsKeyDown(SUBA_KEY_E))
+				{
+					m_Context.RDevice = RenderDevice::DirectX;
+					SwitchRenderer(m_Context);
+				}
+
+				if (GetKeyboard()->IsKeyDown(SUBA_KEY_R))
+				{
+					m_Context.RDevice = RenderDevice::OpenGL;
+					SwitchRenderer(m_Context);
+				}
+
+				if (GetKeyboard()->IsKeyDown(SUBA_KEY_ESCAPE))
+				{
+					done = true;
+				}
+
+				m_Scene->Update();
+				delta -= 1;
+			}
+
+			long nowTimer = std::chrono::duration_cast<std::chrono::milliseconds>
+				(std::chrono::system_clock::now().time_since_epoch()).count();
+			if (nowTimer - lastTimer >= 1000)
+			{
+				printf("Frames %i, Ticks %i\n", frames, updates);
+				updates = 0;
+				frames = 0;
+				lastTimer += 1000;
+			}
 
 			m_Renderer->Render();
-
-			if (GetKeyboard()->IsKeyDown(SUBA_KEY_E))
-			{
-				m_Context.RDevice = RenderDevice::DirectX;
-				SwitchRenderer(m_Context);
-			}
-
-			if (GetKeyboard()->IsKeyDown(SUBA_KEY_R))
-			{
-				m_Context.RDevice = RenderDevice::OpenGL;
-				SwitchRenderer(m_Context);
-			}
-
-			if (GetKeyboard()->IsKeyDown(SUBA_KEY_ESCAPE))
-			{
-				done = true;
-			}
+			frames++;
 		}
 
 		Shutdown();

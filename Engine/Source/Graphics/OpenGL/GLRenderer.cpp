@@ -53,7 +53,7 @@ namespace Graphics
 
 			glViewport(0, 0, a_Desc.Width, a_Desc.Height);
 
-			glDisable(GL_CULL_FACE);
+			glEnable(GL_CULL_FACE);
 			glEnable(GL_DEPTH_TEST);
 
 			glEnable(GL_BLEND);
@@ -70,13 +70,18 @@ namespace Graphics
 				}
 			}
 
+			if (Core::Engine::StaticClass()->GetScene() != nullptr)
+			{
+				SetCamera(Core::Engine::StaticClass()->GetScene()->GetCamera());
+			}
+
 			return true;
 		}
 
 		void GLRenderer::Render()
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glClearColor(1, 1, 1, 1);
+			glClearColor(0.2f, 0.4f, 0.6f, 1);
 
 			for (auto &temp : m_Entities)
 				temp.second->Render();
@@ -97,7 +102,7 @@ namespace Graphics
 
 			GLEntity *temp = new GLEntity();
 			
-			if (!temp->Initialize(a_MeshRenderer->GetMesh(), a_MeshRenderer->GetMaterial()))
+			if (!temp->Initialize(a_MeshRenderer->GetMesh(), a_MeshRenderer->GetMaterial(), a_MeshRenderer->Parent))
 			{
 				LogErr("While trying to add a new Renderable");
 				SAFE_DELETE(temp);
@@ -123,6 +128,11 @@ namespace Graphics
 				SAFE_DELETE(temp);
 				m_Entities.erase(a_MeshRenderer);
 			}
+		}
+
+		void GLRenderer::SetCamera(Scene::CCamera *a_Camera)
+		{
+			Camera = a_Camera;
 		}
 
 		void GLRenderer::Shutdown()
