@@ -4,6 +4,7 @@
 #include <GLEW\Include\glew.h>
 #include <gl/gl.h>
 #include "GLEntity.h"
+#include "GLSprite.h"
 
 #include <unordered_map>
 
@@ -19,7 +20,7 @@ namespace Graphics
 			HDC m_HDC{};
 			SRendererDesc m_Desc{};
 			HGLRC m_Context{};
-
+			GLSprite *test = nullptr;
 
 			std::unordered_map<Scene::CMeshRenderer*, GLEntity*> m_Entities;
 

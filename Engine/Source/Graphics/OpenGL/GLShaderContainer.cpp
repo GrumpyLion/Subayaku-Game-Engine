@@ -45,8 +45,44 @@ namespace Graphics
 
 			glLinkProgram(m_Program);
 			if (GetError())
+				return false;			
+
+			return true;
+		}
+		
+		bool GLShaderContainer::Initialize(const char* a_VS, const char* a_PS)
+		{
+			m_Program = glCreateProgram();
+
+			//Shaders will be automatically destroyed after this scope. We don't need them anymore if they're bound to the program
+			GLShader vertex = GLShader();
+			GLShader fragment = GLShader();
+
+			if (!vertex.Initialize(EShaderTypes::VertexShader, a_VS))
+			{
+				LogErr("Vertex Init failed");
 				return false;
-			
+			}
+
+			//Attach the Shaders to the program
+			glAttachShader(m_Program, vertex.GetProgram());
+			if (GetError())
+				return false;
+
+			if (!fragment.Initialize(EShaderTypes::FragmentShader, a_PS))
+			{
+				LogErr("Fragment Init failed");
+				return false;
+			}
+
+			//Attach the Shaders to the program
+			glAttachShader(m_Program, fragment.GetProgram());
+			if (GetError())
+				return false;
+
+			glLinkProgram(m_Program);
+			if (GetError())
+				return false;
 
 			return true;
 		}
@@ -80,6 +116,11 @@ namespace Graphics
 		void GLShaderContainer::SetMatrix4f(const char* a_UniformName, Matrix4f &a_Mat)
 		{
 			glUniformMatrix4fv(GetUniform(a_UniformName), 1, GL_FALSE, &a_Mat.m11);
+		}
+
+		GLuint GLShaderContainer::GetProgram()
+		{
+			return m_Program;
 		}
 
 		bool GLShaderContainer::GetError()

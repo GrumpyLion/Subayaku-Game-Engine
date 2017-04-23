@@ -53,6 +53,7 @@ namespace Graphics
 
 			glViewport(0, 0, a_Desc.Width, a_Desc.Height);
 
+			//glFrontFace(GL_CW);
 			glEnable(GL_CULL_FACE);
 			glEnable(GL_DEPTH_TEST);
 
@@ -74,6 +75,14 @@ namespace Graphics
 			{
 				SetCamera(Core::Engine::StaticClass()->GetScene()->GetCamera());
 			}
+			
+			test = new GLSprite();
+			test->Initialize();
+
+			delete test;
+
+			test = new GLSprite();
+			test->Initialize();
 
 			return true;
 		}
@@ -83,9 +92,11 @@ namespace Graphics
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glClearColor(0.2f, 0.4f, 0.6f, 1);
 
+
 			for (auto &temp : m_Entities)
 				temp.second->Render();
 
+			test->Render();
 			SwapBuffers(m_HDC);
 		}
 

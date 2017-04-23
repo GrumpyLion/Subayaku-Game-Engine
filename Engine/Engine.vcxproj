@@ -23,10 +23,12 @@
     <ClInclude Include="Source\Core\SEngineContext.h" />
     <ClInclude Include="Source\Core\SubayakuCore.h" />
     <ClInclude Include="Source\Graphics\AssimpLoader.h" />
+    <ClInclude Include="Source\Graphics\Cache\TextureCache.h" />
     <ClInclude Include="Source\Graphics\DirectX3D\D3DHelper.h" />
     <ClInclude Include="Source\Graphics\DirectX3D\D3DRenderer.h" />
     <ClInclude Include="Source\Graphics\Interface\IRenderer.h" />
     <ClInclude Include="Source\Graphics\Interface\SRendererDesc.h" />
+    <ClInclude Include="Source\Graphics\Loaders\BMPLoader.h" />
     <ClInclude Include="Source\Graphics\Material.h" />
     <ClInclude Include="Source\Graphics\Mesh.h" />
     <ClInclude Include="Source\Graphics\Model.h" />
@@ -37,7 +39,11 @@
     <ClInclude Include="Source\Graphics\OpenGL\GLRenderer.h" />
     <ClInclude Include="Source\Graphics\OpenGL\GLShader.h" />
     <ClInclude Include="Source\Graphics\OpenGL\GLShaderContainer.h" />
+    <ClInclude Include="Source\Graphics\OpenGL\GLSprite.h" />
+    <ClInclude Include="Source\Graphics\OpenGL\GLTexture.h" />
     <ClInclude Include="Source\Graphics\Primitives.h" />
+    <ClInclude Include="Source\Graphics\Cache\ETextureFormat.h" />
+    <ClInclude Include="Source\Graphics\Cache\TextureData.h" />
     <ClInclude Include="Source\Input\Keyboard.h" />
     <ClInclude Include="Source\Math\Math.h" />
     <ClInclude Include="Source\Math\Matrix4f.h" />
@@ -64,6 +70,8 @@
     <ClCompile Include="Source\Graphics\OpenGL\GLRenderer.cpp" />
     <ClCompile Include="Source\Graphics\OpenGL\GLShader.cpp" />
     <ClCompile Include="Source\Graphics\OpenGL\GLShaderContainer.cpp" />
+    <ClCompile Include="Source\Graphics\OpenGL\GLSprite.cpp" />
+    <ClCompile Include="Source\Graphics\OpenGL\GLTexture.cpp" />
     <ClCompile Include="Source\Input\Keyboard.cpp" />
     <ClCompile Include="Source\Scene\GameObject\Components\CCamera.cpp" />
     <ClCompile Include="Source\Scene\GameObject\Components\CMeshRenderer.cpp" />

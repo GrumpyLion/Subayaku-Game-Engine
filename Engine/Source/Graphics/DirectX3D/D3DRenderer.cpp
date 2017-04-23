@@ -60,9 +60,7 @@ namespace Graphics
 
 			//We don't need this anymore
 			NSafeRelease(backBuffer);
-
-			m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
+			
 			D3D11_VIEWPORT viewport{};
 			viewport.TopLeftX = 0;
 			viewport.TopLeftY = 0;
@@ -85,7 +83,7 @@ namespace Graphics
 			float color[4] = { 0.0f, 1.0f, 1.0f, 1.0f };
 			m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, color);
 
-			Failed(m_SwapChain->Present(0, 0));
+			Failed(m_SwapChain->Present(1, 0));
 		}
 
 		void D3DRenderer::AddRenderable(Scene::CMeshRenderer *a_MeshRenderer)

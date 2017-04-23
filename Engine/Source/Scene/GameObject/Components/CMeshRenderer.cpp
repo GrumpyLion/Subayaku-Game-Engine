@@ -14,12 +14,12 @@ namespace Scene
 
 		m_Mesh = new Graphics::Mesh();
 		//TODO MOVE THIS
-		loadAssimp("teapot.obj", m_Mesh->Indices, m_Mesh->Vertices, m_Mesh->TexCoords, m_Mesh->Normals);
+		loadAssimp("Assets/Models/teapot.obj", m_Mesh->Indices, m_Mesh->Vertices, m_Mesh->TexCoords, m_Mesh->Normals);
 
 		m_Material = new Graphics::Material();
 
-		m_Material->FragmentShader = "Test.frag";
-		m_Material->VertexShader = "Test.vert";
+		m_Material->FragmentShader = "Assets/Shaders/Test.frag";
+		m_Material->VertexShader = "Assets/Shaders/Test.vert";
 
 		Core::Engine::StaticClass()->GetScene()->AddRenderable(Parent, this);
 

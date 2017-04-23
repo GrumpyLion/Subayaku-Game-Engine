@@ -4,8 +4,6 @@
 
 #include "Core\Engine.h"
 #include "Core\SEngineContext.h"
-#include "Utilities\Utilities.h"
-#include "Math\Matrix4f.h"
 
 int main()
 {
@@ -18,7 +16,6 @@ int main()
 	{
 		engine.Run();
 	}
-
-
+	
 	return 0;
 }

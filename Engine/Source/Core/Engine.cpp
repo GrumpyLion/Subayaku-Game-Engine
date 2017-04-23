@@ -1,3 +1,4 @@
+#include "Engine.h"
 #include "SubayakuCore.h"
 #include <chrono>
 
@@ -18,6 +19,8 @@ namespace Core
 	bool Engine::Initialize(SEngineContext& a_Context)
 	{		
 		m_Context = a_Context;
+
+		m_TextureCache = new Graphics::TextureCache();
 
 		m_Window = new CWindow();
 
@@ -41,7 +44,7 @@ namespace Core
 		m_Keyboard = new Keyboard();
 
 		m_Keyboard->Init();
-
+		
 		return true;
 	}
 
@@ -126,6 +129,9 @@ namespace Core
 		SHUTDOWN_AND_DELETE(m_Renderer);
 		
 		SHUTDOWN_AND_DELETE(m_Window);
+
+		SAFE_DELETE(m_TextureCache);
+
 		return true;
 	}
 	
@@ -162,6 +168,9 @@ namespace Core
 
 		return true;
 	}
+
+	Graphics::TextureCache *Engine::GetTextureCache()
+	{	return m_TextureCache;	}
 
 	IWindow *Engine::GetWindow()
 	{	return m_Window;	}

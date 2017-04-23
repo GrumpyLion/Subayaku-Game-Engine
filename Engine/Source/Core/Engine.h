@@ -11,6 +11,7 @@ namespace Scene
 namespace Graphics
 {
 	class IRenderer;
+	class TextureCache;
 }
 
 namespace Core
@@ -29,6 +30,9 @@ namespace Core
 		Keyboard* m_Keyboard = nullptr;
 		Scene::Scene *m_Scene = nullptr;
 
+		//Caches
+		Graphics::TextureCache *m_TextureCache = nullptr;
+
 	private:
 		bool SwitchRenderer(SEngineContext &a_Context);
 
@@ -44,6 +48,7 @@ namespace Core
 		Graphics::IRenderer *GetRenderer();
 		Keyboard *GetKeyboard();
 		Scene::Scene *GetScene();
+		Graphics::TextureCache *GetTextureCache();
 
 		static Engine* StaticClass();
 	};

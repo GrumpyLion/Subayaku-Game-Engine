@@ -22,10 +22,13 @@ namespace Graphics
 			~GLShaderContainer();
 
 			bool Initialize(Material *a_Material);
+			bool Initialize(const char* a_VS, const char* a_PS);
 
 			void BindProgram();
 			void UnbindProgram();
 			bool GetError();
+
+			GLuint GetProgram();
 
 			void SetVector3f(const char* a_UniformName, const Vector3f &a_Vec);
 			void SetMatrix4f(const char* a_UniformName, Matrix4f &a_Mat);
