@@ -5,7 +5,7 @@
 
 namespace Scene
 {
-	bool CCamera::Initialize(GameObject *a_Parent)
+	bool CCamera::Initialize(GameObject *a_Parent, float a_FOV, float a_Near, float a_Far)
 	{
 		IComponent::Initialize(a_Parent);
 		FOV = 60.0f;

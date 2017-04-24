@@ -12,14 +12,14 @@ namespace Scene
 {
 	class CMeshRenderer : public IComponent
 	{
-	private:
+	protected:
 		Graphics::Mesh *m_Mesh = nullptr;
 		Graphics::Material *m_Material = nullptr;
 
 	public:
-		bool Initialize(GameObject *a_Parent) override;
-		void Update() override;
-		void Shutdown() override;
+		virtual bool Initialize(GameObject *a_Parent, const char* a_ModelLocation, Graphics::Material *a_Material);
+		virtual void Update();
+		void Shutdown();
 
 		Graphics::Mesh *GetMesh();
 		Graphics::Material *GetMaterial();

@@ -1,6 +1,7 @@
 #include "GameObject.h"
 
 #include "Utilities\Utilities.h"
+#include "Components\Transformation.h"
 
 namespace Scene
 {
@@ -27,7 +28,9 @@ namespace Scene
 	void GameObject::RemoveAllComponents()
 	{
 		for (auto &temp : m_Components)
+		{
 			SHUTDOWN_AND_DELETE(temp);
+		}
 		m_Components.clear();
 	}
 

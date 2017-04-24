@@ -5,22 +5,20 @@
 #include "Core\Engine.h"
 #include "Scene\Scene.h"
 #include "Graphics\AssimpLoader.h"
+#include "Graphics\Primitives.h"
 
 namespace Scene
 {
-	bool CMeshRenderer::Initialize(GameObject *a_Parent)
+	bool CMeshRenderer::Initialize(GameObject *a_Parent, const char* a_ModelLocation, Graphics::Material *a_Material)
 	{
 		IComponent::Initialize(a_Parent);
 
 		m_Mesh = new Graphics::Mesh();
 		//TODO MOVE THIS
-		loadAssimp("Assets/Models/teapot.obj", m_Mesh->Indices, m_Mesh->Vertices, m_Mesh->TexCoords, m_Mesh->Normals);
+		loadAssimp(a_ModelLocation, m_Mesh->Indices, m_Mesh->Vertices, m_Mesh->TexCoords, m_Mesh->Normals);
 
-		m_Material = new Graphics::Material();
-
-		m_Material->FragmentShader = "Assets/Shaders/Test.frag";
-		m_Material->VertexShader = "Assets/Shaders/Test.vert";
-
+		m_Material = a_Material;
+		
 		Core::Engine::StaticClass()->GetScene()->AddRenderable(Parent, this);
 
 		return true;
@@ -33,6 +31,9 @@ namespace Scene
 
 	void CMeshRenderer::Shutdown()
 	{
+		delete m_Material;
+		delete m_Mesh;
+
 		Core::Engine::StaticClass()->GetScene()->RemoveRenderable(Parent);
 	}
 

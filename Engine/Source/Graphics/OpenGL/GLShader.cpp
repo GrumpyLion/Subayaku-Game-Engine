@@ -22,8 +22,7 @@ namespace Graphics
 
 			if (!input.good())
 			{
-				LogErr("Shader File not found");
-				LogErr(a_FilePath);
+				LogErr("Shader File not found %s\n", a_FilePath);
 				return false;
 			}
 
@@ -39,14 +38,14 @@ namespace Graphics
 				break;
 			default:
 				//TODO ADD MORE TYPES
-				LogErr("Undefined shader type");
+				LogErr("Undefined shader type\n");
 				return false;
 			}
 
 			m_Handle = glCreateShader(type);
 			if (m_Handle == 0)
 			{
-				LogErr("glCreateShader Failed");
+				LogErr("glCreateShader Failed\n");
 				return false;
 			}
 
@@ -71,7 +70,7 @@ namespace Graphics
 			glGetShaderInfoLog(m_Handle, 256, 0, log);
 			if (strlen(log) > 0)
 			{
-				LogErr(log);
+				LogErr("%s\n", log);
 				return true;
 			}
 			return false;

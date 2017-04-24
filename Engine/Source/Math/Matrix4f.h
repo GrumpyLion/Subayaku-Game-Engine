@@ -189,18 +189,35 @@ struct Matrix4f
 	{
 		float yScale = 1.0f / std::tan(DEGTORAD * a_FOV / 2.0f);
 		float xScale = yScale / a_Aspect;
-		float NearFar = a_Near - a_Far;
+		float NearFar = a_Far - a_Near;
 
 		float temp[4 * 4]
 		{
-			xScale, 0.0f, 0.0f, 0.0f,
+			-xScale, 0.0f, 0.0f, 0.0f,
 			0.0f, yScale, 0.0f, 0.0f,
-			0.0f, 0.0f, (a_Far + a_Near) / NearFar, -1,
-			0.0f, 0.0f, 2* a_Far*a_Near / NearFar, 0
+			0.0f, 0.0f, -a_Far / NearFar, -1,
+			0.0f, 0.0f, -a_Far*a_Near / NearFar, 0
 		};
 
 		Matrix4f mat = Matrix4f();
 		mat.SetData(temp);
+		//mat.Transpose();
+		return mat;
+	}
+
+	static Matrix4f Orthograpic(float a_Left, float a_Right, float a_Top, float a_Bottom, float a_Near, float a_Far)
+	{
+		float temp[4 * 4]
+		{
+			2 / (a_Right - a_Left), 0.0f, 0.0f, -(a_Right + a_Left) / (a_Right - a_Left),
+			0.0f, 2 / (a_Top - a_Bottom), 0.0f, -(a_Top + a_Bottom) / (a_Top - a_Bottom),
+			0.0f, 0.0f, -2 / (a_Far - a_Near),  -(a_Far + a_Near)   / (a_Far - a_Near), 
+			0.0f, 0.0f, 0.0f, 1.0f
+		};
+
+		Matrix4f mat = Matrix4f();
+		mat.SetData(temp);
+		mat.Transpose();
 		return mat;
 	}
 

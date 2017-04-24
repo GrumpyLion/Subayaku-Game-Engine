@@ -27,9 +27,18 @@ inline void ErrorBox(LPWSTR a_Text)
 	MessageBox(nullptr, a_Text, L"Error", MB_OK | MB_ICONERROR);
 }
 
-inline void LogErr(std::string a_Text)
+inline void LogErr(std::string a_Format, ...)
 {
-	printf("Error: %s\n", a_Text.c_str());
+	va_list v1;
+	va_start(v1, a_Format);
+	auto ret = vprintf(a_Format.c_str(), v1);
+	va_end(v1);
+	//printf("Error: %s\n", a_Format);
+}
+
+inline void LogWar(std::string a_Text)
+{
+	printf("Warning: %s\n", a_Text.c_str());
 }
 
 inline void Log(const char* a_Text)

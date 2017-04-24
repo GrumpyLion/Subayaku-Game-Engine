@@ -1,12 +1,11 @@
 #version 330 core
 
-out vec4 Color;
-in vec2 tex;
+out vec4 oColor;
+in vec2 oTexcoord;
 
-uniform sampler2D Texture;
+uniform sampler2D uTexture;
 
 void main()
 {
-	Color = vec4(texture(Texture, tex).xyz, 1.0f);
-	//Color = vec4(0,0,0,1);
+	oColor = vec4(texture(uTexture, oTexcoord).xyz, 1.0f);
 }

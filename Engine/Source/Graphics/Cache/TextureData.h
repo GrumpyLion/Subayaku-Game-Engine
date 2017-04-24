@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ETExtureFormat.h"
+#include "Graphics\Cache\TextureEnums.h"
 
 namespace Graphics
 {

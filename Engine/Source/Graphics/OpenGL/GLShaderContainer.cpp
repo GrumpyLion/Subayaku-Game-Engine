@@ -23,7 +23,7 @@ namespace Graphics
 
 			if (!vertex.Initialize(EShaderTypes::VertexShader, a_Material->VertexShader))
 			{
-				LogErr("Vertex Init failed");
+				LogErr("Vertex Init failed\n");
 				return false;
 			}
 
@@ -34,7 +34,7 @@ namespace Graphics
 
 			if (!fragment.Initialize(EShaderTypes::FragmentShader, a_Material->FragmentShader))
 			{
-				LogErr("Fragment Init failed");
+				LogErr("Fragment Init failed\n");
 				return false;
 			}
 
@@ -60,7 +60,7 @@ namespace Graphics
 
 			if (!vertex.Initialize(EShaderTypes::VertexShader, a_VS))
 			{
-				LogErr("Vertex Init failed");
+				LogErr("Vertex Init failed\n");
 				return false;
 			}
 
@@ -71,7 +71,7 @@ namespace Graphics
 
 			if (!fragment.Initialize(EShaderTypes::FragmentShader, a_PS))
 			{
-				LogErr("Fragment Init failed");
+				LogErr("Fragment Init failed\n");
 				return false;
 			}
 
@@ -102,20 +102,49 @@ namespace Graphics
 			GLint result = glGetUniformLocation(m_Program, a_Name);
 			if (result == -1)
 			{
-				LogErr("Uniform not found");
-				LogErr(a_Name);
+				LogErr("Uniform not found %s \n", a_Name);
 			}
 			return result;
 		}
 
-		void GLShaderContainer::SetVector3f(const char* a_UniformName, const Vector3f &a_Vec)
+		bool GLShaderContainer::SetInt(const char* a_UniformName, const int a_Value)
 		{
-			glUniform3f(GetUniform(a_UniformName), a_Vec.x, a_Vec.y, a_Vec.z);
+			if (GetUniform(a_UniformName) == -1)
+				return false;
+			glUniform1i(GetUniform(a_UniformName), a_Value);
+			return true;
 		}
 
-		void GLShaderContainer::SetMatrix4f(const char* a_UniformName, Matrix4f &a_Mat)
+		bool GLShaderContainer::SetFloat(const char* a_UniformName, const float a_Value)
 		{
+			if (GetUniform(a_UniformName) == -1)
+				return false;
+			glUniform1f(GetUniform(a_UniformName), a_Value);
+			return true;
+		}
+
+		bool GLShaderContainer::SetVector2f(const char* a_UniformName, const Vector2f &a_Vec)
+		{
+			if (GetUniform(a_UniformName) == -1)
+				return false;
+			glUniform2f(GetUniform(a_UniformName), a_Vec.x, a_Vec.y);
+			return true;
+		}
+
+		bool GLShaderContainer::SetVector3f(const char* a_UniformName, const Vector3f &a_Vec)
+		{
+			if (GetUniform(a_UniformName) == -1)
+				return false;
+			glUniform3f(GetUniform(a_UniformName), a_Vec.x, a_Vec.y, a_Vec.z);
+			return true;
+		}
+
+		bool GLShaderContainer::SetMatrix4f(const char* a_UniformName, Matrix4f &a_Mat)
+		{
+			if (GetUniform(a_UniformName) == -1)
+				return false;
 			glUniformMatrix4fv(GetUniform(a_UniformName), 1, GL_FALSE, &a_Mat.m11);
+			return true;
 		}
 
 		GLuint GLShaderContainer::GetProgram()
@@ -129,7 +158,7 @@ namespace Graphics
 			glGetProgramInfoLog(m_Program, 256, 0, log);
 			if (strlen(log) > 0)
 			{
-				LogErr(log);
+				LogErr("%s\n", log);
 				return true;
 			}
 			return false;

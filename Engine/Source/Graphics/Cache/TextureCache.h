@@ -34,7 +34,7 @@ namespace Graphics
 				TextureData<unsigned char*> *temp = m_Textures.find(a_FileName)->second;
 				if (temp == nullptr)
 				{
-					LogErr("Cached Texture is null");
+					LogErr("Cached Texture [%s] is null\n", a_FileName);
 					return nullptr;
 				}
 				return temp;

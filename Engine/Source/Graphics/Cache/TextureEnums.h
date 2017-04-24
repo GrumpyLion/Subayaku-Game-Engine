@@ -10,4 +10,10 @@ namespace Graphics
 		R,
 		RG
 	};
+
+	enum ETextureFilter
+	{
+		NEAREST,
+		LINEAR
+	};
 }

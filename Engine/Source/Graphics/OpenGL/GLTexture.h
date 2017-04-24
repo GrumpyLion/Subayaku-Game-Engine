@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLEW\Include\glew.h>
-#include "Graphics\Cache\ETextureFormat.h"
+#include "Graphics\Cache\TextureEnums.h"
 
 namespace Graphics
 {

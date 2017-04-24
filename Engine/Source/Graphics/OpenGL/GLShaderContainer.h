@@ -30,8 +30,11 @@ namespace Graphics
 
 			GLuint GetProgram();
 
-			void SetVector3f(const char* a_UniformName, const Vector3f &a_Vec);
-			void SetMatrix4f(const char* a_UniformName, Matrix4f &a_Mat);
+			bool SetInt(const char* a_UniformName, const int a_Value);
+			bool SetFloat(const char* a_UniformName, const float a_Value);
+			bool SetVector2f(const char* a_UniformName, const Vector2f &a_Vec);
+			bool SetVector3f(const char* a_UniformName, const Vector3f &a_Vec);
+			bool SetMatrix4f(const char* a_UniformName, Matrix4f &a_Mat);
 
 		};
 	}

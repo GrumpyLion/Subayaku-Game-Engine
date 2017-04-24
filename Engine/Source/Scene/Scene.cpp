@@ -3,11 +3,13 @@
 
 #include "Core\Engine.h"
 #include "Graphics\Interface\IRenderer.h"
+#include "Graphics\Material.h"
 
 #include "GameObject\GameObject.h"
 #include "GameObject\Components\Transformation.h"
 #include "GameObject\Components\CMeshRenderer.h"
 #include "GameObject\Components\CCamera.h"
+#include "GameObject\Components\CSprite.h"
 
 namespace Scene
 {
@@ -15,16 +17,34 @@ namespace Scene
 	{
 		GameObject *temp = new GameObject();
 		temp->Transform = new Transformation();
-		temp->Transform->Position = Vector3f(0, -40, -150);
+		temp->Transform->Position = Vector3f(0, 0, -150);
 		
 		CMeshRenderer *mesh = new CMeshRenderer();
+
+		Graphics::Material *tempMat = new Graphics::Material();
+		tempMat->VertexShader = "Assets/Shaders/Test.vs";
+		tempMat->FragmentShader = "Assets/Shaders/Test.fs";
+
+		mesh->Initialize(temp, "Assets/Models/teapot.obj", tempMat);
 		temp->AddComponent(mesh);
 
 		CCamera *camera = new CCamera();
+		camera->Initialize(temp, 60.0f, 0.1f, 100.0f);
 		temp->AddComponent(camera);
 
 		AddGameObject(temp);
 
+		GameObject *temp2 = new GameObject();
+		temp2->Name = "Sprite";
+		temp2 ->Transform = new Transformation();
+		temp2 ->Transform->Position = Vector3f(1, 1, 0);
+
+		CSprite *sprite = new CSprite();
+		sprite->Initialize(temp2, "Assets/Textures/Test.bmp");
+
+		temp2->AddComponent(sprite);
+
+		AddGameObject(temp2);
 		return true;
 	}
 
@@ -45,11 +65,18 @@ namespace Scene
 	{
 		if (a_ToAdd == nullptr)
 		{
-			LogErr("AddGameObject() GameObject is Null");
+			LogErr("AddGameObject() GameObject is Null\n");
 			return false;
 		}
 		
-		printf("GameObject added %s\n", a_ToAdd->Name.c_str());
+		if (m_GameObjects.find(a_ToAdd->Name) != m_GameObjects.end())
+		{
+			LogErr("GameObject [%s] is already added\n", a_ToAdd->Name.c_str());
+			SHUTDOWN_AND_DELETE(a_ToAdd);
+			return false;
+		}
+
+		LogErr("GameObject added %s\n", a_ToAdd->Name.c_str());
 
 		m_GameObjects.insert(std::pair<std::string, GameObject*>(a_ToAdd->Name, a_ToAdd));
 		return true;
@@ -59,20 +86,20 @@ namespace Scene
 	{
 		if (a_Parent == nullptr)
 		{
-			LogErr("AddRenderable() GameObject is Null");
+			LogErr("AddRenderable() GameObject is Null\n");
 			return;
 		}
 
 		if (a_Renderable == nullptr)
 		{
-			LogErr("AddRenderable() Renderable is Null");
+			LogErr("AddRenderable() Renderable is Null\n");
 			return;
 		}
 
 		//Already added
 		if (m_Renderarbles.find(a_Parent) != m_Renderarbles.end())
 		{
-			LogErr("AddRenderable() GameObject already added");
+			LogErr("AddRenderable() GameObject already added\n");
 			return;
 		}
 		else
@@ -86,7 +113,7 @@ namespace Scene
 	{
 		if (a_Parent == nullptr)
 		{
-			LogErr("RemoveRenderable() GameObject is Null");
+			LogErr("RemoveRenderable() GameObject is Null\n");
 			return;
 		}
 
@@ -99,7 +126,7 @@ namespace Scene
 		}
 		else
 		{
-			LogErr("RemoveRenderable() GameObject not found");
+			LogErr("RemoveRenderable() GameObject not found\n");
 			return;
 		}
 	}
@@ -114,7 +141,7 @@ namespace Scene
 		}
 		else
 		{
-			LogErr("RemoveGameObject() GameObject does not exist");
+			LogErr("RemoveGameObject() GameObject does not exist\n");
 		}
 	}
 
@@ -123,8 +150,10 @@ namespace Scene
 		for (auto &temp : m_GameObjects)
 		{
 			SHUTDOWN_AND_DELETE(temp.second);
+			printf("Test");
 		}
 		m_GameObjects.clear();
+		m_Renderarbles.clear();
 	}
 
 	void Scene::SetCamera(CCamera *a_Camera)

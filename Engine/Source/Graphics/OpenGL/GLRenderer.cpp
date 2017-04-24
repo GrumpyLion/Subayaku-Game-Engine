@@ -53,8 +53,7 @@ namespace Graphics
 
 			glViewport(0, 0, a_Desc.Width, a_Desc.Height);
 
-			//glFrontFace(GL_CW);
-			glEnable(GL_CULL_FACE);
+			glDisable(GL_CULL_FACE);
 			glEnable(GL_DEPTH_TEST);
 
 			glEnable(GL_BLEND);
@@ -75,14 +74,6 @@ namespace Graphics
 			{
 				SetCamera(Core::Engine::StaticClass()->GetScene()->GetCamera());
 			}
-			
-			test = new GLSprite();
-			test->Initialize();
-
-			delete test;
-
-			test = new GLSprite();
-			test->Initialize();
 
 			return true;
 		}
@@ -92,11 +83,9 @@ namespace Graphics
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glClearColor(0.2f, 0.4f, 0.6f, 1);
 
-
 			for (auto &temp : m_Entities)
 				temp.second->Render();
 
-			test->Render();
 			SwapBuffers(m_HDC);
 		}
 
@@ -107,7 +96,7 @@ namespace Graphics
 
 			if (m_Entities.find(a_MeshRenderer) != m_Entities.end())
 			{
-				LogErr("CMeshrenderer is already added");
+				LogErr("CMeshrenderer is already added\n");
 				return;
 			}
 
@@ -115,7 +104,7 @@ namespace Graphics
 			
 			if (!temp->Initialize(a_MeshRenderer->GetMesh(), a_MeshRenderer->GetMaterial(), a_MeshRenderer->Parent))
 			{
-				LogErr("While trying to add a new Renderable");
+				LogErr("While trying to add a new Renderable\n");
 				SAFE_DELETE(temp);
 				return;
 			}
@@ -130,7 +119,7 @@ namespace Graphics
 
 			if (m_Entities.find(a_MeshRenderer) == m_Entities.end())
 			{
-				LogErr("CMeshrenderer was not found");
+				LogErr("CMeshrenderer was not found\n");
 				return;
 			}
 			else

@@ -7,7 +7,8 @@ namespace Scene
 		Transform,
 		MeshRenderer,
 		Camera,
-		Script		
+		Script,
+		Sprite
 	};
 
 	class GameObject;

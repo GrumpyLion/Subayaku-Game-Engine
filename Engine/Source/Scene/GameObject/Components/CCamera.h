@@ -9,7 +9,7 @@ namespace Scene
 	public:
 		float FOV, Near, Far;
 		
-		bool Initialize(GameObject *a_Parent) override;
+		bool Initialize(GameObject *a_Parent, float a_FOV, float a_Near, float a_Far);
 		void Update() override;
 		void Shutdown() override;
 	};

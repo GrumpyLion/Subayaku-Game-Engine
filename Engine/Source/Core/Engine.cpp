@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "SubayakuCore.h"
 #include <chrono>
+#include <thread>
 
 namespace Core
 {
@@ -115,6 +116,7 @@ namespace Core
 
 			m_Renderer->Render();
 			frames++;
+			Sleep(1);
 		}
 
 		Shutdown();

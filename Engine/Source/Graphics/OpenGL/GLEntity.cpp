@@ -36,14 +36,14 @@ namespace Graphics
 		float rot;
 		void GLEntity::Render()
 		{
-			rot += 0.01f;
+			rot += 0.001f;
 			m_Material->Bind();
 			m_Mesh->Bind();
 			
 			Matrix4f temp = Matrix4f::Identity();
 			temp *= Matrix4f::Scale(m_Parent->Transform->Scale);
 			temp *= Matrix4f::Translate(m_Parent->Transform->Position);
-			temp *= Matrix4f::RotateY(rot);
+			temp *= Matrix4f::RotateX(rot);
 
 			m_Material->GetContainer()->SetMatrix4f("uMLMatrix", temp);
 

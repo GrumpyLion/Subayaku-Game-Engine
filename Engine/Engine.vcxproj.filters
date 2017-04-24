@@ -120,19 +120,22 @@
     <ClInclude Include="Source\Graphics\Loaders\BMPLoader.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\OpenGL\GLSprite.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\OpenGL\GLTexture.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\Cache\TextureData.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Cache\ETextureFormat.h">
+    <ClInclude Include="Source\Graphics\Cache\TextureCache.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Cache\TextureCache.h">
+    <ClInclude Include="Source\Scene\GameObject\Components\CSprite.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\TextureInfo.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Cache\TextureEnums.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -182,10 +185,13 @@
     <ClCompile Include="Source\Graphics\AssimpLoader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\OpenGL\GLSprite.cpp">
+    <ClCompile Include="Source\Graphics\OpenGL\GLTexture.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\OpenGL\GLTexture.cpp">
+    <ClCompile Include="Source\Graphics\Material.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\GameObject\Components\CSprite.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
