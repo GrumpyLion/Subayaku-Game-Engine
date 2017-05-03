@@ -16,7 +16,7 @@ namespace Graphics
 
 		int m_Width = 0, m_Height = 0;
 
-		bool LoadFile(const char* a_FileName, TextureData<unsigned char*>*& a_TextureData)
+		bool LoadFile(const char* a_FileName, TextureData*& a_TextureData)
 		{
 			unsigned char* bigBuffer = nullptr;
 
@@ -81,7 +81,7 @@ namespace Graphics
 				j += 4;
 			}
 			
-			a_TextureData  = new TextureData<unsigned char*>();
+			a_TextureData  = new TextureData();
 			a_TextureData->Initialize(m_PixelData, ETextureFormat::RGBA, m_Width, m_Height);
 
 			delete[] bigBuffer;

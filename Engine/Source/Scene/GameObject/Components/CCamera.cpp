@@ -9,7 +9,7 @@ namespace Scene
 	{
 		IComponent::Initialize(a_Parent);
 		FOV = 60.0f;
-		Near = 0.1f;
+		Near = 1.0f;
 		Far = 500.0f;
 
 		Core::Engine::StaticClass()->GetRenderer()->SetCamera(this);

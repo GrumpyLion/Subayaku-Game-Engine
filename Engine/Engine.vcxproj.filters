@@ -138,6 +138,9 @@
     <ClInclude Include="Source\Graphics\Cache\TextureEnums.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\MeshInfo.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Graphics\OpenGL\GLRenderer.cpp">

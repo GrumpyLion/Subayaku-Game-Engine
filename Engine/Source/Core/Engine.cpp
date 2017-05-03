@@ -78,10 +78,8 @@ namespace Core
 			delta += std::chrono::duration_cast<std::chrono::nanoseconds>(now - lastTime).count() / nsPerTick;
 			lastTime = std::chrono::high_resolution_clock::now();
 
-			while (delta >= 1)
+			while (delta > 1)
 			{
-				if (delta > 2) delta = 0;
-
 				updates++;
 				if (GetKeyboard()->IsKeyDown(SUBA_KEY_E))
 				{
@@ -185,6 +183,9 @@ namespace Core
 
 	Scene::Scene *Engine::GetScene()
 	{	return m_Scene;	}
+
+	SEngineContext &Engine::GetContext()
+	{	return m_Context;	}
 
 	Engine* Engine::StaticClass()
 	{	return m_SharedInstance;	}

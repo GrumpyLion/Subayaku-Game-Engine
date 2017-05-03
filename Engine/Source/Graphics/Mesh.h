@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Math\Math.h"
+#include "Graphics\MeshInfo.h"
 
 namespace Graphics
 {
@@ -12,5 +13,9 @@ namespace Graphics
 		std::vector<Vector3f> Normals;
 		std::vector<Vector2f> TexCoords;
 		std::vector<unsigned int> Indices;
+
+		EMeshPrimitive Mode;
+		bool ShouldCull = true;
+		bool HasIndices = false;
 	};
 }

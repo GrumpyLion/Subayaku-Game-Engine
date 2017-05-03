@@ -89,16 +89,32 @@ namespace Core
 		return true;
 	}
 
+	void CWindow::Resize()
+	{
+		RECT rect;
+		if (GetWindowRect(m_Handle, &rect))
+		{
+			Engine::StaticClass()->GetContext().Width = rect.right - rect.left;
+			Engine::StaticClass()->GetContext().Height = rect.bottom - rect.top;
+		}
+	}
+
 	LRESULT CWindow::WndProc(HWND a_HWND, unsigned int a_Message, WPARAM a_WParam, LPARAM a_LParam)
 	{
 		switch (a_Message)
 		{
+		case WM_SIZE:
+		{
+			static_cast<CWindow*>(Engine::StaticClass()->GetWindow())->Resize();
+			break;
+		}
+
 		case WM_KEYDOWN:
-			Engine::StaticClass()->GetKeyboard()->KeyDown(a_WParam);
+			Engine::StaticClass()->GetKeyboard()->KeyDown((int)a_WParam);
 			break;
 
 		case WM_KEYUP:
-			Engine::StaticClass()->GetKeyboard()->KeyUp(a_WParam);
+			Engine::StaticClass()->GetKeyboard()->KeyUp((int)a_WParam);
 			break;
 
 		case WM_CLOSE:

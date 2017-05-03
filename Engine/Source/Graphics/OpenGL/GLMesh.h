@@ -1,16 +1,16 @@
 #pragma once
 
 #include <GLEW\Include\glew.h>
+#include "Graphics\Mesh.h"
 
 namespace Graphics
 {
-	class Mesh;
 
 	namespace OpenGL
 	{
 		const int numVBOs = 4;
 
-		class GLMesh
+		class GLMesh : public Mesh
 		{
 		private:
 			GLuint m_VAO = 0;

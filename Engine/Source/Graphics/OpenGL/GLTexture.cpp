@@ -13,7 +13,7 @@ namespace Graphics
 		
 		bool GLTexture::InitializeFromCache(const char* a_FileName, GLint a_Filter)
 		{
-			TextureData<unsigned char*> *temp = Core::Engine::StaticClass()->GetTextureCache()->GetTexture(a_FileName);
+			TextureData *temp = Core::Engine::StaticClass()->GetTextureCache()->GetTexture(a_FileName);
 			
 			if (temp == nullptr)
 				return false;

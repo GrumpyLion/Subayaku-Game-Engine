@@ -4,13 +4,12 @@
 
 namespace Graphics
 {
-	template <typename T1>
 	class TextureData
 	{
 	private:
 	
 	public:
-		T1 PixelData;
+		unsigned char* PixelData;
 		ETextureFormat Format;
 		int Width = 0, Height = 0;
 		
@@ -19,7 +18,7 @@ namespace Graphics
 			delete[] PixelData;
 		}
 
-		void Initialize(T1 a_PixelData, ETextureFormat a_Format, int a_Width, int a_Height)
+		void Initialize(unsigned char* a_PixelData, ETextureFormat a_Format, int a_Width, int a_Height)
 		{
 			Width = a_Width;
 			Height = a_Height;

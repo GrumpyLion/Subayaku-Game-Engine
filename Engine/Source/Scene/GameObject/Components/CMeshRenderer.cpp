@@ -14,6 +14,8 @@ namespace Scene
 		IComponent::Initialize(a_Parent);
 
 		m_Mesh = new Graphics::Mesh();
+		m_Mesh->HasIndices = true;
+		m_Mesh->Mode = Graphics::EMeshPrimitive::TRIANGLES;
 		//TODO MOVE THIS
 		loadAssimp(a_ModelLocation, m_Mesh->Indices, m_Mesh->Vertices, m_Mesh->TexCoords, m_Mesh->Normals);
 

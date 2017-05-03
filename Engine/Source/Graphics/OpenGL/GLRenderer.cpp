@@ -53,10 +53,12 @@ namespace Graphics
 
 			glViewport(0, 0, a_Desc.Width, a_Desc.Height);
 
-			glDisable(GL_CULL_FACE);
+			glFrontFace(GL_CW);
+			glEnable(GL_CULL_FACE);
 			glEnable(GL_DEPTH_TEST);
 
-			glEnable(GL_BLEND);
+			glEnable(GL_BLEND); 
+			glDepthFunc(GL_LESS);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			if (Core::Engine::StaticClass()->GetScene() != nullptr)
@@ -82,6 +84,9 @@ namespace Graphics
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glClearColor(0.2f, 0.4f, 0.6f, 1);
+			glViewport(0, 0, Core::Engine::StaticClass()->GetContext().Width, Core::Engine::StaticClass()->GetContext().Height);
+
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 			for (auto &temp : m_Entities)
 				temp.second->Render();
@@ -109,7 +114,7 @@ namespace Graphics
 				return;
 			}
 
-			m_Entities.insert(std::pair<Scene::CMeshRenderer*, GLEntity*>(a_MeshRenderer, temp));
+			m_Entities.insert({ a_MeshRenderer, temp });
 		}
 
 		void GLRenderer::RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer)
@@ -137,6 +142,12 @@ namespace Graphics
 
 		void GLRenderer::Shutdown()
 		{
+			for (auto &temp : m_Entities)
+			{
+				SAFE_DELETE(temp.second);
+			}
+			m_Entities.clear();
+
 			if (m_HDC != nullptr)
 			{
 				ReleaseDC(m_Desc.Handle, m_HDC);

@@ -74,18 +74,21 @@ namespace Graphics
 				index++;
 			}
 
+			float aspect = (float)Core::Engine::StaticClass()->GetContext().Width / (float)Core::Engine::StaticClass()->GetContext().Height;
+
 			if (m_FoundUniforms.find("uPRMatrix")->second)
 			{
 				if (m_Renderer->Camera == nullptr) 
 					return;
 				if (!m_Container->SetMatrix4f("uPRMatrix",
-					Matrix4f::Perspective(m_Renderer->Camera->FOV, 1024 / 600, m_Renderer->Camera->Near, m_Renderer->Camera->Far)))
+					Matrix4f::Perspective(m_Renderer->Camera->FOV,
+					aspect, m_Renderer->Camera->Near, m_Renderer->Camera->Far)))
 					m_FoundUniforms.find("uPRMatrix")->second = false;				
 			}
 
 			if (m_FoundUniforms.find("uORMatrix")->second)
 			{
-				if (!m_Container->SetMatrix4f("uORMatrix", Matrix4f::Orthograpic(0.0f, 4.0f, 0.0f, 2.0f, -1.0f, 10.0f)))
+				if (!m_Container->SetMatrix4f("uORMatrix", Matrix4f::Orthograpic(0.0f, 4.0f, 0.0f, 2.5f, -1.0f, 10.0f)))
 					m_FoundUniforms.find("uORMatrix")->second = false;
 			}
 		}

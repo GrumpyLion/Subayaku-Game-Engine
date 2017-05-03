@@ -11,6 +11,9 @@ namespace Scene
 		IComponent::Initialize(a_Parent);
 
 		m_Mesh = Graphics::Primitives::GetQuad();
+		m_Mesh->ShouldCull = false;
+		m_Mesh->HasIndices = true;
+		m_Mesh->Mode = Graphics::EMeshPrimitive::TRIANGLES;
 		m_Material = new Graphics::Material();
 
 		Graphics::TextureInfo texInfo;

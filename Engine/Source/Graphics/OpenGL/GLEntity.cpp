@@ -33,21 +33,53 @@ namespace Graphics
 			return true;
 		}
 
-		float rot;
 		void GLEntity::Render()
 		{
-			rot += 0.001f;
 			m_Material->Bind();
 			m_Mesh->Bind();
 			
 			Matrix4f temp = Matrix4f::Identity();
 			temp *= Matrix4f::Scale(m_Parent->Transform->Scale);
 			temp *= Matrix4f::Translate(m_Parent->Transform->Position);
-			temp *= Matrix4f::RotateX(rot);
+			temp *= Matrix4f::RotateX(m_Parent->Transform->Rotation.x);
+			temp *= Matrix4f::RotateY(m_Parent->Transform->Rotation.y);
+			temp *= Matrix4f::RotateZ(m_Parent->Transform->Rotation.z);
 
 			m_Material->GetContainer()->SetMatrix4f("uMLMatrix", temp);
 
-			glDrawElements(GL_TRIANGLES, m_Mesh->GetCount(), GL_UNSIGNED_INT, NULL);
+			GLenum mode;
+			switch (m_Mesh->Mode)
+			{
+			case EMeshPrimitive::TRIANGLES:
+				mode = GL_TRIANGLES;
+				break;
+
+			case EMeshPrimitive::TRIANGLE_STRIP:
+				mode = GL_TRIANGLE_STRIP;
+				break;
+
+			case EMeshPrimitive::LINES:
+				mode = GL_LINES;
+				break;
+
+			case EMeshPrimitive::TRIANGLE_FAN:
+				mode = GL_TRIANGLE_FAN;
+				break;
+
+			case EMeshPrimitive::POINTS:
+				mode = GL_POINTS;
+				break;
+			}
+
+			if (m_Mesh->HasIndices)
+			{
+				glDrawElements(mode, m_Mesh->GetCount(), GL_UNSIGNED_INT, nullptr);
+			}
+			else
+			{
+				glDrawArrays(mode, 0, m_Mesh->GetCount());
+			}
+			
 			m_Mesh->Unbind();
 		}
 	}

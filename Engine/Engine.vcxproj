@@ -31,6 +31,7 @@
     <ClInclude Include="Source\Graphics\Loaders\BMPLoader.h" />
     <ClInclude Include="Source\Graphics\Material.h" />
     <ClInclude Include="Source\Graphics\Mesh.h" />
+    <ClInclude Include="Source\Graphics\MeshInfo.h" />
     <ClInclude Include="Source\Graphics\Model.h" />
     <ClInclude Include="Source\Graphics\OpenGL\GLEntity.h" />
     <ClInclude Include="Source\Graphics\OpenGL\GLEShaderTypes.h" />

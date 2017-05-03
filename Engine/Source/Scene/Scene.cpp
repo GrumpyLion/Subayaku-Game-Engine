@@ -17,7 +17,7 @@ namespace Scene
 	{
 		GameObject *temp = new GameObject();
 		temp->Transform = new Transformation();
-		temp->Transform->Position = Vector3f(0, 0, -150);
+		temp->Transform->Position = Vector3f(20, -20, -150);
 		
 		CMeshRenderer *mesh = new CMeshRenderer();
 
@@ -37,7 +37,7 @@ namespace Scene
 		GameObject *temp2 = new GameObject();
 		temp2->Name = "Sprite";
 		temp2 ->Transform = new Transformation();
-		temp2 ->Transform->Position = Vector3f(1, 1, 0);
+		temp2 ->Transform->Position = Vector3f(0, 0, 0);
 
 		CSprite *sprite = new CSprite();
 		sprite->Initialize(temp2, "Assets/Textures/Test.bmp");
@@ -150,7 +150,6 @@ namespace Scene
 		for (auto &temp : m_GameObjects)
 		{
 			SHUTDOWN_AND_DELETE(temp.second);
-			printf("Test");
 		}
 		m_GameObjects.clear();
 		m_Renderarbles.clear();

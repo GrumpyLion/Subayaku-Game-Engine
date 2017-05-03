@@ -19,6 +19,8 @@ namespace Core
 		bool Update() override;
 		bool Shutdown() override;
 
+		void Resize();
+
 		static LRESULT CALLBACK WndProc(HWND a_hwnd, unsigned int a_Message, WPARAM a_wParam, LPARAM a_lParam);
 
 		HWND GetHandle();

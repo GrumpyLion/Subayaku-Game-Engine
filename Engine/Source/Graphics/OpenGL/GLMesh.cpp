@@ -14,6 +14,9 @@ namespace Graphics
 
 		void GLMesh::Initialize(Mesh *a_Mesh)
 		{
+			Mode = a_Mesh->Mode;
+			ShouldCull = a_Mesh->ShouldCull;
+			
 			glGenVertexArrays(1, &m_VAO);
 			glBindVertexArray(m_VAO);
 
@@ -59,7 +62,15 @@ namespace Graphics
 			glBindVertexArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-			m_Count = a_Mesh->Indices.size();
+			HasIndices = a_Mesh->HasIndices;
+			if (a_Mesh->HasIndices)
+			{
+				m_Count = (GLuint)a_Mesh->Indices.size();
+			}
+			else
+			{
+				m_Count = (GLuint)a_Mesh->Vertices.size();
+			}
 		}
 		
 		GLuint GLMesh::GetCount() const
@@ -70,11 +81,15 @@ namespace Graphics
 		void GLMesh::Bind()
 		{
 			glBindVertexArray(m_VAO);
+			if (!ShouldCull)
+				glDisable(GL_CULL_FACE);
 		}
 
 		void GLMesh::Unbind()
 		{
 			glBindVertexArray(0);
+			if (!ShouldCull)
+				glEnable(GL_CULL_FACE);
 		}
 	}
 }

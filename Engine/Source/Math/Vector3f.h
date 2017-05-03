@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <stdio.h>
 
 struct Vector3f
 {
@@ -20,6 +21,11 @@ struct Vector3f
 
 	Vector3f(const Vector3f &a_Vec)
 		: x(a_Vec.x), y(a_Vec.y), z(a_Vec.z) {}
+
+	void Print()
+	{
+		printf("%f, %f, %f\n", x, y, z);
+	}
 
 	void Set(const float &a_X, const float &a_Y, const float &a_Z)
 	{
@@ -104,6 +110,15 @@ struct Vector3f
 
 	float Length()
 	{	return std::sqrt((x*x) + (y*y) + (z*z));	}
+
+	static Vector3f Cross(const Vector3f a_Vec1, const Vector3f a_Vec2)
+	{
+		Vector3f temp;
+		temp.x = a_Vec1.y * a_Vec2.z - a_Vec1.z * a_Vec2.y;
+		temp.y = a_Vec1.z * a_Vec2.x - a_Vec1.x * a_Vec2.z;
+		temp.z = a_Vec1.x * a_Vec2.y - a_Vec1.y * a_Vec2.x;
+		return temp;
+	}
 
 	Vector3f &Vector3f::operator+=(const Vector3f &a_Vec)
 	{

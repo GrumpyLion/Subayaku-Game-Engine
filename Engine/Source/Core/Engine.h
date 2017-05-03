@@ -49,6 +49,7 @@ namespace Core
 		Keyboard *GetKeyboard();
 		Scene::Scene *GetScene();
 		Graphics::TextureCache *GetTextureCache();
+		SEngineContext &GetContext();
 
 		static Engine* StaticClass();
 	};

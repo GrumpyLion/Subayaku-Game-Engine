@@ -2,8 +2,9 @@
 
 out vec4 Color;
 in vec3 pos;
+in vec3 fragPos;
 in vec2 tex;
-
+  
 uniform sampler2D Texture;
 
 void main()
@@ -14,5 +15,4 @@ void main()
 	
 	Color = vec4(vec3(d),1);
 	//Color = texture(Texture, tex);
-
 }
