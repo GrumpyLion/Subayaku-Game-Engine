@@ -1,6 +1,6 @@
 #include "Window.h"
 #include "Core\Engine.h"
-#include "Input\Keyboard.h"
+#include "Input\InputManager.h"
 
 namespace Core
 {
@@ -38,16 +38,16 @@ namespace Core
 
 		AdjustWindowRect(&rect, style, NULL);
 
-		int xPos = (GetSystemMetrics(SM_CXSCREEN) - rect.right - rect.left) / 2;
-		int yPos = (GetSystemMetrics(SM_CYSCREEN) - rect.bottom - rect.top) / 2;
+		Core::Engine::StaticClass()->GetContext().xPos = (GetSystemMetrics(SM_CXSCREEN) - rect.right - rect.left) / 2;
+		Core::Engine::StaticClass()->GetContext().yPos = (GetSystemMetrics(SM_CYSCREEN) - rect.bottom - rect.top) / 2;
 
 		if (a_EngineContext.IsFullScreen)
 		{
 			//We don't need borders if we're in fullscreen mode
 			style = WS_POPUP;
 
-			xPos = 0;
-			yPos = 0;
+			Core::Engine::StaticClass()->GetContext().xPos = 0;
+			Core::Engine::StaticClass()->GetContext().yPos = 0;
 			
 			rect.left = 0;
 			rect.top = 0;
@@ -58,7 +58,9 @@ namespace Core
 
 		m_Handle = CreateWindowEx(WS_EX_APPWINDOW,
 			a_EngineContext.Title, a_EngineContext.Title, style,
-			xPos, yPos, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, m_HInstance, NULL);
+			Core::Engine::StaticClass()->GetContext().xPos,
+			Core::Engine::StaticClass()->GetContext().yPos,
+			rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, m_HInstance, NULL);
 
 		//Window creation failed
 		if (m_Handle == nullptr)
@@ -108,12 +110,33 @@ namespace Core
 			break;
 		}
 
+		case WM_MOVE:
+			Core::Engine::StaticClass()->GetContext().xPos = (int)(short)LOWORD(a_LParam);
+			Core::Engine::StaticClass()->GetContext().yPos = (int)(short)HIWORD(a_LParam);
+			break;
+
 		case WM_KEYDOWN:
-			Engine::StaticClass()->GetKeyboard()->KeyDown((int)a_WParam);
+			Engine::StaticClass()->GetInputManager()->GetKeyboard()->KeyDown((int)a_WParam);
 			break;
 
 		case WM_KEYUP:
-			Engine::StaticClass()->GetKeyboard()->KeyUp((int)a_WParam);
+			Engine::StaticClass()->GetInputManager()->GetKeyboard()->KeyUp((int)a_WParam);
+			break;
+
+		case WM_RBUTTONUP:
+			Engine::StaticClass()->GetInputManager()->GetMouse()->RightButton = false;
+			break;
+
+		case WM_RBUTTONDOWN:
+			Engine::StaticClass()->GetInputManager()->GetMouse()->RightButton = true;
+			break;
+
+		case WM_LBUTTONUP:
+			Engine::StaticClass()->GetInputManager()->GetMouse()->LeftButton = false;
+			break;
+
+		case WM_LBUTTONDOWN:
+			Engine::StaticClass()->GetInputManager()->GetMouse()->LeftButton = true;
 			break;
 
 		case WM_CLOSE:

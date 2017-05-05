@@ -20,6 +20,7 @@ namespace Core
 	class IWindow;
 	class Keyboard;
 	class Cache;
+	class InputManager;
 
 	class Engine
 	{
@@ -28,7 +29,7 @@ namespace Core
 
 		static Engine* m_SharedInstance;
 		IWindow* m_Window = nullptr;
-		Keyboard* m_Keyboard = nullptr;
+		InputManager* m_InputManager = nullptr;
 		Cache *m_Cache = nullptr;
 
 		Scene::Scene *m_Scene = nullptr;
@@ -53,11 +54,11 @@ namespace Core
 
 		//Returns the time since the start of the game in milliseconds
 		long GetTimeSinceStart();
-
+		
 		Cache *GetCache();
 		IWindow *GetWindow();
 		Graphics::IRenderer *GetRenderer();
-		Keyboard *GetKeyboard();
+		InputManager *GetInputManager();
 		Scene::Scene *GetScene();
 		SEngineContext &GetContext();
 		static Engine* StaticClass();

@@ -1,37 +1,31 @@
 #pragma once
 
-#include <vector>
-#include "Graphics\Cache\SMeshDesc.h"
 #include "Graphics\Interface\IEntity.h"
-
-namespace Scene
-{
-	class GameObject;
-}
 
 namespace Graphics
 {
 	class Material;
 
-	namespace OpenGL
+	namespace DirectX
 	{
-		class GLMesh;
-		class GLMaterial;
+		class D3DMesh;
+		class D3DMaterial;
+		class D3DRenderer;
 
-		class GLEntity : public IEntity
+		class D3DEntity : public IEntity
 		{
 		private:
-			GLMesh *m_Mesh = nullptr;
-			GLMaterial *m_Material = nullptr;
+			D3DMesh *m_Mesh = nullptr;
+			D3DMaterial *m_Material = nullptr;
+			D3DRenderer *m_Renderer = nullptr;
+
 			Scene::GameObject *m_Parent = nullptr;
-			bool m_IsPrimitive = false;
 
 		public:
-			~GLEntity();
+			~D3DEntity();
 
 			bool Initialize(SMeshDesc &a_Mesh, Material *a_Material, Scene::GameObject *a_Parent) override;
 			void Render() override;
-
 		};
 	}
 }

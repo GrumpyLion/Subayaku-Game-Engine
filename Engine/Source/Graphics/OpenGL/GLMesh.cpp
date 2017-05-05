@@ -11,7 +11,7 @@ namespace Graphics
 			glDeleteVertexArrays(1, &m_VAO);			
 		}
 
-		void GLMesh::Initialize(SMeshDesc &a_Desc)
+		bool GLMesh::Initialize(SMeshDesc &a_Desc)
 		{			
 			ShouldCull = a_Desc.ShouldCull;
 			Mode = a_Desc.Mode;
@@ -100,6 +100,8 @@ namespace Graphics
 			{
 				m_Count = (GLuint)a_Desc.Vertices.size();
 			}
+
+			return true;
 		}
 		
 		GLuint GLMesh::GetCount()

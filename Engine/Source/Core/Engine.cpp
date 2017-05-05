@@ -47,9 +47,9 @@ namespace Core
 			return false;
 		}
 
-		m_Keyboard = new Keyboard();
+		m_InputManager = new InputManager();
 
-		m_Keyboard->Init();
+		m_InputManager->Initialize();
 		
 		return true;
 	}
@@ -78,6 +78,8 @@ namespace Core
 			if (!m_Window->Update())
 				done = true;
 
+			GetInputManager()->Update();
+
 			auto delta = clock::now() - start;
 			start = clock::now();
 			lag += std::chrono::duration_cast<std::chrono::nanoseconds>(delta);
@@ -86,25 +88,25 @@ namespace Core
 			{
 				lag -= timestep;
 				updates++;
-				if (GetKeyboard()->IsKeyDown(SUBA_KEY_ESCAPE))
+				if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_ESCAPE))
 				{
 					done = true;
 				}
-
+				
 				m_Scene->Update();
 			}
 
-			//if (GetKeyboard()->IsKeyDown(SUBA_KEY_E))
-			//{
-			//	m_Context.RDevice = RenderDevice::DirectX;
-			//	SwitchRenderer(m_Context);
-			//}
+			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_E))
+			{
+				m_Context.RDevice = RenderDevice::DirectX;
+				SwitchRenderer(m_Context);
+			}
 
-			//if (GetKeyboard()->IsKeyDown(SUBA_KEY_R))
-			//{
-			//	m_Context.RDevice = RenderDevice::OpenGL;
-			//	SwitchRenderer(m_Context);
-			//}
+			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_R))
+			{
+				m_Context.RDevice = RenderDevice::OpenGL;
+				SwitchRenderer(m_Context);
+			}
 
 			auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - deltaTimer);
 			deltaTimer = std::chrono::high_resolution_clock::now();
@@ -129,7 +131,7 @@ namespace Core
 
 	bool Engine::Shutdown()
 	{
-		SAFE_DELETE(m_Keyboard);
+		SAFE_DELETE(m_InputManager);
 
 		SHUTDOWN_AND_DELETE(m_Scene);
 	
@@ -139,8 +141,6 @@ namespace Core
 
 		SHUTDOWN_AND_DELETE(m_Cache);
 
-		//SAFE_DELETE(m_TextureCache);
-
 		return true;
 	}
 	
@@ -148,6 +148,7 @@ namespace Core
 	{
 		//Shutdown the old renderer
 		SHUTDOWN_AND_DELETE(m_Renderer);
+		//Shutdown Cache because cache is renderer relevant
 		SHUTDOWN_AND_DELETE(m_Cache);
 
 		m_Cache = new Cache();
@@ -160,7 +161,8 @@ namespace Core
 			break;
 
 		case RenderDevice::DirectX:
-			m_Renderer = new Graphics::DirectX::D3DRenderer();	
+			m_Renderer = new Graphics::DirectX::D3DRenderer();
+			m_Cache->Initialize(new Graphics::DirectX::D3DRenderFactory());
 			break;
 		
 		default:
@@ -199,8 +201,8 @@ namespace Core
 	Graphics::IRenderer *Engine::GetRenderer()
 	{	return m_Renderer;	}
 
-	Keyboard *Engine::GetKeyboard()
-	{	return m_Keyboard;	}
+	InputManager *Engine::GetInputManager()
+	{	return m_InputManager;	}
 
 	Scene::Scene *Engine::GetScene()
 	{	return m_Scene;		}

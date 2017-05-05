@@ -11,6 +11,7 @@ namespace Scene
 	{
 		IComponent::Initialize(a_Parent);
 
+		//Graphics::Primitives::GetQuad(m_Mesh);
 		m_Mesh.FilePath = "Assets/Models/sphere.obj";
 		m_Mesh.HasIndices = true;
 		m_Mesh.ShouldCull = false;

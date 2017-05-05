@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string>
 #include <algorithm>
+#include "Core\SEngineContext.h"
 
 inline bool Failed(HRESULT aResult)
 {
@@ -45,6 +46,19 @@ inline void LogWar(std::string a_Text)
 inline void Log(const char* a_Text)
 {
 	printf("%s\n", a_Text);
+}
+
+inline std::string GetShaderLocation(Core::SEngineContext &a_Context, std::string a_Path)
+{
+	std::string location;
+
+	if(a_Context.RDevice == Core::RenderDevice::OpenGL)
+		location = "Assets/Shaders/GLSL/";
+	else
+		location = "Assets/Shaders/HLSL/";
+
+	location.append(a_Path);
+	return location;
 }
 
 inline std::string GetExtension(std::string a_Path)

@@ -185,7 +185,7 @@ struct Matrix4f
 		return mat;
 	}
 
-	static Matrix4f Perspective(float a_FOV, float a_Aspect, float a_Near, float a_Far)
+	static Matrix4f PerspectiveRH(float a_FOV, float a_Aspect, float a_Near, float a_Far)
 	{
 		float yScale = 1.0f / std::tan(DEGTORAD * a_FOV / 2.0f);
 		float xScale = yScale / a_Aspect;
@@ -201,7 +201,25 @@ struct Matrix4f
 
 		Matrix4f mat = Matrix4f();
 		mat.SetData(temp);
-		//mat.Transpose();
+		return mat;
+	}
+
+	static Matrix4f PerspectiveLH(float a_FOV, float a_Aspect, float a_Near, float a_Far)
+	{
+		float yScale = 1.0f / std::tan(DEGTORAD * a_FOV / 2.0f);
+		float xScale = yScale / a_Aspect;
+		float NearFar = a_Far - a_Near;
+
+		float temp[4 * 4]
+		{
+			xScale, 0.0f, 0.0f, 0.0f,
+			0.0f, yScale, 0.0f, 0.0f,
+			0.0f, 0.0f, a_Far / NearFar, 1,
+			0.0f, 0.0f, a_Far*a_Near / (a_Near - a_Far), 0
+		};
+
+		Matrix4f mat = Matrix4f();
+		mat.SetData(temp);
 		return mat;
 	}
 

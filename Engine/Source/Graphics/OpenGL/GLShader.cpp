@@ -1,5 +1,6 @@
 #include "GLShader.h"
 #include "Utilities\Utilities.h"
+#include "Core\Engine.h"
 #include <fstream>
 
 namespace Graphics
@@ -15,7 +16,7 @@ namespace Graphics
 		{
 			Type = a_Type;
 
-			std::ifstream input(a_FilePath);
+			std::ifstream input(GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_FilePath));
 
 			std::string source((std::istreambuf_iterator<char>(input)),
 				std::istreambuf_iterator<char>());

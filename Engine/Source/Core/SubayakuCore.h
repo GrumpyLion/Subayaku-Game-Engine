@@ -14,17 +14,19 @@
 //Renderers
 #include "Graphics\Interface\IRenderer.h"
 #include "Graphics\OpenGL\GLRenderer.h"
-#include "Graphics\DirectX3D\D3DRenderer.h"
+#include "Graphics\DirectX\D3DRenderer.h"
 
 //Caches
 #include "Graphics\Interface\IRenderFactory.h"
 #include "Graphics\OpenGL\GLRenderFactory.h"
+#include "Graphics\DirectX\D3DRenderFactory.h"
 #include "Utilities\Cache.h"
 
 //IO
 #include "Window\Interface\IWindow.h"
 #include "Window\Window.h"
 #include "Input\Keyboard.h"
+#include "Input\InputManager.h"
 
 //Scene
 #include "Scene\Scene.h"

@@ -22,7 +22,7 @@ namespace Graphics
 			EMeshPrimitive Mode;
 
 			~GLMesh();
-			void Initialize(SMeshDesc &a_Desc) override;
+			bool Initialize(SMeshDesc &a_Desc) override;
 			void Bind() override;
 			void Unbind() override;
 			GLuint GetCount() override;

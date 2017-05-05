@@ -15,6 +15,7 @@ namespace Core
 		RenderDevice RDevice = RenderDevice::OpenGL;
 		LPCWSTR Title = L"Subayaku";
 		int Width = 1024, Height = 600;
+		int xPos = 0, yPos = 0;
 		bool IsFullScreen = false;
 	};
 }

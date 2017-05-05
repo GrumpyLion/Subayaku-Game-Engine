@@ -24,8 +24,8 @@ namespace Scene
 		//insert cache
 		m_Material->AddTexture(texInfo);
 
-		m_Material->FragmentShader = "Assets/Shaders/Sprite.fs";
-		m_Material->VertexShader = "Assets/Shaders/Sprite.vs";
+		m_Material->FragmentShader = "Assets/Shaders/GLSL/Sprite.fs";
+		m_Material->VertexShader = "Assets/Shaders/GLSL/Sprite.vs";
 
 		Core::Engine::StaticClass()->GetScene()->AddRenderable(Parent, this);
 

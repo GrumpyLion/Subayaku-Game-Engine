@@ -73,16 +73,12 @@ namespace Graphics
 				//TODO Check if the uniform was found 
 				m_Container->SetFloat(temp.first.c_str(), temp.second);
 			}
-
-			float aspect = (float)Core::Engine::StaticClass()->GetContext().Width / (float)Core::Engine::StaticClass()->GetContext().Height;
-
+			
 			if (m_FoundUniforms.find("uPRMatrix")->second)
 			{
 				if (m_Renderer->Camera == nullptr) 
 					return;
-				if (!m_Container->SetMatrix4f("uPRMatrix",
-					Matrix4f::Perspective(m_Renderer->Camera->FOV,
-					aspect, m_Renderer->Camera->Near, m_Renderer->Camera->Far)))
+				if (!m_Container->SetMatrix4f("uPRMatrix", m_Renderer->Camera->ToProjectionMatrixRH()))
 					m_FoundUniforms.find("uPRMatrix")->second = false;				
 			}
 
@@ -94,14 +90,7 @@ namespace Graphics
 
 			if (m_FoundUniforms.find("uVWMatrix")->second)
 			{
-				Scene::Transformation *tempTrans = Core::Engine::StaticClass()->GetRenderer()->GetCamera()->Parent->Transform;
-				Matrix4f temp = Matrix4f::Identity();
-				temp *= Matrix4f::RotateX(tempTrans->Rotation.x * DEGTORAD);
-				temp *= Matrix4f::RotateY(tempTrans->Rotation.y * DEGTORAD);
-				temp *= Matrix4f::RotateZ(tempTrans->Rotation.z * DEGTORAD);
-				temp *= Matrix4f::Translate(tempTrans->Position);
-
-				if (!m_Container->SetMatrix4f("uVWMatrix", temp))
+				if (!m_Container->SetMatrix4f("uVWMatrix", m_Renderer->Camera->ToViewMatrixRH()))
 					m_FoundUniforms.find("uVWMatrix")->second = false;
 			}
 

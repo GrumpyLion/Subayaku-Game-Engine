@@ -22,7 +22,7 @@ namespace Scene
 		temp2->Transform->Position = Vector3f(0, 0, 0);
 
 		CCamera *camera = new CCamera();
-		camera->Initialize(temp2, 70.0f, 1.0f, 500.0f);
+		camera->Initialize(temp2, 70.0f, 0.1f, 700.0f);
 		temp2->AddComponent(camera);
 
 		AddGameObject(temp2);
@@ -30,7 +30,7 @@ namespace Scene
 		GameObject *temp = new GameObject();
 		temp->Transform = new Transformation();
 		temp->Transform->Position = Vector3f(0, 0, 0);
-		temp->Transform->Scale = Vector3f(0.4, 0.4, 0.4);
+		temp->Transform->Scale = Vector3f(0.5f, 0.5f, 0.5f);
 		
 		CMeshRenderer *mesh = new CMeshRenderer();
 
@@ -62,8 +62,8 @@ namespace Scene
 		texInfo.FilePath = "Assets/Textures/earth_normal.tga";
 		tempMat->AddTexture(texInfo);
 
-		tempMat->VertexShader = "Assets/Shaders/Test.vs";
-		tempMat->FragmentShader = "Assets/Shaders/Test.fs";
+		tempMat->VertexShader = "Test.vs";
+		tempMat->FragmentShader = "Test.fs";
 
 		mesh->Initialize(temp, "Assets/Models/teapot.obj", tempMat);
 		temp->AddComponent(mesh);

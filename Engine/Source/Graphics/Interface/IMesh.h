@@ -9,7 +9,7 @@ namespace Graphics
 	public:
 		virtual ~IMesh() { }
 
-		virtual void Initialize(SMeshDesc &a_Desc) = 0;
+		virtual bool Initialize(SMeshDesc &a_Desc) = 0;
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 		virtual unsigned int GetCount() = 0;
