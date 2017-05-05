@@ -24,7 +24,7 @@ namespace Graphics
 			D3D11_SUBRESOURCE_DATA vertexData{}, normalData{}, indexData{};
 
 			vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-			vertexBufferDesc.ByteWidth = sizeof(Vector3f) * a_Desc.Vertices.size();
+			vertexBufferDesc.ByteWidth = (unsigned int)(sizeof(Vector3f) * a_Desc.Vertices.size());
 			vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
 			vertexData.pSysMem = a_Desc.Vertices.data();
@@ -34,7 +34,7 @@ namespace Graphics
 				return false;
 
 			normalBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-			normalBufferDesc.ByteWidth = sizeof(Vector3f) * a_Desc.Normals.size();
+			normalBufferDesc.ByteWidth = (unsigned int)(sizeof(Vector3f) * a_Desc.Normals.size());
 			normalBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
 			normalData.pSysMem = a_Desc.Normals.data();
@@ -44,10 +44,10 @@ namespace Graphics
 				return false;
 
 			indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-			indexBufferDesc.ByteWidth = sizeof(unsigned long) * a_Desc.Indices.size();
+			indexBufferDesc.ByteWidth = (unsigned int)(sizeof(unsigned long) * a_Desc.Indices.size());
 			indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
-			m_Count = a_Desc.Indices.size();
+			m_Count = (unsigned int)a_Desc.Indices.size();
 
 			//Grab the data
 			indexData.pSysMem = a_Desc.Indices.data();

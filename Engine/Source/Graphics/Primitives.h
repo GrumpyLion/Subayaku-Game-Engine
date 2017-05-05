@@ -55,28 +55,28 @@ namespace Graphics
 					Vector3f tempPos1, tempPos2, tempPos3, tempPos4;
 					Vector2f tempUV;
 
-					tempPos1.Set(x, a_Y, z);
+					tempPos1.Set((float)x, a_Y, (float)z);
 					a_Desc.Vertices.push_back(tempPos1);
 
-					tempPos2.Set(x, a_Y, z + 1.0f);
+					tempPos2.Set((float)x, a_Y, (float)z + 1.0f);
 					a_Desc.Vertices.push_back(tempPos2);
 
-					tempPos3.Set(x + 1.0f, a_Y, z + 1.0f);
+					tempPos3.Set((float)x + 1.0f, a_Y, (float)z + 1.0f);
 					a_Desc.Vertices.push_back(tempPos3);
 
-					tempPos4.Set(x + 1.0f, a_Y, z);
+					tempPos4.Set((float)x + 1.0f, a_Y, (float)z);
 					a_Desc.Vertices.push_back(tempPos4);
 
-					tempUV.Set((x + a_XD/2) / a_XD, (z + a_ZD/2) / a_ZD);
+					tempUV.Set(((float)x + a_XD/2) / a_XD, ((float)z + a_ZD/2) / a_ZD);
 					a_Desc.TexCoords.push_back(tempUV);
 
-					tempUV.Set((x + a_XD/2) / a_XD, (z + a_ZD/2 + 1) / a_ZD);
+					tempUV.Set(((float)x + a_XD/2) / a_XD, ((float)z + a_ZD/2 + 1) / a_ZD);
 					a_Desc.TexCoords.push_back(tempUV);
 
-					tempUV.Set((x + a_XD/2 + 1) / a_XD, (z + a_ZD/2 + 1) / a_ZD);
+					tempUV.Set(((float)x + a_XD/2 + 1) / a_XD, ((float)z + a_ZD/2 + 1) / a_ZD);
 					a_Desc.TexCoords.push_back(tempUV);
 
-					tempUV.Set((x + a_XD/2 + 1) / a_XD, (z + a_ZD/2) / a_ZD);
+					tempUV.Set(((float)x + a_XD/2 + 1) / a_XD, ((float)z + a_ZD/2) / a_ZD);
 					a_Desc.TexCoords.push_back(tempUV);
 
 					a_Desc.Indices.push_back(index);

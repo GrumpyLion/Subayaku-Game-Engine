@@ -57,6 +57,7 @@ namespace Graphics
 			default:
 				LogErr("Error Active Texture index is to high !");
 			}
+			return 0;
 		}
 
 		inline GLenum EMeshPrimitiveToGL(EMeshPrimitive &a_Primitive)
