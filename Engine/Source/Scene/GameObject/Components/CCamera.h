@@ -12,5 +12,10 @@ namespace Scene
 		bool Initialize(GameObject *a_Parent, float a_FOV, float a_Near, float a_Far);
 		void Update() override;
 		void Shutdown() override;
+
+		//Delete later ..
+		float m_Radius = 350.0f;
+		float CalculateHorizontalDistance();
+		float CalculateVerticalDistance();
 	};
 }

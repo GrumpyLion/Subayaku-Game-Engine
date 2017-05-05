@@ -15,36 +15,60 @@ namespace Scene
 {
 	bool Scene::Initialize()
 	{
+
+		GameObject *temp2 = new GameObject();
+		temp2->Name = "Camera";
+		temp2->Transform = new Transformation();
+		temp2->Transform->Position = Vector3f(0, 0, 0);
+
+		CCamera *camera = new CCamera();
+		camera->Initialize(temp2, 70.0f, 1.0f, 500.0f);
+		temp2->AddComponent(camera);
+
+		AddGameObject(temp2);
+
 		GameObject *temp = new GameObject();
 		temp->Transform = new Transformation();
-		temp->Transform->Position = Vector3f(20, -20, -150);
+		temp->Transform->Position = Vector3f(0, 0, 0);
+		temp->Transform->Scale = Vector3f(0.4, 0.4, 0.4);
 		
 		CMeshRenderer *mesh = new CMeshRenderer();
 
 		Graphics::Material *tempMat = new Graphics::Material();
+		
+		Graphics::STextureDesc texInfo;
+		texInfo.UniformName = "uDay";
+		texInfo.Filter = Graphics::ETextureFilter::LINEAR;
+		texInfo.FilePath = "Assets/Textures/earth_day.tga";
+		tempMat->AddTexture(texInfo);
+
+		texInfo.UniformName = "uNight";
+		texInfo.FilePath = "Assets/Textures/earth_night.tga";
+		tempMat->AddTexture(texInfo);
+
+		texInfo.UniformName = "uClouds";
+		texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
+		tempMat->AddTexture(texInfo);
+
+		texInfo.UniformName = "uHeight";
+		texInfo.FilePath = "Assets/Textures/earth_height.tga";
+		tempMat->AddTexture(texInfo);
+
+		texInfo.UniformName = "uSpecular";
+		texInfo.FilePath = "Assets/Textures/earth_specular.tga";
+		tempMat->AddTexture(texInfo);
+
+		texInfo.UniformName = "uNormal";
+		texInfo.FilePath = "Assets/Textures/earth_normal.tga";
+		tempMat->AddTexture(texInfo);
+
 		tempMat->VertexShader = "Assets/Shaders/Test.vs";
 		tempMat->FragmentShader = "Assets/Shaders/Test.fs";
 
 		mesh->Initialize(temp, "Assets/Models/teapot.obj", tempMat);
 		temp->AddComponent(mesh);
 
-		CCamera *camera = new CCamera();
-		camera->Initialize(temp, 60.0f, 0.1f, 100.0f);
-		temp->AddComponent(camera);
-
 		AddGameObject(temp);
-
-		GameObject *temp2 = new GameObject();
-		temp2->Name = "Sprite";
-		temp2 ->Transform = new Transformation();
-		temp2 ->Transform->Position = Vector3f(0, 0, 0);
-
-		CSprite *sprite = new CSprite();
-		sprite->Initialize(temp2, "Assets/Textures/Test.bmp");
-
-		temp2->AddComponent(sprite);
-
-		AddGameObject(temp2);
 		return true;
 	}
 

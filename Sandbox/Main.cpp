@@ -1,10 +1,7 @@
 #include <iostream>
-#include <exception>
-#include <stdio.h>
 
 #include "Core\Engine.h"
 #include "Core\SEngineContext.h"
-#include "Utilities\Utilities.h"
 
 int main()
 {

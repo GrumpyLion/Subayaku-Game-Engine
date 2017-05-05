@@ -17,7 +17,9 @@
 #include "Graphics\DirectX3D\D3DRenderer.h"
 
 //Caches
-#include "Graphics\Cache\TextureCache.h"
+#include "Graphics\Interface\IRenderFactory.h"
+#include "Graphics\OpenGL\GLRenderFactory.h"
+#include "Utilities\Cache.h"
 
 //IO
 #include "Window\Interface\IWindow.h"

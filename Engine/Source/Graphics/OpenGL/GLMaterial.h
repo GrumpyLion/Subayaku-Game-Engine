@@ -21,6 +21,7 @@ namespace Graphics
 			GLRenderer *m_Renderer = nullptr;
 
 			std::unordered_map<std::string, GLTexture*> m_Textures;
+			std::unordered_map<std::string, float> m_FloatUniforms;
 			std::unordered_map<std::string, bool> m_FoundUniforms;
 
 		public:

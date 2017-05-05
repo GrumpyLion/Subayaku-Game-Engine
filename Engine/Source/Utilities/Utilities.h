@@ -7,6 +7,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include <string>
+#include <algorithm>
 
 inline bool Failed(HRESULT aResult)
 {
@@ -44,4 +45,15 @@ inline void LogWar(std::string a_Text)
 inline void Log(const char* a_Text)
 {
 	printf("%s\n", a_Text);
+}
+
+inline std::string GetExtension(std::string a_Path)
+{
+	int indexOfLastPeriod = (int)a_Path.find_last_of(".");
+	return a_Path.substr(indexOfLastPeriod + 1);
+}
+
+inline void ToLowerCase(std::string &a_String)
+{
+	std::transform(a_String.begin(), a_String.end(), a_String.begin(), ::tolower);
 }

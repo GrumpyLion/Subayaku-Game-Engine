@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Interface\IComponent.h"
+#include "Graphics\Cache\SMeshDesc.h"
 
 namespace Graphics
 {
@@ -13,7 +14,7 @@ namespace Scene
 	class CMeshRenderer : public IComponent
 	{
 	protected:
-		Graphics::Mesh *m_Mesh = nullptr;
+		Graphics::SMeshDesc m_Mesh {};
 		Graphics::Material *m_Material = nullptr;
 
 	public:
@@ -21,7 +22,7 @@ namespace Scene
 		virtual void Update();
 		void Shutdown();
 
-		Graphics::Mesh *GetMesh();
+		Graphics::SMeshDesc &GetMesh();
 		Graphics::Material *GetMaterial();
 	};
 }

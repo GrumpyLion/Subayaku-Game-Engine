@@ -8,6 +8,11 @@ namespace Graphics
 {
 	namespace OpenGL
 	{
+		GLShaderContainer::GLShaderContainer()
+		{
+
+		}
+
 		GLShaderContainer::~GLShaderContainer()
 		{
 			glDeleteProgram(m_Program);

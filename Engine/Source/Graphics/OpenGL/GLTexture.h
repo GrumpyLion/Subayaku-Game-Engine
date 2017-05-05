@@ -1,26 +1,26 @@
 #pragma once
 
 #include <GLEW\Include\glew.h>
-#include "Graphics\Cache\TextureEnums.h"
+#include "Graphics\Interface\ITexture.h"
 
 namespace Graphics
 {
 	namespace OpenGL
 	{
-		class GLTexture
+		class GLTexture : public ITexture
 		{
 		public:
+			~GLTexture();
+
 			GLuint TextureID = 0;
 			GLuint Width = 0;
 			GLuint Height = 0;
 
-			bool InitializeFromCache(const char* a_FileName, GLint a_Filter);
-			bool Initialize(unsigned char* a_PixelData, ETextureFormat a_Format, GLenum a_DataType, GLint a_Filter, GLuint a_Width, GLuint a_Height);
+			bool Initialize(STextureDesc a_Desc) override;
 
-			void Bind();
-			void Unbind();
+			void Bind() override;
+			void Unbind() override;
 
-			~GLTexture();
 		};
 	}
 }

@@ -17,5 +17,6 @@ namespace Graphics
 		virtual void AddRenderable(Scene::CMeshRenderer *a_MeshRenderer) = 0;
 		virtual void RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer) = 0;
 		virtual void SetCamera(Scene::CCamera *a_Camera) = 0;
+		virtual Scene::CCamera *GetCamera() = 0;
 	};
 }

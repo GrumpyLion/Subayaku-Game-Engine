@@ -101,6 +101,11 @@ namespace Graphics
 			//..
 		}
 
+		Scene::CCamera *D3DRenderer::GetCamera()
+		{
+			return nullptr;
+		}
+
 		void D3DRenderer::Shutdown()
 		{
 			NSafeRelease(m_DeviceContext);

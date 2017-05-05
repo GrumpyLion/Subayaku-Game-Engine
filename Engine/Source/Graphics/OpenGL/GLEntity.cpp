@@ -3,11 +3,14 @@
 #include "Scene\GameObject\GameObject.h"
 #include "Scene\GameObject\Components\Transformation.h"
 
+#include "Core\Engine.h"
 #include "Utilities\Utilities.h"
+#include "Utilities\Cache.h"
 
 #include "GLMaterial.h"
 #include "GLMesh.h"
 #include "GLShaderContainer.h"
+#include "GLHelper.h"
 
 namespace Graphics
 {
@@ -16,10 +19,11 @@ namespace Graphics
 		GLEntity::~GLEntity()
 		{
 			SAFE_DELETE(m_Material);
-			SAFE_DELETE(m_Mesh);
+			if(m_IsPrimitive)
+				SAFE_DELETE(m_Mesh);
 		}
 
-		bool GLEntity::Initialize(Mesh *a_Mesh, Material *a_Material, Scene::GameObject *a_Parent)
+		bool GLEntity::Initialize(SMeshDesc &a_Mesh, Material *a_Material, Scene::GameObject *a_Parent)
 		{
 			m_Parent = a_Parent;
 
@@ -27,9 +31,17 @@ namespace Graphics
 			if (!m_Material->Initialize(a_Material))
 				return false;
 
-			m_Mesh = new GLMesh();
-			m_Mesh->Initialize(a_Mesh);
-
+			if (a_Mesh.Vertices.size() == 0)
+			{
+				m_IsPrimitive = false;
+				m_Mesh = dynamic_cast<GLMesh*>(Core::Engine::StaticClass()->GetCache()->LoadMesh(a_Mesh));
+			}
+			else
+			{
+				m_IsPrimitive = true;
+				m_Mesh = new GLMesh();
+				m_Mesh->Initialize(a_Mesh);
+			}
 			return true;
 		}
 
@@ -37,47 +49,24 @@ namespace Graphics
 		{
 			m_Material->Bind();
 			m_Mesh->Bind();
-			
+			m_Parent->Transform->Rotation.y += 0.05f;
+
 			Matrix4f temp = Matrix4f::Identity();
 			temp *= Matrix4f::Scale(m_Parent->Transform->Scale);
 			temp *= Matrix4f::Translate(m_Parent->Transform->Position);
-			temp *= Matrix4f::RotateX(m_Parent->Transform->Rotation.x);
-			temp *= Matrix4f::RotateY(m_Parent->Transform->Rotation.y);
-			temp *= Matrix4f::RotateZ(m_Parent->Transform->Rotation.z);
+			temp *= Matrix4f::RotateX(m_Parent->Transform->Rotation.x * DEGTORAD);
+			temp *= Matrix4f::RotateY(m_Parent->Transform->Rotation.y * DEGTORAD);
+			temp *= Matrix4f::RotateZ(m_Parent->Transform->Rotation.z * DEGTORAD);
 
 			m_Material->GetContainer()->SetMatrix4f("uMLMatrix", temp);
-
-			GLenum mode;
-			switch (m_Mesh->Mode)
-			{
-			case EMeshPrimitive::TRIANGLES:
-				mode = GL_TRIANGLES;
-				break;
-
-			case EMeshPrimitive::TRIANGLE_STRIP:
-				mode = GL_TRIANGLE_STRIP;
-				break;
-
-			case EMeshPrimitive::LINES:
-				mode = GL_LINES;
-				break;
-
-			case EMeshPrimitive::TRIANGLE_FAN:
-				mode = GL_TRIANGLE_FAN;
-				break;
-
-			case EMeshPrimitive::POINTS:
-				mode = GL_POINTS;
-				break;
-			}
-
+			
 			if (m_Mesh->HasIndices)
 			{
-				glDrawElements(mode, m_Mesh->GetCount(), GL_UNSIGNED_INT, nullptr);
+				glDrawElements(EMeshPrimitiveToGL(m_Mesh->Mode), m_Mesh->GetCount(), GL_UNSIGNED_INT, nullptr);
 			}
 			else
 			{
-				glDrawArrays(mode, 0, m_Mesh->GetCount());
+				glDrawArrays(EMeshPrimitiveToGL(m_Mesh->Mode), 0, m_Mesh->GetCount());
 			}
 			
 			m_Mesh->Unbind();

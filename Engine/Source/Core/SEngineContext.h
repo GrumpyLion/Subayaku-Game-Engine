@@ -13,7 +13,7 @@ namespace Core
 	struct SEngineContext
 	{
 		RenderDevice RDevice = RenderDevice::OpenGL;
-		LPCWSTR Title = L"Subayaku ^-^";
+		LPCWSTR Title = L"Subayaku";
 		int Width = 1024, Height = 600;
 		bool IsFullScreen = false;
 	};

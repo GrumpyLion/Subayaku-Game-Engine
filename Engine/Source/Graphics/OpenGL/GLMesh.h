@@ -1,16 +1,15 @@
 #pragma once
 
 #include <GLEW\Include\glew.h>
-#include "Graphics\Mesh.h"
+#include "Graphics\Interface\IMesh.h"
 
 namespace Graphics
 {
-
 	namespace OpenGL
 	{
-		const int numVBOs = 4;
+		const int numVBOs = 6;
 
-		class GLMesh : public Mesh
+		class GLMesh : public IMesh
 		{
 		private:
 			GLuint m_VAO = 0;
@@ -18,11 +17,15 @@ namespace Graphics
 			GLuint m_Count = 0;
 
 		public:
+			bool ShouldCull = true;
+			bool HasIndices = true;
+			EMeshPrimitive Mode;
+
 			~GLMesh();
-			void Initialize(Mesh *a_Mesh);
-			void Bind();
-			void Unbind();
-			GLuint GetCount() const;
+			void Initialize(SMeshDesc &a_Desc) override;
+			void Bind() override;
+			void Unbind() override;
+			GLuint GetCount() override;
 		};
 	}
 }

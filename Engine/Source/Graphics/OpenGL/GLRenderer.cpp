@@ -140,6 +140,11 @@ namespace Graphics
 			Camera = a_Camera;
 		}
 
+		Scene::CCamera *GLRenderer::GetCamera()
+		{
+			return Camera;
+		}
+
 		void GLRenderer::Shutdown()
 		{
 			for (auto &temp : m_Entities)

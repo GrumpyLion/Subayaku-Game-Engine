@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "Graphics\Cache\SMeshDesc.h"
 
 namespace Scene
 {
@@ -10,7 +11,6 @@ namespace Scene
 namespace Graphics
 {
 	class Material;
-	class Mesh;
 
 	namespace OpenGL
 	{
@@ -20,15 +20,15 @@ namespace Graphics
 		class GLEntity
 		{
 		private:
-
 			GLMesh *m_Mesh = nullptr;
 			GLMaterial *m_Material = nullptr;
 			Scene::GameObject *m_Parent = nullptr;
+			bool m_IsPrimitive = false;
 
 		public:
 			~GLEntity();
 
-			bool Initialize(Mesh *a_Mesh, Material *a_Material, Scene::GameObject *a_Parent);
+			bool Initialize(SMeshDesc &a_Mesh, Material *a_Material, Scene::GameObject *a_Parent);
 			void Render();
 
 		};

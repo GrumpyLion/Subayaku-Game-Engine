@@ -1,6 +1,7 @@
 #include "GLTexture.h"
 #include "Core\Engine.h"
-#include "Graphics\Cache\TextureCache.h"
+#include "GLHelper.h"
+#include "Utilities\Utilities.h"
 
 namespace Graphics
 {
@@ -10,41 +11,22 @@ namespace Graphics
 		{
 			glDeleteTextures(1, &TextureID);
 		}
-		
-		bool GLTexture::InitializeFromCache(const char* a_FileName, GLint a_Filter)
+
+		bool GLTexture::Initialize(STextureDesc a_Desc)
 		{
-			TextureData *temp = Core::Engine::StaticClass()->GetTextureCache()->GetTexture(a_FileName);
-			
-			if (temp == nullptr)
-				return false;
+			Width = a_Desc.Width;
+			Height = a_Desc.Height;
 
-			return GLTexture::Initialize(temp->PixelData, temp->Format, GL_UNSIGNED_BYTE, a_Filter, temp->Width, temp->Height);			
-		}
-
-		bool GLTexture::Initialize(unsigned char* a_PixelData,
-			ETextureFormat a_Format, GLenum a_DataType, GLint a_Filter, GLuint a_Width, GLuint a_Height)
-		{
-			Width = a_Width;
-			Height = a_Height;
-
-			GLenum format;
-			switch (a_Format)
+			if (Width == 0 || Height == 0)
 			{
-			case ETextureFormat::RGBA:
-				format = GL_RGBA;
-				break;
+				LogErr("Error while initializing GLTexture: Width Or Height is zero");
+				return false;
+			}
 
-			case ETextureFormat::RGB:
-				format = GL_RGB;
-				break;
-
-			case ETextureFormat::RG:
-				format = GL_RG;
-				break;
-
-			case ETextureFormat::R:
-				format = GL_R;
-				break;
+			if (a_Desc.PixelData.size() == 0)
+			{
+				LogErr("Error while initializing GLTexture: PixelCount is zero");
+				return false;
 			}
 
 			glGenTextures(1, &TextureID);
@@ -53,11 +35,11 @@ namespace Graphics
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			// Set texture filtering
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, a_Filter);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, a_Filter);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, ETextureFilterToGL(a_Desc));
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, ETextureFilterToGL(a_Desc));
 
-			glTexImage2D(GL_TEXTURE_2D, 0, format, a_Width, a_Height, 0, format, a_DataType, a_PixelData);
-
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, a_Desc.Width, a_Desc.Height, 0, ETextureFormatToGL(a_Desc), GL_UNSIGNED_BYTE, a_Desc.PixelData.data());
+			
 			glBindTexture(GL_TEXTURE_2D, 0);
 
 			return true;
