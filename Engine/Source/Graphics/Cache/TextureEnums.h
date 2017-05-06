@@ -6,6 +6,7 @@ namespace Graphics
 	{
 		RGBA,
 		BGR,
+		BGRA,
 		RGB,
 		R,
 		RG

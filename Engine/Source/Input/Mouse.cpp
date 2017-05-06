@@ -19,6 +19,13 @@ namespace Core
 		x = cursorPos.x - Core::Engine::StaticClass()->GetContext().xPos;
 		y = cursorPos.y - Core::Engine::StaticClass()->GetContext().yPos;
 
+		if (x < 0 || x > Core::Engine::StaticClass()->GetContext().Width ||
+			y < 0 || y > Core::Engine::StaticClass()->GetContext().Height)
+		{
+			LeftButton = false;
+			RightButton = false;
+		}
+
 		//Calculates the delta position
 		xD = OldX - x;
 		yD = OldY - y;

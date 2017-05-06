@@ -26,8 +26,6 @@ namespace Core
 	{		
 		m_Context = a_Context;
 
-		//m_TextureCache = new Graphics::TextureCache();
-
 		m_Window = new CWindow();
 
 		if (!m_Window->Initialize(a_Context))
@@ -96,13 +94,13 @@ namespace Core
 				m_Scene->Update();
 			}
 
-			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_E))
+			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_O))
 			{
 				m_Context.RDevice = RenderDevice::DirectX;
 				SwitchRenderer(m_Context);
 			}
 
-			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_R))
+			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_P))
 			{
 				m_Context.RDevice = RenderDevice::OpenGL;
 				SwitchRenderer(m_Context);
@@ -111,7 +109,7 @@ namespace Core
 			auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - deltaTimer);
 			deltaTimer = std::chrono::high_resolution_clock::now();
 
-			long nowTimer = std::chrono::duration_cast<std::chrono::milliseconds>
+			long nowTimer = (long)std::chrono::duration_cast<std::chrono::milliseconds>
 				(std::chrono::system_clock::now().time_since_epoch()).count();
 			if (nowTimer - lastTimer >= 1000)
 			{
@@ -131,7 +129,7 @@ namespace Core
 
 	bool Engine::Shutdown()
 	{
-		SAFE_DELETE(m_InputManager);
+		SafeDelete(m_InputManager);
 
 		SHUTDOWN_AND_DELETE(m_Scene);
 	

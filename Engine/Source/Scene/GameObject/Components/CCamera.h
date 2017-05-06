@@ -17,7 +17,7 @@ namespace Scene
 		//Delete later ..
 		float xSpeed = 0, ySpeed = 0;
 
-		float m_Radius = 350.0f;
+		float m_Radius = 200.0f;
 		float CalculateHorizontalDistance();
 		float CalculateVerticalDistance();
 

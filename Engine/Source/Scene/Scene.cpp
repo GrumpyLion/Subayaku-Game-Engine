@@ -30,42 +30,43 @@ namespace Scene
 		GameObject *temp = new GameObject();
 		temp->Transform = new Transformation();
 		temp->Transform->Position = Vector3f(0, 0, 0);
-		temp->Transform->Scale = Vector3f(0.5f, 0.5f, 0.5f);
+		temp->Transform->Scale = Vector3f(150, 150, 150);
 		
 		CMeshRenderer *mesh = new CMeshRenderer();
 
 		Graphics::Material *tempMat = new Graphics::Material();
-		
+		tempMat->TextureFilter = Graphics::ETextureFilter::LINEAR;
+
 		Graphics::STextureDesc texInfo;
+		texInfo.RegisterIndex = 0;
 		texInfo.UniformName = "uDay";
-		texInfo.Filter = Graphics::ETextureFilter::LINEAR;
 		texInfo.FilePath = "Assets/Textures/earth_day.tga";
 		tempMat->AddTexture(texInfo);
 
+		texInfo.RegisterIndex = 1;
 		texInfo.UniformName = "uNight";
 		texInfo.FilePath = "Assets/Textures/earth_night.tga";
 		tempMat->AddTexture(texInfo);
 
-		texInfo.UniformName = "uClouds";
-		texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
+		texInfo.RegisterIndex = 2;
+		texInfo.UniformName = "uNormal";
+		texInfo.FilePath = "Assets/Textures/earth_normal.tga";
 		tempMat->AddTexture(texInfo);
 
-		texInfo.UniformName = "uHeight";
-		texInfo.FilePath = "Assets/Textures/earth_height.tga";
-		tempMat->AddTexture(texInfo);
-
+		texInfo.RegisterIndex = 3;
 		texInfo.UniformName = "uSpecular";
 		texInfo.FilePath = "Assets/Textures/earth_specular.tga";
 		tempMat->AddTexture(texInfo);
 
-		texInfo.UniformName = "uNormal";
-		texInfo.FilePath = "Assets/Textures/earth_normal.tga";
+		texInfo.RegisterIndex = 4;
+		texInfo.UniformName = "uClouds";
+		texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
 		tempMat->AddTexture(texInfo);
 
 		tempMat->VertexShader = "Test.vs";
 		tempMat->FragmentShader = "Test.fs";
 
-		mesh->Initialize(temp, "Assets/Models/teapot.obj", tempMat);
+		mesh->Initialize(temp, "Assets/Models/kögel.obj", tempMat);
 		temp->AddComponent(mesh);
 
 		AddGameObject(temp);
@@ -87,7 +88,7 @@ namespace Scene
 
 	bool Scene::AddGameObject(GameObject *a_ToAdd)
 	{
-		if (a_ToAdd == nullptr)
+		if (CheckIfPointerIsValid(a_ToAdd))
 		{
 			LogErr("AddGameObject() GameObject is Null\n");
 			return false;
@@ -108,13 +109,13 @@ namespace Scene
 
 	void Scene::AddRenderable(GameObject *a_Parent, CMeshRenderer *a_Renderable)
 	{
-		if (a_Parent == nullptr)
+		if (CheckIfPointerIsValid(a_Parent))
 		{
 			LogErr("AddRenderable() GameObject is Null\n");
 			return;
 		}
 
-		if (a_Renderable == nullptr)
+		if (CheckIfPointerIsValid(a_Renderable))
 		{
 			LogErr("AddRenderable() Renderable is Null\n");
 			return;
@@ -135,7 +136,7 @@ namespace Scene
 
 	void Scene::RemoveRenderable(GameObject *a_Parent)
 	{
-		if (a_Parent == nullptr)
+		if (CheckIfPointerIsValid(a_Parent))
 		{
 			LogErr("RemoveRenderable() GameObject is Null\n");
 			return;

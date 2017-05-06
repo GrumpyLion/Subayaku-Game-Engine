@@ -26,8 +26,13 @@
     <ClInclude Include="Source\Graphics\DirectX\D3DMaterial.h" />
     <ClInclude Include="Source\Graphics\DirectX\D3DMesh.h" />
     <ClInclude Include="Source\Graphics\DirectX\D3DRenderFactory.h" />
+    <ClInclude Include="Source\Graphics\DirectX\D3DShaderBuffer.h" />
+    <ClInclude Include="Source\Graphics\DirectX\D3DShaderBufferContainer.h" />
     <ClInclude Include="Source\Graphics\DirectX\D3DShaderContainer.h" />
+    <ClInclude Include="Source\Graphics\DirectX\D3DTexture.h" />
     <ClInclude Include="Source\Graphics\Interface\IEntity.h" />
+    <ClInclude Include="Source\Graphics\Interface\IShaderBuffer.h" />
+    <ClInclude Include="Source\Graphics\Interface\SShaderBufferDesc.h" />
     <ClInclude Include="Source\Graphics\Loaders\AssimpLoader.h" />
     <ClInclude Include="Source\Graphics\Cache\SMeshDesc.h" />
     <ClInclude Include="Source\Graphics\Cache\STextureDesc.h" />
@@ -83,7 +88,10 @@
     <ClCompile Include="Source\Graphics\DirectX\D3DMesh.cpp" />
     <ClCompile Include="Source\Graphics\DirectX\D3DRenderer.cpp" />
     <ClCompile Include="Source\Graphics\DirectX\D3DRenderFactory.cpp" />
+    <ClCompile Include="Source\Graphics\DirectX\D3DShaderBuffer.cpp" />
+    <ClCompile Include="Source\Graphics\DirectX\D3DShaderBufferContainer.cpp" />
     <ClCompile Include="Source\Graphics\DirectX\D3DShaderContainer.cpp" />
+    <ClCompile Include="Source\Graphics\DirectX\D3DTexture.cpp" />
     <ClCompile Include="Source\Graphics\Material.cpp" />
     <ClCompile Include="Source\Graphics\OpenGL\GLEntity.cpp" />
     <ClCompile Include="Source\Graphics\OpenGL\GLMaterial.cpp" />
@@ -203,7 +211,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies/Lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;d3dcompiler.lib;assimp.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;dxgi.lib;d3dcompiler.lib;assimp.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -244,7 +252,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;d3dcompiler.lib;d3dx10.lib;assimp.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;d3dx11.lib;d3d11.lib;dxgi.lib;d3dcompiler.lib;assimp.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies/Lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>

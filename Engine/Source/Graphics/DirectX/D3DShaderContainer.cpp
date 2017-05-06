@@ -9,11 +9,9 @@ namespace Graphics
 	{
 		D3DShaderContainer::~D3DShaderContainer()
 		{
-			NSafeRelease(m_MatrixBuffer);
-			NSafeRelease(m_Layout);
-			NSafeRelease(m_PixelShader);
-			NSafeRelease(m_VertexShader);
-			NSafeRelease(m_SampleState);
+			SafeRelease(m_Layout);
+			SafeRelease(m_PixelShader);
+			SafeRelease(m_VertexShader);
 		}
 
 		bool D3DShaderContainer::Initialize(Material *a_Material)
@@ -23,10 +21,8 @@ namespace Graphics
 			ID3D10Blob *errorMessage = nullptr;
 			ID3D10Blob *vertexShaderBuffer = nullptr;
 			ID3D10Blob *pixelShaderBuffer = nullptr;
-			D3D11_INPUT_ELEMENT_DESC polygonLayout[2];
+			D3D11_INPUT_ELEMENT_DESC polygonLayout[3];
 			unsigned int numElements;
-			D3D11_BUFFER_DESC matrixBufferDesc{};
-			D3D11_SAMPLER_DESC samplerDesc;
 
 			std::ifstream fileStream(GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_Material->VertexShader));
 
@@ -89,10 +85,18 @@ namespace Graphics
 			polygonLayout[1].SemanticName = "NORMAL";
 			polygonLayout[1].SemanticIndex = 0;
 			polygonLayout[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-			polygonLayout[1].InputSlot = 0;
-			polygonLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+			polygonLayout[1].InputSlot = 1;
+			polygonLayout[1].AlignedByteOffset = 0;
 			polygonLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			polygonLayout[1].InstanceDataStepRate = 0;
+
+			polygonLayout[2].SemanticName = "TEXCOORD";
+			polygonLayout[2].SemanticIndex = 0;
+			polygonLayout[2].Format = DXGI_FORMAT_R32G32_FLOAT;
+			polygonLayout[2].InputSlot = 2;
+			polygonLayout[2].AlignedByteOffset = 0;
+			polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			polygonLayout[2].InstanceDataStepRate = 0;
 
 			numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 
@@ -106,34 +110,6 @@ namespace Graphics
 			pixelShaderBuffer->Release();
 			pixelShaderBuffer = nullptr;
 
-			matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-			matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
-			matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-			matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			matrixBufferDesc.MiscFlags = 0;
-			matrixBufferDesc.StructureByteStride = 0;
-
-			if (Failed(m_Renderer->GetDevice()->CreateBuffer(&matrixBufferDesc, nullptr, &m_MatrixBuffer)))
-				return false;
-
-			// Create a texture sampler state description.
-			samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-			samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
-			samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
-			samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
-			samplerDesc.MipLODBias = 0.0f;
-			samplerDesc.MaxAnisotropy = 1;
-			samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-			samplerDesc.BorderColor[0] = 0;
-			samplerDesc.BorderColor[1] = 0;
-			samplerDesc.BorderColor[2] = 0;
-			samplerDesc.BorderColor[3] = 1;
-			samplerDesc.MinLOD = 0;
-			samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-			if (Failed(m_Renderer->GetDevice()->CreateSamplerState(&samplerDesc, &m_SampleState)))
-				return false;
-
 			return true;
 		}
 
@@ -143,8 +119,6 @@ namespace Graphics
 
 			m_Renderer->GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 			m_Renderer->GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
-
-			m_Renderer->GetDeviceContext()->PSSetSamplers(0, 1, &m_SampleState);
 		}
 
 		void D3DShaderContainer::UnbindProgram() 

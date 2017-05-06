@@ -22,7 +22,7 @@ uniform sampler2D uHeight;
 
 void main()
 {
-	vec4 Pos = uMLMatrix * vec4(position + normal * texture(uHeight, texcoord * vec2(-1, -1)).x * 15, 1.0);
+	vec4 Pos = uMLMatrix * vec4(position, 1.0); //* vec4(position + normal * texture(uHeight, texcoord * vec2(-1, -1)).x * 15, 1.0);
 	oFragPos = Pos.xyz;
 	
 	gl_Position = uPRMatrix * uVWMatrix * Pos;
@@ -38,5 +38,5 @@ void main()
 	TBN[2] = vec4(normalize(uMLMatrix * vec4(oNormal, 0.0))).xyz;
 	oTBN = TBN;
 	
-	oTexCoordClouds = oTexCoord + vec2(uTime*0.000001, 1);
+	oTexCoordClouds = oTexCoord + vec2(uTime*0.00001, 1);
 }

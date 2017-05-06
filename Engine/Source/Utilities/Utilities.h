@@ -1,8 +1,6 @@
 #pragma once
 
-#define SAFE_DELETE(p) if(p != nullptr) {delete p; p = nullptr;}
-
-#define SHUTDOWN_AND_DELETE(p) if(p!= nullptr) { p->Shutdown(); SAFE_DELETE(p); } 
+#define SHUTDOWN_AND_DELETE(p) if(p!= nullptr) { p->Shutdown(); SafeDelete(p); } 
 
 #include <Windows.h>
 #include <stdio.h>
@@ -10,17 +8,20 @@
 #include <algorithm>
 #include "Core\SEngineContext.h"
 
-inline bool Failed(HRESULT aResult)
+template<typename T> void SafeDelete(T*& aInterface)
 {
-	if (FAILED(aResult))
+	if (aInterface != nullptr)
 	{
-		LPTSTR buffer;
-		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, nullptr, (DWORD)aResult, LANG_USER_DEFAULT, (LPTSTR)&buffer, 0, nullptr);
-
-		MessageBox(0, buffer, TEXT("Fatal error"), MB_OK | MB_ICONERROR);
-		LocalFree(buffer);
-		return true;
+		delete aInterface;
+		aInterface = nullptr;
 	}
+}
+
+template<typename T> bool CheckIfPointerIsValid(T*& aInterface)
+{
+	if (aInterface == nullptr)
+		return true;
+
 	return false;
 }
 

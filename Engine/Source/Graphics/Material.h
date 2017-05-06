@@ -23,6 +23,8 @@ namespace Graphics
 		std::unordered_map<std::string, STextureDesc> GetTextures();
 		std::unordered_map<std::string, float> GetFloats();
 
+		ETextureFilter TextureFilter = ETextureFilter::NEAREST;
+
 		std::string VertexShader = "";
 		std::string FragmentShader = "";
 	};

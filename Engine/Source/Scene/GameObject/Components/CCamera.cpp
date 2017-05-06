@@ -43,14 +43,14 @@ namespace Scene
 		ySpeed *= 0.9f;
 
 		Parent->Transform->Rotation.y += xSpeed;
-		Parent->Transform->Rotation.x -= ySpeed;
+		Parent->Transform->Rotation.x += ySpeed;
 
 		float xOffset = CalculateHorizontalDistance() * std::sin(Parent->Transform->Rotation.y * DEGTORAD);
 		float zOffset = CalculateHorizontalDistance() * std::cos(Parent->Transform->Rotation.y * DEGTORAD);
 
-		Parent->Transform->Position.x = -xOffset;
-		Parent->Transform->Position.y = CalculateVerticalDistance();
-		Parent->Transform->Position.z = zOffset;
+		Parent->Transform->Position.x = xOffset;
+		Parent->Transform->Position.y = -CalculateVerticalDistance();
+		Parent->Transform->Position.z = -zOffset;
 	}
 
 	float CCamera::CalculateHorizontalDistance()
@@ -90,10 +90,10 @@ namespace Scene
 	Matrix4f CCamera::ToViewMatrixLH()
 	{
 		Matrix4f temp = Matrix4f::Identity();
-		temp *= Matrix4f::RotateX(-Parent->Transform->Rotation.x * DEGTORAD);
+		temp *= Matrix4f::RotateX(Parent->Transform->Rotation.x * DEGTORAD);
 		temp *= Matrix4f::RotateY(Parent->Transform->Rotation.y * DEGTORAD);
 		temp *= Matrix4f::RotateZ(Parent->Transform->Rotation.z * DEGTORAD);
-		temp *= Matrix4f::Translate(Parent->Transform->Position * Vector3f(-1, 1, -1));
+		temp *= Matrix4f::Translate(Parent->Transform->Position * Vector3f(1, 1, 1));
 		return temp;
 	}
 

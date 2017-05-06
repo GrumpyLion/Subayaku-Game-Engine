@@ -11,11 +11,11 @@ namespace Core
 		HWND m_Handle{};
 		HINSTANCE m_HInstance{};
 		SEngineContext m_Context{};
-
+		DWORD m_Style;
 	public:
 		~CWindow() override;
 
-		bool Initialize(const SEngineContext &a_EngineContext) override;
+		bool Initialize(SEngineContext &a_EngineContext) override;
 		bool Update() override;
 		bool Shutdown() override;
 

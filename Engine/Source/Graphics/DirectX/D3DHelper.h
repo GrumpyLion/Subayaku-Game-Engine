@@ -1,25 +1,20 @@
 #pragma once
 
 #include <Windows.h>
+#include <d3d11.h>
+#include "Graphics\Cache\TextureEnums.h"
+#include "Graphics\Cache\STextureDesc.h"
+#include "Graphics\Cache\SMeshDesc.h"
 
 namespace Graphics
 {
 	namespace DirectX
 	{
-		template<typename T> void NSafeRelease(T*& aInterface)
+		template<typename T> inline void SafeRelease(T*& aInterface)
 		{
 			if (aInterface != nullptr)
 			{
 				aInterface->Release();
-				aInterface = nullptr;
-			}
-		}
-
-		template<typename T> void NSafeDelete(T*& aInterface)
-		{
-			if (aInterface != nullptr)
-			{
-				delete aInterface;
 				aInterface = nullptr;
 			}
 		}
@@ -36,6 +31,57 @@ namespace Graphics
 				return true;
 			}
 			return false;
+		}
+
+		inline D3D11_FILTER ETextureFilterToDX(ETextureFilter &a_Format)
+		{
+			D3D11_FILTER format;
+
+			switch (a_Format)
+			{
+			case ETextureFilter::LINEAR:
+				format = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+				break;
+
+			case ETextureFilter::NEAREST:
+				format = D3D11_FILTER_MIN_MAG_MIP_POINT;
+				break;
+			}
+
+			return format;
+		}
+
+		inline DXGI_FORMAT ETextureFormatToDX(ETextureFormat &a_Format)
+		{
+			DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+			switch (a_Format)
+			{
+			case ETextureFormat::RGBA:
+				format = DXGI_FORMAT_R8G8B8A8_UNORM;
+				break;
+
+			//case ETextureFormat::RGB:
+			//	format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			//	break;
+
+			//case ETextureFormat::RG:
+			//	format = DXGI_FORMAT_R32G32_FLOAT;
+			//	break;
+
+			//case ETextureFormat::R:
+			//	format = DXGI_FORMAT_R8_UNORM;
+			//	break;
+
+			case ETextureFormat::BGRA:
+				format = DXGI_FORMAT_B8G8R8A8_UNORM;
+				break;
+
+			default:
+				break;
+			}
+
+			return format;
 		}
 	}
 }

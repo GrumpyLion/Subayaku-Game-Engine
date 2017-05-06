@@ -18,8 +18,8 @@ namespace Graphics
 
 			bool Initialize(STextureDesc a_Desc) override;
 
-			void Bind() override;
-			void Unbind() override;
+			void Bind();
+			void Unbind();
 
 		};
 	}

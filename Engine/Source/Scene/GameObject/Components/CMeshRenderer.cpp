@@ -5,6 +5,9 @@
 #include "Scene\Scene.h"
 #include "Graphics\Primitives.h"
 
+#include "Scene\GameObject\GameObject.h"
+#include "Scene\GameObject\Components\Transformation.h"
+
 namespace Scene
 {
 	bool CMeshRenderer::Initialize(GameObject *a_Parent, const char* a_ModelLocation, Graphics::Material *a_Material)
@@ -12,7 +15,7 @@ namespace Scene
 		IComponent::Initialize(a_Parent);
 
 		//Graphics::Primitives::GetQuad(m_Mesh);
-		m_Mesh.FilePath = "Assets/Models/sphere.obj";
+		m_Mesh.FilePath = a_ModelLocation;
 		m_Mesh.HasIndices = true;
 		m_Mesh.ShouldCull = false;
 		m_Mesh.Mode = Graphics::EMeshPrimitive::TRIANGLES;
@@ -25,6 +28,7 @@ namespace Scene
 
 	void CMeshRenderer::Update()
 	{
+		Parent->Transform->Rotation.y += 0.1f;
 	}
 
 	void CMeshRenderer::Shutdown()

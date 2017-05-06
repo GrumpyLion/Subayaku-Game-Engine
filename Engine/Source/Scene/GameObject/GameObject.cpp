@@ -17,7 +17,7 @@ namespace Scene
 
 	bool GameObject::AddComponent(IComponent *a_ToAdd)
 	{
-		if (a_ToAdd == nullptr)	
+		if (CheckIfPointerIsValid(a_ToAdd))
 			return false;
 
 		a_ToAdd->Initialize(this);
@@ -54,7 +54,7 @@ namespace Scene
 
 	void GameObject::Shutdown()
 	{
-		SAFE_DELETE(Transform);
+		SafeDelete(Transform);
 		RemoveAllComponents();
 	}
 }

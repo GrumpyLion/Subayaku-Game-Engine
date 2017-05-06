@@ -18,9 +18,9 @@ namespace Graphics
 	{
 		GLEntity::~GLEntity()
 		{
-			SAFE_DELETE(m_Material);
+			SafeDelete(m_Material);
 			if(m_IsPrimitive)
-				SAFE_DELETE(m_Mesh);
+				SafeDelete(m_Mesh);
 		}
 
 		bool GLEntity::Initialize(SMeshDesc &a_Mesh, Material *a_Material, Scene::GameObject *a_Parent)
@@ -49,7 +49,6 @@ namespace Graphics
 		{
 			m_Material->Bind();
 			m_Mesh->Bind();
-			m_Parent->Transform->Rotation.y += 0.05f;
 
 			Matrix4f temp = Matrix4f::Identity();
 			temp *= Matrix4f::Scale(m_Parent->Transform->Scale);

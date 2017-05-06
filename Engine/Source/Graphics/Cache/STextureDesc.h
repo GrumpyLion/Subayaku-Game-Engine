@@ -12,6 +12,8 @@ namespace Graphics
 		ETextureFormat Format;
 
 		std::string FilePath = "";
+		
+		int RegisterIndex = 0;
 		const char* UniformName = "";
 
 		std::vector<std::uint8_t> PixelData;

@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "Core\Engine.h"
+#include "Utilities\Utilities.h"
 #include "Input\InputManager.h"
 
 namespace Core
@@ -9,7 +10,7 @@ namespace Core
 		Shutdown();
 	}
 
-	bool CWindow::Initialize(const SEngineContext &a_EngineContext)
+	bool CWindow::Initialize(SEngineContext &a_EngineContext)
 	{
 		m_Context = a_EngineContext;
 
@@ -28,7 +29,7 @@ namespace Core
 			return false;
 		}
 
-		DWORD style = WS_OVERLAPPEDWINDOW;
+		m_Style = WS_POPUP;
 
 		//This is needed to resize the window. Without this the client size would't be correct
 		RECT rect
@@ -36,7 +37,7 @@ namespace Core
 			0, 0, a_EngineContext.Width, a_EngineContext.Height
 		};
 
-		AdjustWindowRect(&rect, style, NULL);
+		AdjustWindowRect(&rect, m_Style, NULL);
 
 		Core::Engine::StaticClass()->GetContext().xPos = (GetSystemMetrics(SM_CXSCREEN) - rect.right - rect.left) / 2;
 		Core::Engine::StaticClass()->GetContext().yPos = (GetSystemMetrics(SM_CYSCREEN) - rect.bottom - rect.top) / 2;
@@ -44,7 +45,7 @@ namespace Core
 		if (a_EngineContext.IsFullScreen)
 		{
 			//We don't need borders if we're in fullscreen mode
-			style = WS_POPUP;
+			m_Style = WS_POPUP;
 
 			Core::Engine::StaticClass()->GetContext().xPos = 0;
 			Core::Engine::StaticClass()->GetContext().yPos = 0;
@@ -56,14 +57,17 @@ namespace Core
 			rect.bottom = GetSystemMetrics(SM_CYSCREEN);
 		}
 
+		Core::Engine::StaticClass()->GetContext().AdjustedWidth = rect.right - rect.left;
+		Core::Engine::StaticClass()->GetContext().AdjustedHeight = rect.bottom - rect.top;
+
 		m_Handle = CreateWindowEx(WS_EX_APPWINDOW,
-			a_EngineContext.Title, a_EngineContext.Title, style,
+			a_EngineContext.Title, a_EngineContext.Title, m_Style,
 			Core::Engine::StaticClass()->GetContext().xPos,
 			Core::Engine::StaticClass()->GetContext().yPos,
 			rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, m_HInstance, NULL);
 
 		//Window creation failed
-		if (m_Handle == nullptr)
+		if (CheckIfPointerIsValid(m_Handle))
 		{
 			return false;
 		}
@@ -78,6 +82,16 @@ namespace Core
 	bool CWindow::Update()
 	{
 		MSG msg{};
+
+		RECT rect
+		{
+			0, 0, Core::Engine::StaticClass()->GetContext().Width, Core::Engine::StaticClass()->GetContext().Height
+		};
+
+		AdjustWindowRect(&rect, m_Style, NULL);
+		
+		Core::Engine::StaticClass()->GetContext().AdjustedWidth = rect.right - rect.left;
+		Core::Engine::StaticClass()->GetContext().AdjustedHeight = rect.bottom - rect.top;
 
 		while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 		{

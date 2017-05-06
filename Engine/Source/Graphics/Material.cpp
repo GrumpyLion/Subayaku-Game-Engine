@@ -38,6 +38,7 @@ namespace Graphics
 		}
 		else
 		{
+			a_TextureInfo.Filter = TextureFilter;
 			m_Textures.insert({ a_TextureInfo.FilePath, a_TextureInfo });
 		}
 	}

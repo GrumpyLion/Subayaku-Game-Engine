@@ -5,6 +5,7 @@
 #include <d3d11.h>
 
 #include "D3DEntity.h"
+#include "D3DShaderBufferContainer.h"
 
 namespace Graphics
 {
@@ -14,6 +15,7 @@ namespace Graphics
 		{
 		private:
 			SRendererDesc m_Desc{};
+			D3DShaderBufferContainer *m_BufferContainer = nullptr;
 
 			ID3D11Device* m_Device = nullptr;
 			ID3D11DeviceContext* m_DeviceContext = nullptr;

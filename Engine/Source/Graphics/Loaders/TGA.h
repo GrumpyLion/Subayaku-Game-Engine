@@ -63,7 +63,8 @@ namespace Graphics
 				BitsPerPixel = Header[16];
 				Width = Header[13] * 256 + Header[12];
 				Height = Header[15] * 256 + Header[14];
-				size = ((Width * BitsPerPixel + 31) / 32) * 4 * Height;
+				//Set the size always to 32 bits we will push 255 if there is no alpha
+				size = ((Width * 32 + 31) / 32) * 4 * Height;
 
 				if ((BitsPerPixel != 24) && (BitsPerPixel != 32))
 				{
@@ -93,7 +94,10 @@ namespace Graphics
 							ImageData[CurrentByte++] = Pixel.B;
 							ImageData[CurrentByte++] = Pixel.G;
 							ImageData[CurrentByte++] = Pixel.R;
-							if (BitsPerPixel > 24) ImageData[CurrentByte++] = Pixel.A;
+							if (BitsPerPixel > 24) 
+								ImageData[CurrentByte++] = Pixel.A;
+							else
+								ImageData[CurrentByte++] = 255;
 						}
 					}
 					else
@@ -106,7 +110,10 @@ namespace Graphics
 							ImageData[CurrentByte++] = Pixel.B;
 							ImageData[CurrentByte++] = Pixel.G;
 							ImageData[CurrentByte++] = Pixel.R;
-							if (BitsPerPixel > 24) ImageData[CurrentByte++] = Pixel.A;
+							if (BitsPerPixel > 24) 
+								ImageData[CurrentByte++] = Pixel.A;
+							else
+								ImageData[CurrentByte++] = 255;
 						}
 					}
 				} while (CurrentPixel < (Width * Height));
@@ -122,11 +129,7 @@ namespace Graphics
 			a_Desc.PixelData = ImageData;
 			a_Desc.Width = Width;
 			a_Desc.Height = Height;
-
-			if(BitsPerPixel == 32)
-				a_Desc.Format = ETextureFormat::RGBA;
-			else
-				a_Desc.Format = ETextureFormat::RGB;
+			a_Desc.Format = ETextureFormat::RGBA;
 
 		}
 

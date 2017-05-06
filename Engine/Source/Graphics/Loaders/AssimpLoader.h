@@ -10,7 +10,7 @@ inline bool LoadAssimpObj(Graphics::SMeshDesc &a_Desc)
 {
 	Assimp::Importer importer;
 
-	const aiScene* scene = importer.ReadFile(a_Desc.FilePath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
+	const aiScene* scene = importer.ReadFile(a_Desc.FilePath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals  | aiProcess_CalcTangentSpace);
 	if (!scene) {
 		fprintf(stderr, importer.GetErrorString());
 		getchar();

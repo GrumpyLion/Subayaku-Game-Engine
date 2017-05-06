@@ -11,9 +11,16 @@ namespace Graphics
 		class D3DMesh : public IMesh
 		{
 		private:
-			ID3D11Buffer *m_VertexBuffer = nullptr, *m_NormalBuffer = nullptr, *m_IndexBuffer = nullptr;
+			ID3D11Buffer *m_VertexBuffer = nullptr, *m_NormalBuffer = nullptr, *m_UVBuffer = nullptr, *m_IndexBuffer = nullptr;
 			D3DRenderer *m_Renderer = nullptr;
 			unsigned int m_Count = 0;
+
+			enum Data 
+			{
+				POSITION,
+				NORMAL,
+				TEXCOORD
+			};
 
 		public:
 			~D3DMesh();

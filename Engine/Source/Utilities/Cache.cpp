@@ -27,6 +27,9 @@ namespace Core
 
 	Graphics::IMesh* Cache::LoadMesh(Graphics::SMeshDesc &a_Desc)
 	{
+		if (a_Desc.FilePath == "")
+			return nullptr;
+
 		auto temp = m_Meshes.find(a_Desc.FilePath);
 
 		if (temp != m_Meshes.end())
@@ -51,7 +54,7 @@ namespace Core
 		else
 		{
 			auto texture = m_RenderFactory->CreateTexture(a_Desc);
-			if (texture == nullptr)
+			if (CheckIfPointerIsValid(texture))
 			{
 				LogErr("Error while loading Texture File [%s] in Cache\n", a_Desc.FilePath);
 				return nullptr;

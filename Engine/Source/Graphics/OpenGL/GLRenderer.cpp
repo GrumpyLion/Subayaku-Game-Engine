@@ -17,16 +17,15 @@ namespace Graphics
 		bool GLRenderer::Initialize(SRendererDesc &a_Desc)
 		{
 			m_Desc = a_Desc;
-
 			m_HDC = GetDC(a_Desc.Handle);
 
 			PIXELFORMATDESCRIPTOR pfd{};
 			pfd.nSize = sizeof(pfd);
 			pfd.nVersion = 1;
-			pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+			pfd.dwFlags = PFD_DRAW_TO_WINDOW| PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
 			pfd.iPixelType = PFD_TYPE_RGBA;
-			pfd.cColorBits = 24;
-			pfd.cDepthBits = 0;
+			pfd.cColorBits = 32;
+			pfd.cDepthBits = 32;
 			pfd.iLayerType = PFD_MAIN_PLANE;
 
 			int format = ChoosePixelFormat(m_HDC, &pfd);
@@ -39,7 +38,7 @@ namespace Graphics
 				return false;
 
 			m_Context = wglCreateContext(m_HDC);
-			if (m_Context == nullptr)
+			if (CheckIfPointerIsValid(m_Context))
 				return false;
 
 			if (wglMakeCurrent(m_HDC, m_Context) == FALSE)
@@ -50,9 +49,11 @@ namespace Graphics
 				std::cout << "GLEW not okay! " << glewinit;
 				return false;
 			}
+			
+			printf("Initializing OpenGL Renderer..\n");
+			printf("%s\n", glGetString(GL_VERSION));
 
 			glViewport(0, 0, a_Desc.Width, a_Desc.Height);
-
 			glFrontFace(GL_CW);
 			glEnable(GL_CULL_FACE);
 			glEnable(GL_DEPTH_TEST);
@@ -84,7 +85,6 @@ namespace Graphics
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glClearColor(0.2f, 0.4f, 0.6f, 1);
-			glViewport(0, 0, Core::Engine::StaticClass()->GetContext().Width, Core::Engine::StaticClass()->GetContext().Height);
 
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -96,7 +96,7 @@ namespace Graphics
 
 		void GLRenderer::AddRenderable(Scene::CMeshRenderer *a_MeshRenderer)
 		{
-			if (a_MeshRenderer == nullptr)
+			if (CheckIfPointerIsValid(a_MeshRenderer))
 				return;
 
 			if (m_Entities.find(a_MeshRenderer) != m_Entities.end())
@@ -110,7 +110,7 @@ namespace Graphics
 			if (!temp->Initialize(a_MeshRenderer->GetMesh(), a_MeshRenderer->GetMaterial(), a_MeshRenderer->Parent))
 			{
 				LogErr("While trying to add a new Renderable\n");
-				SAFE_DELETE(temp);
+				SafeDelete(temp);
 				return;
 			}
 
@@ -119,7 +119,7 @@ namespace Graphics
 
 		void GLRenderer::RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer)
 		{
-			if (a_MeshRenderer == nullptr)
+			if (CheckIfPointerIsValid(a_MeshRenderer))
 				return;
 
 			if (m_Entities.find(a_MeshRenderer) == m_Entities.end())
@@ -130,7 +130,7 @@ namespace Graphics
 			else
 			{
 				GLEntity *temp = m_Entities.find(a_MeshRenderer)->second;
-				SAFE_DELETE(temp);
+				SafeDelete(temp);
 				m_Entities.erase(a_MeshRenderer);
 			}
 		}
@@ -149,7 +149,7 @@ namespace Graphics
 		{
 			for (auto &temp : m_Entities)
 			{
-				SAFE_DELETE(temp.second);
+				SafeDelete(temp.second);
 			}
 			m_Entities.clear();
 

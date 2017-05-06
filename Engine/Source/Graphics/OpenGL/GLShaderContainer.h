@@ -31,11 +31,11 @@ namespace Graphics
 
 			GLuint GetProgram();
 
-			bool SetInt(const char* a_UniformName, const int a_Value) override;
-			bool SetFloat(const char* a_UniformName, const float a_Value) override;
-			bool SetVector2f(const char* a_UniformName, const Vector2f &a_Vec) override;
-			bool SetVector3f(const char* a_UniformName, const Vector3f &a_Vec) override;
-			bool SetMatrix4f(const char* a_UniformName, Matrix4f &a_Mat) override;
+			bool SetInt(const char* a_UniformName, const int a_Value);
+			bool SetFloat(const char* a_UniformName, const float a_Value);
+			bool SetVector2f(const char* a_UniformName, const Vector2f &a_Vec);
+			bool SetVector3f(const char* a_UniformName, const Vector3f &a_Vec);
+			bool SetMatrix4f(const char* a_UniformName, Matrix4f &a_Mat);
 
 		};
 	}

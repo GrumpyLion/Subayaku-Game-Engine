@@ -66,7 +66,7 @@ namespace Graphics
 				return false;
 
 			//We don't need this anymore
-			NSafeRelease(backBuffer);
+			SafeRelease(backBuffer);
 			
 			D3D11_VIEWPORT viewport{};
 			viewport.TopLeftX = 0;
@@ -94,6 +94,7 @@ namespace Graphics
 			if (Failed(m_Device->CreateTexture2D(&depthBufferDesc, NULL, &m_StencilBuffer)))
 				return false;
 
+			//Depth stencil
 			depthStencilDesc.DepthEnable = true;
 			depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 			depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
@@ -117,6 +118,7 @@ namespace Graphics
 
 			m_DeviceContext->OMSetDepthStencilState(m_DepthStencilState, 1);
 
+			//Raster desc
 			rasterDesc.AntialiasedLineEnable = false;
 			rasterDesc.CullMode = D3D11_CULL_BACK;
 			rasterDesc.DepthBias = 0;
@@ -144,6 +146,31 @@ namespace Graphics
 
 			m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 
+			//Getting the graphics card info
+			IDXGIAdapter* adapter;	
+			IDXGIFactory* factory;
+
+			// Create a DirectX graphics interface factory.
+			if (Failed(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory)))
+				return false;
+
+			//Get the adapter
+			if (Failed(factory->EnumAdapters(0, &adapter)))
+				return false;
+
+			DXGI_ADAPTER_DESC test;
+			auto adapterDescription = adapter->GetDesc(&test);
+
+			printf("Initializing DirectX Renderer..\n");
+			wprintf(L"%s\n", test.Description);
+
+			//Release it 
+			SafeRelease(adapter);
+			SafeRelease(factory);
+
+			m_BufferContainer = new D3DShaderBufferContainer();
+			m_BufferContainer->Initialize();
+
 			if (Core::Engine::StaticClass()->GetScene() != nullptr)
 			{
 				if (Core::Engine::StaticClass()->GetScene()->GetRenderables().size() > 0)
@@ -165,10 +192,11 @@ namespace Graphics
 		
 		void D3DRenderer::Render()
 		{
-			float color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+			float color[4] = { 0.2f, 0.4f, 0.6f, 1.0f };
 			m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, color);
 			m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
+			m_BufferContainer->Bind();
 			for (auto &temp : m_Entities)
 			{
 				temp.second->Render();
@@ -179,7 +207,7 @@ namespace Graphics
 
 		void D3DRenderer::AddRenderable(Scene::CMeshRenderer *a_MeshRenderer)
 		{
-			if (a_MeshRenderer == nullptr)
+			if (CheckIfPointerIsValid(a_MeshRenderer))
 				return;
 
 			if (m_Entities.find(a_MeshRenderer) != m_Entities.end())
@@ -192,8 +220,8 @@ namespace Graphics
 
 			if (!temp->Initialize(a_MeshRenderer->GetMesh(), a_MeshRenderer->GetMaterial(), a_MeshRenderer->Parent))
 			{
-				LogErr("While trying to add a new Renderable\n");
-				SAFE_DELETE(temp);
+				LogErr("Error while trying to add a new Renderable\n");
+				SafeDelete(temp);
 				return;
 			}
 
@@ -202,7 +230,7 @@ namespace Graphics
 		
 		void D3DRenderer::RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer)
 		{
-			if (a_MeshRenderer == nullptr)
+			if (CheckIfPointerIsValid(a_MeshRenderer))
 				return;
 
 			if (m_Entities.find(a_MeshRenderer) == m_Entities.end())
@@ -213,7 +241,7 @@ namespace Graphics
 			else
 			{
 				D3DEntity *temp = m_Entities.find(a_MeshRenderer)->second;
-				SAFE_DELETE(temp);
+				SafeDelete(temp);
 				m_Entities.erase(a_MeshRenderer);
 			}
 		}
@@ -234,21 +262,23 @@ namespace Graphics
 
 		void D3DRenderer::Shutdown()
 		{
+			SafeDelete(m_BufferContainer);
 			for (auto &temp : m_Entities)
 			{
-				NSafeDelete(temp.second);
+				SafeDelete(temp.second);
 			}
 
-			NSafeRelease(m_DeviceContext);
-			NSafeRelease(m_Device);
-			NSafeRelease(m_SwapChain);
-			NSafeRelease(m_RenderTargetView);
-			NSafeRelease(m_DepthStencilState);
-			NSafeRelease(m_TextureDepthBuffer);
-			NSafeRelease(m_BlendState);
-			NSafeRelease(m_RasterState);
-			NSafeRelease(m_DepthStencilView);
-			NSafeRelease(m_StencilBuffer);
+
+			SafeRelease(m_DeviceContext);
+			SafeRelease(m_Device);
+			SafeRelease(m_SwapChain);
+			SafeRelease(m_RenderTargetView);
+			SafeRelease(m_DepthStencilState);
+			SafeRelease(m_TextureDepthBuffer);
+			SafeRelease(m_BlendState);
+			SafeRelease(m_RasterState);
+			SafeRelease(m_DepthStencilView);
+			SafeRelease(m_StencilBuffer);
 		}
 	}
 }

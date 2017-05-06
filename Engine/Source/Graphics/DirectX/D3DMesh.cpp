@@ -10,9 +10,10 @@ namespace Graphics
 	{
 		D3DMesh::~D3DMesh()
 		{
-			NSafeRelease(m_VertexBuffer);
-			NSafeRelease(m_IndexBuffer);
-			NSafeRelease(m_NormalBuffer);
+			SafeRelease(m_VertexBuffer);
+			SafeRelease(m_UVBuffer);
+			SafeRelease(m_IndexBuffer);
+			SafeRelease(m_NormalBuffer);
 		}
 
 		bool D3DMesh::Initialize(SMeshDesc &a_Desc)
@@ -20,8 +21,8 @@ namespace Graphics
 			m_Renderer = dynamic_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
 
 			//For the buffer we need the descriptions
-			D3D11_BUFFER_DESC vertexBufferDesc{}, normalBufferDesc{}, indexBufferDesc{};
-			D3D11_SUBRESOURCE_DATA vertexData{}, normalData{}, indexData{};
+			D3D11_BUFFER_DESC vertexBufferDesc{}, normalBufferDesc{}, texcoordBufferDesc{}, indexBufferDesc{};
+			D3D11_SUBRESOURCE_DATA vertexData{}, normalData{}, uvData{}, indexData{};
 
 			vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 			vertexBufferDesc.ByteWidth = (unsigned int)(sizeof(Vector3f) * a_Desc.Vertices.size());
@@ -41,6 +42,16 @@ namespace Graphics
 
 			//Now we create the buffer
 			if (Failed(m_Renderer->GetDevice()->CreateBuffer(&normalBufferDesc, &normalData, &m_NormalBuffer)))
+				return false;
+
+			texcoordBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+			texcoordBufferDesc.ByteWidth = (unsigned int)(sizeof(Vector2f) * a_Desc.TexCoords.size());
+			texcoordBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+			uvData.pSysMem = a_Desc.TexCoords.data();
+
+			//Now we create the buffer
+			if (Failed(m_Renderer->GetDevice()->CreateBuffer(&texcoordBufferDesc, &uvData, &m_UVBuffer)))
 				return false;
 
 			indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -68,8 +79,12 @@ namespace Graphics
 			stride = sizeof(Vector3f);
 			offset = 0;
 
-			m_Renderer->GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
-			m_Renderer->GetDeviceContext()->IASetVertexBuffers(1, 1, &m_NormalBuffer, &stride, &offset);
+			m_Renderer->GetDeviceContext()->IASetVertexBuffers(Data::POSITION, 1, &m_VertexBuffer, &stride, &offset);
+			m_Renderer->GetDeviceContext()->IASetVertexBuffers(Data::NORMAL, 1, &m_NormalBuffer, &stride, &offset);
+			
+			stride = sizeof(Vector2f);
+			m_Renderer->GetDeviceContext()->IASetVertexBuffers(Data::TEXCOORD, 1, &m_UVBuffer, &stride, &offset);
+			
 			m_Renderer->GetDeviceContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 			m_Renderer->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}

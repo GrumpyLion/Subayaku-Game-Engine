@@ -19,7 +19,7 @@ namespace Graphics
 	{
 		GLMaterial::~GLMaterial()
 		{
-			SAFE_DELETE(m_Container);
+			SafeDelete(m_Container);
 
 			m_Textures.clear();
 		}
@@ -37,7 +37,7 @@ namespace Graphics
 			{
 				GLTexture *tex = dynamic_cast<GLTexture*>(Core::Engine::StaticClass()->GetCache()->LoadTexture(temp.second));
 
-				if (tex == nullptr)
+				if (CheckIfPointerIsValid(tex))
 					return false;
 				
 				m_Textures.insert(std::pair<std::string, GLTexture*>(temp.second.UniformName, tex));
@@ -76,9 +76,9 @@ namespace Graphics
 			
 			if (m_FoundUniforms.find("uPRMatrix")->second)
 			{
-				if (m_Renderer->Camera == nullptr) 
+				if (CheckIfPointerIsValid(m_Renderer->Camera))
 					return;
-				if (!m_Container->SetMatrix4f("uPRMatrix", m_Renderer->Camera->ToProjectionMatrixRH()))
+				if (!m_Container->SetMatrix4f("uPRMatrix", m_Renderer->Camera->ToProjectionMatrixLH()))
 					m_FoundUniforms.find("uPRMatrix")->second = false;				
 			}
 
@@ -90,7 +90,7 @@ namespace Graphics
 
 			if (m_FoundUniforms.find("uVWMatrix")->second)
 			{
-				if (!m_Container->SetMatrix4f("uVWMatrix", m_Renderer->Camera->ToViewMatrixRH()))
+				if (!m_Container->SetMatrix4f("uVWMatrix", m_Renderer->Camera->ToViewMatrixLH()))
 					m_FoundUniforms.find("uVWMatrix")->second = false;
 			}
 
