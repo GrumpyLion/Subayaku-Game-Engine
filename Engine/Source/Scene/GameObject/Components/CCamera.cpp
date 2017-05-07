@@ -15,6 +15,7 @@ namespace Scene
 		Near = a_Near;
 		Far = a_Far;
 
+		CurrentCamera = true;
 		Core::Engine::StaticClass()->GetRenderer()->SetCamera(this);
 		Core::Engine::StaticClass()->GetScene()->SetCamera(this);
 

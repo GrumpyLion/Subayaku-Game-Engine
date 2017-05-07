@@ -16,17 +16,16 @@ namespace Graphics
 			SafeDelete(m_DynamicGlobalBuffer);
 		}
 
-		void D3DShaderBufferContainer::Initialize()
+		void D3DShaderBufferContainer::Initialize(D3DRenderer *a_Renderer)
 		{
-			m_Renderer = dynamic_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
+			m_Renderer = a_Renderer;
 			SShaderBufferDesc desc{};
 			m_ConstantGlobalBuffer = new D3DShaderBuffer();
 
-			desc.BufferIndex = GlobalBufferPositions::DynamicGlobalBuffer;
+			desc.BufferIndex = EBufferIndex::GlobalDynamicBuffer;
 			desc.BufferSize = sizeof(DynamicBuffer);
 			m_DynamicGlobalBuffer = new D3DShaderBuffer();
 			m_DynamicGlobalBuffer->Initialize(desc);
-
 		}
 
 		void D3DShaderBufferContainer::Bind()
@@ -34,16 +33,19 @@ namespace Graphics
 			//Bind constant buffer
 			DynamicBuffer dynamicData{};
 
-			Matrix4f temp = m_Renderer->GetCamera()->ToProjectionMatrixLH();
-			temp.Transpose();
-			dynamicData.Projection = temp;
+			if (m_Renderer->GetCamera() != nullptr)
+			{
+				Matrix4f temp = m_Renderer->GetCamera()->ToProjectionMatrixLH();
+				temp.Transpose();
+				dynamicData.Projection = temp;
 
-			temp = m_Renderer->GetCamera()->ToViewMatrixLH();
-			temp.Transpose();
-			dynamicData.View = temp;
+				temp = m_Renderer->GetCamera()->ToViewMatrixLH();
+				temp.Transpose();
+				dynamicData.View = temp;
 
+				dynamicData.CameraPosition = Core::Engine::StaticClass()->GetRenderer()->GetCamera()->Parent->Transform->Position;
+			}
 			dynamicData.TimeSinceStart = (float)Core::Engine::StaticClass()->GetTimeSinceStart();
-			dynamicData.CameraPosition = Core::Engine::StaticClass()->GetRenderer()->GetCamera()->Parent->Transform->Position;
 
 			m_DynamicGlobalBuffer->Bind(m_Renderer, &dynamicData);
 		}

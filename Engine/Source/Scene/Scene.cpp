@@ -20,56 +20,60 @@ namespace Scene
 		temp2->Name = "Camera";
 		temp2->Transform = new Transformation();
 		temp2->Transform->Position = Vector3f(0, 0, 0);
-
-		CCamera *camera = new CCamera();
-		camera->Initialize(temp2, 70.0f, 0.1f, 700.0f);
-		temp2->AddComponent(camera);
-
-		AddGameObject(temp2);
-
-		GameObject *temp = new GameObject();
-		temp->Transform = new Transformation();
-		temp->Transform->Position = Vector3f(0, 0, 0);
-		temp->Transform->Scale = Vector3f(150, 150, 150);
 		
-		CMeshRenderer *mesh = new CMeshRenderer();
+		if (AddGameObject(temp2))
+		{
+			CCamera *camera = new CCamera();
+			camera->Initialize(temp2, 70.0f, 1, 5000.0f);
+			temp2->AddComponent(camera);
+		}
+		
+		GameObject *temp = new GameObject();
+		temp->Name = "World";
+		temp->Transform = new Transformation();
+		temp->Transform->Position = Vector3f(0,0,0);
+		temp->Transform->Scale = Vector3f(150, 150, 150);
 
-		Graphics::Material *tempMat = new Graphics::Material();
-		tempMat->TextureFilter = Graphics::ETextureFilter::LINEAR;
+		if (AddGameObject(temp))
+		{
+			CMeshRenderer *mesh = new CMeshRenderer();
 
-		Graphics::STextureDesc texInfo;
-		texInfo.RegisterIndex = 0;
-		texInfo.UniformName = "uDay";
-		texInfo.FilePath = "Assets/Textures/earth_day.tga";
-		tempMat->AddTexture(texInfo);
+			Graphics::Material *tempMat = new Graphics::Material();
+			tempMat->TextureFilter = Graphics::ETextureFilter::LINEAR;
 
-		texInfo.RegisterIndex = 1;
-		texInfo.UniformName = "uNight";
-		texInfo.FilePath = "Assets/Textures/earth_night.tga";
-		tempMat->AddTexture(texInfo);
+			Graphics::STextureDesc texInfo;
+			texInfo.RegisterIndex = 0;
+			texInfo.UniformName = "uDay";
+			texInfo.FilePath = "Assets/Textures/earth_day.tga";
+			tempMat->AddTexture(texInfo);
 
-		texInfo.RegisterIndex = 2;
-		texInfo.UniformName = "uNormal";
-		texInfo.FilePath = "Assets/Textures/earth_normal.tga";
-		tempMat->AddTexture(texInfo);
+			texInfo.RegisterIndex = 1;
+			texInfo.UniformName = "uNight";
+			texInfo.FilePath = "Assets/Textures/earth_night.tga";
+			tempMat->AddTexture(texInfo);
 
-		texInfo.RegisterIndex = 3;
-		texInfo.UniformName = "uSpecular";
-		texInfo.FilePath = "Assets/Textures/earth_specular.tga";
-		tempMat->AddTexture(texInfo);
+			texInfo.RegisterIndex = 2;
+			texInfo.UniformName = "uNormal";
+			texInfo.FilePath = "Assets/Textures/earth_normal.tga";
+			tempMat->AddTexture(texInfo);
 
-		texInfo.RegisterIndex = 4;
-		texInfo.UniformName = "uClouds";
-		texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
-		tempMat->AddTexture(texInfo);
+			texInfo.RegisterIndex = 3;
+			texInfo.UniformName = "uSpecular";
+			texInfo.FilePath = "Assets/Textures/earth_specular.tga";
+			tempMat->AddTexture(texInfo);
 
-		tempMat->VertexShader = "Test.vs";
-		tempMat->FragmentShader = "Test.fs";
+			texInfo.RegisterIndex = 4;
+			texInfo.UniformName = "uClouds";
+			texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
+			tempMat->AddTexture(texInfo);
 
-		mesh->Initialize(temp, "Assets/Models/kögel.obj", tempMat);
-		temp->AddComponent(mesh);
+			tempMat->VertexShader = "Test.vs";
+			tempMat->FragmentShader = "Test.fs";
 
-		AddGameObject(temp);
+			mesh->Initialize(temp, "Assets/Models/kögel.obj", tempMat);
+			temp->AddComponent(mesh);
+		}
+
 		return true;
 	}
 
@@ -88,7 +92,7 @@ namespace Scene
 
 	bool Scene::AddGameObject(GameObject *a_ToAdd)
 	{
-		if (CheckIfPointerIsValid(a_ToAdd))
+		if (CheckIfPointerIsInvalid(a_ToAdd))
 		{
 			LogErr("AddGameObject() GameObject is Null\n");
 			return false;
@@ -98,6 +102,7 @@ namespace Scene
 		{
 			LogErr("GameObject [%s] is already added\n", a_ToAdd->Name.c_str());
 			SHUTDOWN_AND_DELETE(a_ToAdd);
+			a_ToAdd = nullptr;
 			return false;
 		}
 
@@ -109,13 +114,13 @@ namespace Scene
 
 	void Scene::AddRenderable(GameObject *a_Parent, CMeshRenderer *a_Renderable)
 	{
-		if (CheckIfPointerIsValid(a_Parent))
+		if (CheckIfPointerIsInvalid(a_Parent))
 		{
 			LogErr("AddRenderable() GameObject is Null\n");
 			return;
 		}
 
-		if (CheckIfPointerIsValid(a_Renderable))
+		if (CheckIfPointerIsInvalid(a_Renderable))
 		{
 			LogErr("AddRenderable() Renderable is Null\n");
 			return;
@@ -136,7 +141,7 @@ namespace Scene
 
 	void Scene::RemoveRenderable(GameObject *a_Parent)
 	{
-		if (CheckIfPointerIsValid(a_Parent))
+		if (CheckIfPointerIsInvalid(a_Parent))
 		{
 			LogErr("RemoveRenderable() GameObject is Null\n");
 			return;

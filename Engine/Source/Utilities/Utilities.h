@@ -17,7 +17,7 @@ template<typename T> void SafeDelete(T*& aInterface)
 	}
 }
 
-template<typename T> bool CheckIfPointerIsValid(T*& aInterface)
+template<typename T> bool CheckIfPointerIsInvalid(T*& aInterface)
 {
 	if (aInterface == nullptr)
 		return true;

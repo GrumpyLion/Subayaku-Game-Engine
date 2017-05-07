@@ -6,7 +6,9 @@
 #include "GLEntity.h"
 #include "Scene\GameObject\Components\CMeshRenderer.h"
 #include "Core\Engine.h"
+
 #include "Scene\Scene.h"
+#include "Scene\GameObject\Components\Transformation.h"
 
 #include <iostream>
 
@@ -38,7 +40,7 @@ namespace Graphics
 				return false;
 
 			m_Context = wglCreateContext(m_HDC);
-			if (CheckIfPointerIsValid(m_Context))
+			if (CheckIfPointerIsInvalid(m_Context))
 				return false;
 
 			if (wglMakeCurrent(m_HDC, m_Context) == FALSE)
@@ -78,6 +80,9 @@ namespace Graphics
 				SetCamera(Core::Engine::StaticClass()->GetScene()->GetCamera());
 			}
 
+			m_Container = new GLShaderBufferContainer();
+			m_Container->Initialize(this);
+
 			return true;
 		}
 
@@ -88,6 +93,8 @@ namespace Graphics
 
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+			m_Container->Bind();
+
 			for (auto &temp : m_Entities)
 				temp.second->Render();
 
@@ -96,7 +103,7 @@ namespace Graphics
 
 		void GLRenderer::AddRenderable(Scene::CMeshRenderer *a_MeshRenderer)
 		{
-			if (CheckIfPointerIsValid(a_MeshRenderer))
+			if (CheckIfPointerIsInvalid(a_MeshRenderer))
 				return;
 
 			if (m_Entities.find(a_MeshRenderer) != m_Entities.end())
@@ -119,7 +126,7 @@ namespace Graphics
 
 		void GLRenderer::RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer)
 		{
-			if (CheckIfPointerIsValid(a_MeshRenderer))
+			if (CheckIfPointerIsInvalid(a_MeshRenderer))
 				return;
 
 			if (m_Entities.find(a_MeshRenderer) == m_Entities.end())
@@ -152,6 +159,8 @@ namespace Graphics
 				SafeDelete(temp.second);
 			}
 			m_Entities.clear();
+
+			SafeDelete(m_Container);
 
 			if (m_HDC != nullptr)
 			{

@@ -7,7 +7,7 @@ int main()
 {
 	Core::Engine engine = Core::Engine();
 	Core::SEngineContext context{};
-	context.RDevice = Core::RenderDevice::DirectX;
+	context.RDevice = Core::RenderDevice::OpenGL;
 
 	//Check for errors while init
 	if (engine.Initialize(context))

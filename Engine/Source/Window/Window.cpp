@@ -67,7 +67,7 @@ namespace Core
 			rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, m_HInstance, NULL);
 
 		//Window creation failed
-		if (CheckIfPointerIsValid(m_Handle))
+		if (CheckIfPointerIsInvalid(m_Handle))
 		{
 			return false;
 		}

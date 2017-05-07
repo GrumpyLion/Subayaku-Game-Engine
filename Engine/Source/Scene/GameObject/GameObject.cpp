@@ -17,7 +17,7 @@ namespace Scene
 
 	bool GameObject::AddComponent(IComponent *a_ToAdd)
 	{
-		if (CheckIfPointerIsValid(a_ToAdd))
+		if (CheckIfPointerIsInvalid(a_ToAdd))
 			return false;
 
 		a_ToAdd->Initialize(this);

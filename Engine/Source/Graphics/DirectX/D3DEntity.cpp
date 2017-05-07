@@ -24,9 +24,10 @@ namespace Graphics
 		bool D3DEntity::Initialize(SMeshDesc &a_Mesh, Material *a_Material, Scene::GameObject *a_Parent)
 		{
 			m_Parent = a_Parent;
+			HasIndices = a_Mesh.HasIndices;
 			m_Renderer = dynamic_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
 
-			if (CheckIfPointerIsValid(m_Renderer))
+			if (CheckIfPointerIsInvalid(m_Renderer))
 				return false;
 
 			m_Material = new D3DMaterial();
@@ -35,7 +36,10 @@ namespace Graphics
 
 			m_Mesh = dynamic_cast<D3DMesh*>(Core::Engine::StaticClass()->GetCache()->LoadMesh(a_Mesh));
 
-			if (CheckIfPointerIsValid(m_Renderer))
+			if (CheckIfPointerIsInvalid(m_Mesh))
+				return false;
+
+			if (CheckIfPointerIsInvalid(m_Renderer))
 				return false;
 
 			return true;
@@ -47,7 +51,10 @@ namespace Graphics
 
 			m_Material->Bind(m_Parent);
 
-			m_Renderer->GetDeviceContext()->DrawIndexed(m_Mesh->GetCount(), 0, 0);
+			if (HasIndices)
+				m_Renderer->GetDeviceContext()->DrawIndexed(m_Mesh->GetCount(), 0, 0);
+			else
+				m_Renderer->GetDeviceContext()->Draw(m_Mesh->GetCount(), 0);
 		}
 	}
 }

@@ -9,6 +9,7 @@ namespace Scene
 	{
 	public:
 		float FOV, Near, Far;
+		bool CurrentCamera = false;
 		
 		bool Initialize(GameObject *a_Parent, float a_FOV, float a_Near, float a_Far);
 		void Update() override;
@@ -17,7 +18,7 @@ namespace Scene
 		//Delete later ..
 		float xSpeed = 0, ySpeed = 0;
 
-		float m_Radius = 200.0f;
+		float m_Radius = 350.0f;
 		float CalculateHorizontalDistance();
 		float CalculateVerticalDistance();
 

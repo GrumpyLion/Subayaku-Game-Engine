@@ -57,7 +57,7 @@ namespace Graphics
 			temp *= Matrix4f::RotateY(m_Parent->Transform->Rotation.y * DEGTORAD);
 			temp *= Matrix4f::RotateZ(m_Parent->Transform->Rotation.z * DEGTORAD);
 
-			m_Material->GetContainer()->SetMatrix4f("uMLMatrix", temp);
+			m_Material->GetContainer()->SetMatrix4f("uWMatrix", temp);
 			
 			if (m_Mesh->HasIndices)
 			{

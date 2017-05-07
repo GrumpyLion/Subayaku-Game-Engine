@@ -6,5 +6,6 @@ namespace Graphics
 	{
 		unsigned short BufferSize;
 		unsigned short BufferIndex;
+		bool IsDynamic = false;
 	};
 }

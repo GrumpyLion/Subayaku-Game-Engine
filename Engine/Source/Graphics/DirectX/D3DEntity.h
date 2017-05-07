@@ -21,6 +21,8 @@ namespace Graphics
 
 			Scene::GameObject *m_Parent = nullptr;
 
+			bool HasIndices = true;
+
 		public:
 			~D3DEntity();
 

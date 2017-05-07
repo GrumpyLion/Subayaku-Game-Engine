@@ -169,7 +169,7 @@ namespace Graphics
 			SafeRelease(factory);
 
 			m_BufferContainer = new D3DShaderBufferContainer();
-			m_BufferContainer->Initialize();
+			m_BufferContainer->Initialize(this);
 
 			if (Core::Engine::StaticClass()->GetScene() != nullptr)
 			{
@@ -207,7 +207,7 @@ namespace Graphics
 
 		void D3DRenderer::AddRenderable(Scene::CMeshRenderer *a_MeshRenderer)
 		{
-			if (CheckIfPointerIsValid(a_MeshRenderer))
+			if (CheckIfPointerIsInvalid(a_MeshRenderer))
 				return;
 
 			if (m_Entities.find(a_MeshRenderer) != m_Entities.end())
@@ -230,7 +230,7 @@ namespace Graphics
 		
 		void D3DRenderer::RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer)
 		{
-			if (CheckIfPointerIsValid(a_MeshRenderer))
+			if (CheckIfPointerIsInvalid(a_MeshRenderer))
 				return;
 
 			if (m_Entities.find(a_MeshRenderer) == m_Entities.end())
@@ -267,7 +267,6 @@ namespace Graphics
 			{
 				SafeDelete(temp.second);
 			}
-
 
 			SafeRelease(m_DeviceContext);
 			SafeRelease(m_Device);

@@ -21,7 +21,7 @@ namespace Graphics
 			ID3D10Blob *errorMessage = nullptr;
 			ID3D10Blob *vertexShaderBuffer = nullptr;
 			ID3D10Blob *pixelShaderBuffer = nullptr;
-			D3D11_INPUT_ELEMENT_DESC polygonLayout[3];
+			D3D11_INPUT_ELEMENT_DESC polygonLayout[5];
 			unsigned int numElements;
 
 			std::ifstream fileStream(GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_Material->VertexShader));
@@ -97,6 +97,22 @@ namespace Graphics
 			polygonLayout[2].AlignedByteOffset = 0;
 			polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			polygonLayout[2].InstanceDataStepRate = 0;
+
+			polygonLayout[3].SemanticName = "TANGENT";
+			polygonLayout[3].SemanticIndex = 0;
+			polygonLayout[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+			polygonLayout[3].InputSlot = 3;
+			polygonLayout[3].AlignedByteOffset = 0;
+			polygonLayout[3].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			polygonLayout[3].InstanceDataStepRate = 0;
+
+			polygonLayout[4].SemanticName = "BITANGENT";
+			polygonLayout[4].SemanticIndex = 0;
+			polygonLayout[4].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+			polygonLayout[4].InputSlot = 4;
+			polygonLayout[4].AlignedByteOffset = 0;
+			polygonLayout[4].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			polygonLayout[4].InstanceDataStepRate = 0;
 
 			numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 

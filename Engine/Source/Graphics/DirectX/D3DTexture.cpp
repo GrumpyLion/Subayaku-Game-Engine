@@ -67,6 +67,7 @@ namespace Graphics
 
 		void D3DTexture::Bind()
 		{
+			m_Renderer->GetDeviceContext()->VSSetSamplers(0, 1, &m_SampleState);
 			m_Renderer->GetDeviceContext()->PSSetSamplers(0, 1, &m_SampleState);
 			m_Renderer->GetDeviceContext()->PSSetShaderResources(RegisterIndex, 1, &m_Texure);
 		}

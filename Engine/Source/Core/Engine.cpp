@@ -69,6 +69,7 @@ namespace Core
 
 		int frames = 0;
 		int updates = 0;
+		int index = 0;
 
 		while (!done)
 		{
@@ -94,6 +95,7 @@ namespace Core
 				m_Scene->Update();
 			}
 
+			//Remove later..
 			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_O))
 			{
 				m_Context.RDevice = RenderDevice::DirectX;
@@ -104,6 +106,63 @@ namespace Core
 			{
 				m_Context.RDevice = RenderDevice::OpenGL;
 				SwitchRenderer(m_Context);
+			}
+
+			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_Z))
+			{
+				m_Scene->ClearScene();
+				m_Scene->Initialize();
+				index = 0;
+			}
+
+			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_U))
+			{
+				index++;
+				Scene::GameObject *temp = new Scene::GameObject();
+				temp->Name = std::to_string(index);
+				temp->Transform = new Scene::Transformation();
+				temp->Transform->Position = Vector3f(rand() % 10, rand() % 10, rand() % 10);
+				temp->Transform->Scale = Vector3f(150, 150, 150);
+
+				if (m_Scene->AddGameObject(temp))
+				{
+					Scene::CMeshRenderer *mesh = new Scene::CMeshRenderer();
+
+					Graphics::Material *tempMat = new Graphics::Material();
+					tempMat->TextureFilter = Graphics::ETextureFilter::LINEAR;
+
+					Graphics::STextureDesc texInfo;
+					texInfo.RegisterIndex = 0;
+					texInfo.UniformName = "uDay";
+					texInfo.FilePath = "Assets/Textures/earth_day.tga";
+					tempMat->AddTexture(texInfo);
+
+					texInfo.RegisterIndex = 1;
+					texInfo.UniformName = "uNight";
+					texInfo.FilePath = "Assets/Textures/earth_night.tga";
+					tempMat->AddTexture(texInfo);
+
+					texInfo.RegisterIndex = 2;
+					texInfo.UniformName = "uNormal";
+					texInfo.FilePath = "Assets/Textures/earth_normal.tga";
+					tempMat->AddTexture(texInfo);
+
+					texInfo.RegisterIndex = 3;
+					texInfo.UniformName = "uSpecular";
+					texInfo.FilePath = "Assets/Textures/earth_specular.tga";
+					tempMat->AddTexture(texInfo);
+
+					texInfo.RegisterIndex = 4;
+					texInfo.UniformName = "uClouds";
+					texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
+					tempMat->AddTexture(texInfo);
+
+					tempMat->VertexShader = "Test.vs";
+					tempMat->FragmentShader = "Test.fs";
+
+					mesh->Initialize(temp, "Assets/Models/kögel.obj", tempMat);
+					temp->AddComponent(mesh);
+				}
 			}
 
 			auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - deltaTimer);

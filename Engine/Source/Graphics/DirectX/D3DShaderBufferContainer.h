@@ -2,18 +2,13 @@
 
 #include "D3DShaderBuffer.h" 
 #include "Math\Math.h"
+#include "Graphics\GlobalIndices.h"
 
 namespace Graphics
 {
 	namespace DirectX
 	{
 		class D3DRenderer;
-		
-		enum GlobalBufferPositions
-		{
-			ConstantGlobalBuffer,
-			DynamicGlobalBuffer
-		};
 
 		class D3DShaderBufferContainer
 		{
@@ -37,9 +32,8 @@ namespace Graphics
 		public:
 			~D3DShaderBufferContainer();
 
-			void Initialize();
+			void Initialize(D3DRenderer *a_Renderer);
 			void Bind();
-
 		};
 	}
 }

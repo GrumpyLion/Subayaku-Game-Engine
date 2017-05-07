@@ -30,6 +30,7 @@
     <ClInclude Include="Source\Graphics\DirectX\D3DShaderBufferContainer.h" />
     <ClInclude Include="Source\Graphics\DirectX\D3DShaderContainer.h" />
     <ClInclude Include="Source\Graphics\DirectX\D3DTexture.h" />
+    <ClInclude Include="Source\Graphics\GlobalIndices.h" />
     <ClInclude Include="Source\Graphics\Interface\IEntity.h" />
     <ClInclude Include="Source\Graphics\Interface\IShaderBuffer.h" />
     <ClInclude Include="Source\Graphics\Interface\SShaderBufferDesc.h" />
@@ -57,6 +58,8 @@
     <ClInclude Include="Source\Graphics\OpenGL\GLRenderer.h" />
     <ClInclude Include="Source\Graphics\OpenGL\GLRenderFactory.h" />
     <ClInclude Include="Source\Graphics\OpenGL\GLShader.h" />
+    <ClInclude Include="Source\Graphics\OpenGL\GLShaderBuffer.h" />
+    <ClInclude Include="Source\Graphics\OpenGL\GLShaderBufferContainer.h" />
     <ClInclude Include="Source\Graphics\OpenGL\GLShaderContainer.h" />
     <ClInclude Include="Source\Graphics\OpenGL\GLTexture.h" />
     <ClInclude Include="Source\Graphics\Primitives.h" />
@@ -68,6 +71,7 @@
     <ClInclude Include="Source\Math\Matrix4f.h" />
     <ClInclude Include="Source\Math\Vector2f.h" />
     <ClInclude Include="Source\Math\Vector3f.h" />
+    <ClInclude Include="Source\Math\Vector4f.h" />
     <ClInclude Include="Source\Scene\GameObject\Components\CCamera.h" />
     <ClInclude Include="Source\Scene\GameObject\Components\CMeshRenderer.h" />
     <ClInclude Include="Source\Scene\GameObject\Components\CSprite.h" />
@@ -99,6 +103,8 @@
     <ClCompile Include="Source\Graphics\OpenGL\GLRenderer.cpp" />
     <ClCompile Include="Source\Graphics\OpenGL\GLRenderFactory.cpp" />
     <ClCompile Include="Source\Graphics\OpenGL\GLShader.cpp" />
+    <ClCompile Include="Source\Graphics\OpenGL\GLShaderBuffer.cpp" />
+    <ClCompile Include="Source\Graphics\OpenGL\GLShaderBufferContainer.cpp" />
     <ClCompile Include="Source\Graphics\OpenGL\GLShaderContainer.cpp" />
     <ClCompile Include="Source\Graphics\OpenGL\GLTexture.cpp" />
     <ClCompile Include="Source\Input\InputManager.cpp" />

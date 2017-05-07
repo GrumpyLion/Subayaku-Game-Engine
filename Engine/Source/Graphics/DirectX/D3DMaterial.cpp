@@ -21,13 +21,15 @@ namespace Graphics
 		{
 			m_Renderer = dynamic_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
 			m_Container = new D3DShaderContainer();
-			m_Container->Initialize(a_Material);
+
+			if (!m_Container->Initialize(a_Material))
+				return false;
 
 			for (auto &temp : a_Material->GetTextures())
 			{
 				D3DTexture *tex = dynamic_cast<D3DTexture*>(Core::Engine::StaticClass()->GetCache()->LoadTexture(temp.second));
 
-				if (CheckIfPointerIsValid(tex))
+				if (CheckIfPointerIsInvalid(tex))
 					return false;
 
 				m_Textures.insert({ temp.second.UniformName, tex });
@@ -35,6 +37,7 @@ namespace Graphics
 
 			SShaderBufferDesc desc;
 			desc.BufferSize = sizeof(ObjectBuffer);
+			//The fifth index is reserved for the world matrix buffer
 			desc.BufferIndex = 5;
 
 			m_ObjectBuffer = new D3DShaderBuffer();

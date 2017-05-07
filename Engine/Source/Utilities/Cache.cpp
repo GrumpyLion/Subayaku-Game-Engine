@@ -54,7 +54,7 @@ namespace Core
 		else
 		{
 			auto texture = m_RenderFactory->CreateTexture(a_Desc);
-			if (CheckIfPointerIsValid(texture))
+			if (CheckIfPointerIsInvalid(texture))
 			{
 				LogErr("Error while loading Texture File [%s] in Cache\n", a_Desc.FilePath);
 				return nullptr;

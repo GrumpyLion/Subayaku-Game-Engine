@@ -37,7 +37,7 @@ namespace Graphics
 			{
 				GLTexture *tex = dynamic_cast<GLTexture*>(Core::Engine::StaticClass()->GetCache()->LoadTexture(temp.second));
 
-				if (CheckIfPointerIsValid(tex))
+				if (CheckIfPointerIsInvalid(tex))
 					return false;
 				
 				m_Textures.insert(std::pair<std::string, GLTexture*>(temp.second.UniformName, tex));
@@ -73,37 +73,11 @@ namespace Graphics
 				//TODO Check if the uniform was found 
 				m_Container->SetFloat(temp.first.c_str(), temp.second);
 			}
-			
-			if (m_FoundUniforms.find("uPRMatrix")->second)
-			{
-				if (CheckIfPointerIsValid(m_Renderer->Camera))
-					return;
-				if (!m_Container->SetMatrix4f("uPRMatrix", m_Renderer->Camera->ToProjectionMatrixLH()))
-					m_FoundUniforms.find("uPRMatrix")->second = false;				
-			}
 
 			if (m_FoundUniforms.find("uORMatrix")->second)
 			{
 				if (!m_Container->SetMatrix4f("uORMatrix", Matrix4f::Orthograpic(0.0f, 4.0f, 0.0f, 2.5f, -1.0f, 10.0f)))
 					m_FoundUniforms.find("uORMatrix")->second = false;
-			}
-
-			if (m_FoundUniforms.find("uVWMatrix")->second)
-			{
-				if (!m_Container->SetMatrix4f("uVWMatrix", m_Renderer->Camera->ToViewMatrixLH()))
-					m_FoundUniforms.find("uVWMatrix")->second = false;
-			}
-
-			if (m_FoundUniforms.find("uTime")->second)
-			{
-				if (!m_Container->SetFloat("uTime", (float)Core::Engine::StaticClass()->GetTimeSinceStart()))
-					m_FoundUniforms.find("uTime")->second = false;
-			}
-
-			if (m_FoundUniforms.find("uCameraPos")->second)
-			{
-				if (!m_Container->SetVector3f("uCameraPos", Core::Engine::StaticClass()->GetRenderer()->GetCamera()->Parent->Transform->Position))
-					m_FoundUniforms.find("uCameraPos")->second = false;
 			}
 		}
 
