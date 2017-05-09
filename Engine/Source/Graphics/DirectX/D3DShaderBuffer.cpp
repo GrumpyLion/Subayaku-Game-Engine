@@ -25,7 +25,7 @@ namespace Graphics
 			matrixBufferDesc.MiscFlags = 0;
 			matrixBufferDesc.StructureByteStride = 0;
 
-			if (Failed(dynamic_cast<D3DRenderer*>(
+			if (Failed(static_cast<D3DRenderer*>(
 				Core::Engine::StaticClass()->GetRenderer())->GetDevice()->CreateBuffer(&matrixBufferDesc, nullptr, &m_Buffer)))
 				return false;
 			

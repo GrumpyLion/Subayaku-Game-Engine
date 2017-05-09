@@ -72,7 +72,9 @@ namespace Core
 	{
 	private:
 		bool m_Keys[MAX_KEYS];
-
+		bool m_PrevKeys[MAX_KEYS];
+		bool m_KeyDown[MAX_KEYS];
+		
 	public:
 		void Init();
 
@@ -80,6 +82,10 @@ namespace Core
 		void KeyDown(int a_Key);
 		void KeyUp(int a_Key);
 
+		void Update();
+		void Refresh();
+
 		bool IsKeyDown(int a_Key);
+		bool IsKeyJustDown(int a_Key);
 	};
 }

@@ -15,64 +15,63 @@ namespace Scene
 {
 	bool Scene::Initialize()
 	{
-
-		GameObject *temp2 = new GameObject();
+		auto temp2 = std::make_unique<GameObject>();
 		temp2->Name = "Camera";
-		temp2->Transform = new Transformation();
+		temp2->Transform = std::make_unique<Transformation>();
 		temp2->Transform->Position = Vector3f(0, 0, 0);
 		
-		if (AddGameObject(temp2))
-		{
-			CCamera *camera = new CCamera();
-			camera->Initialize(temp2, 70.0f, 1, 5000.0f);
-			temp2->AddComponent(camera);
-		}
-		
-		GameObject *temp = new GameObject();
-		temp->Name = "World";
-		temp->Transform = new Transformation();
-		temp->Transform->Position = Vector3f(0,0,0);
+		auto ptr = temp2.get();
+		auto camera = std::make_unique<CCamera>();
+		camera->Initialize(ptr, 70.0f, 1, 5000.0f);
+
+		temp2->AddComponent(std::move(camera));
+		AddGameObject(std::move(temp2));
+
+		auto temp = std::make_unique<GameObject>();
+		temp->Name = "Penis";
+		temp->Transform = std::make_unique<Transformation>();
+		temp->Transform->Position = Vector3f(0, 0, 0);
 		temp->Transform->Scale = Vector3f(150, 150, 150);
 
-		if (AddGameObject(temp))
-		{
-			CMeshRenderer *mesh = new CMeshRenderer();
+		ptr = temp.get();
+		auto mesh = std::make_unique<CMeshRenderer>();
 
-			Graphics::Material *tempMat = new Graphics::Material();
-			tempMat->TextureFilter = Graphics::ETextureFilter::LINEAR;
+		auto tempMat = std::make_unique<Graphics::Material>();
+		tempMat->TextureFilter = Graphics::ETextureFilter::LINEAR;
 
-			Graphics::STextureDesc texInfo;
-			texInfo.RegisterIndex = 0;
-			texInfo.UniformName = "uDay";
-			texInfo.FilePath = "Assets/Textures/earth_day.tga";
-			tempMat->AddTexture(texInfo);
+		Graphics::STextureDesc texInfo;
+		texInfo.RegisterIndex = 0;
+		texInfo.UniformName = "uDay";
+		texInfo.FilePath = "Assets/Textures/earth_day.tga";
+		tempMat->AddTexture(texInfo);
 
-			texInfo.RegisterIndex = 1;
-			texInfo.UniformName = "uNight";
-			texInfo.FilePath = "Assets/Textures/earth_night.tga";
-			tempMat->AddTexture(texInfo);
+		texInfo.RegisterIndex = 1;
+		texInfo.UniformName = "uNight";
+		texInfo.FilePath = "Assets/Textures/earth_night.tga";
+		tempMat->AddTexture(texInfo);
 
-			texInfo.RegisterIndex = 2;
-			texInfo.UniformName = "uNormal";
-			texInfo.FilePath = "Assets/Textures/earth_normal.tga";
-			tempMat->AddTexture(texInfo);
+		texInfo.RegisterIndex = 2;
+		texInfo.UniformName = "uNormal";
+		texInfo.FilePath = "Assets/Textures/earth_normal.tga";
+		tempMat->AddTexture(texInfo);
 
-			texInfo.RegisterIndex = 3;
-			texInfo.UniformName = "uSpecular";
-			texInfo.FilePath = "Assets/Textures/earth_specular.tga";
-			tempMat->AddTexture(texInfo);
+		texInfo.RegisterIndex = 3;
+		texInfo.UniformName = "uSpecular";
+		texInfo.FilePath = "Assets/Textures/earth_specular.tga";
+		tempMat->AddTexture(texInfo);
 
-			texInfo.RegisterIndex = 4;
-			texInfo.UniformName = "uClouds";
-			texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
-			tempMat->AddTexture(texInfo);
+		texInfo.RegisterIndex = 4;
+		texInfo.UniformName = "uClouds";
+		texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
+		tempMat->AddTexture(texInfo);
 
-			tempMat->VertexShader = "Test.vs";
-			tempMat->FragmentShader = "Test.fs";
+		tempMat->Shaders.VertexShaderPath = "Test.vs";
+		tempMat->Shaders.FragmentShaderPath = "Test.fs";
+		tempMat->Shaders.ShaderContainerName = "Earth";
 
-			mesh->Initialize(temp, "Assets/Models/kögel.obj", tempMat);
-			temp->AddComponent(mesh);
-		}
+		mesh->Initialize(ptr, "Assets/Models/kögel.obj", std::move(tempMat));
+		temp->AddComponent(std::move(mesh));
+		AddGameObject(std::move(temp));
 
 		return true;
 	}
@@ -90,9 +89,9 @@ namespace Scene
 		ClearScene();
 	}
 
-	bool Scene::AddGameObject(GameObject *a_ToAdd)
+	bool Scene::AddGameObject(std::unique_ptr<GameObject> a_ToAdd)
 	{
-		if (CheckIfPointerIsInvalid(a_ToAdd))
+		if (a_ToAdd == nullptr)
 		{
 			LogErr("AddGameObject() GameObject is Null\n");
 			return false;
@@ -101,14 +100,12 @@ namespace Scene
 		if (m_GameObjects.find(a_ToAdd->Name) != m_GameObjects.end())
 		{
 			LogErr("GameObject [%s] is already added\n", a_ToAdd->Name.c_str());
-			SHUTDOWN_AND_DELETE(a_ToAdd);
 			a_ToAdd = nullptr;
 			return false;
 		}
 
 		LogErr("GameObject added %s\n", a_ToAdd->Name.c_str());
-
-		m_GameObjects.insert(std::pair<std::string, GameObject*>(a_ToAdd->Name, a_ToAdd));
+		m_GameObjects[a_ToAdd->Name] = std::move( a_ToAdd );
 		return true;
 	}
 
@@ -127,14 +124,14 @@ namespace Scene
 		}
 
 		//Already added
-		if (m_Renderarbles.find(a_Parent) != m_Renderarbles.end())
+		if (m_Renderables.find(a_Parent) != m_Renderables.end())
 		{
 			LogErr("AddRenderable() GameObject already added\n");
 			return;
 		}
 		else
 		{
-			m_Renderarbles.insert(std::pair<GameObject*, CMeshRenderer*>(a_Parent, a_Renderable));
+			m_Renderables.insert(std::pair<GameObject*, CMeshRenderer*>(a_Parent, a_Renderable));
 			Core::Engine::StaticClass()->GetRenderer()->AddRenderable(a_Renderable);
 		}
 	}
@@ -147,12 +144,12 @@ namespace Scene
 			return;
 		}
 
-		if (m_Renderarbles.find(a_Parent) != m_Renderarbles.end())
+		if (m_Renderables.find(a_Parent) != m_Renderables.end())
 		{
-			CMeshRenderer *temp = m_Renderarbles.find(a_Parent)->second;			
+			CMeshRenderer *temp = m_Renderables.find(a_Parent)->second;			
 			//The Renderer need to notice the deletion			
 			Core::Engine::StaticClass()->GetRenderer()->RemoveRenderable(temp);
-			m_Renderarbles.erase(a_Parent);
+			m_Renderables.erase(a_Parent);
 		}
 		else
 		{
@@ -165,8 +162,6 @@ namespace Scene
 	{
 		if (m_GameObjects.find(a_Name) != m_GameObjects.end())
 		{
-			GameObject *temp = m_GameObjects.find(a_Name)->second;
-			SHUTDOWN_AND_DELETE(temp);
 			m_GameObjects.erase(a_Name);
 		}
 		else
@@ -177,12 +172,8 @@ namespace Scene
 
 	void Scene::ClearScene()
 	{
-		for (auto &temp : m_GameObjects)
-		{
-			SHUTDOWN_AND_DELETE(temp.second);
-		}
 		m_GameObjects.clear();
-		m_Renderarbles.clear();
+		m_Renderables.clear();
 	}
 
 	void Scene::SetCamera(CCamera *a_Camera)
@@ -192,6 +183,6 @@ namespace Scene
 	{	return m_Camera;	}
 
 	std::unordered_map<GameObject*, CMeshRenderer*> Scene::GetRenderables()
-	{	return m_Renderarbles;	}
+	{	return m_Renderables;	}
 
 }

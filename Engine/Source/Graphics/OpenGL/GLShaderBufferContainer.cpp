@@ -11,22 +11,16 @@
 namespace Graphics
 {
 	namespace OpenGL
-	{
-		GLShaderBufferContainer::~GLShaderBufferContainer()
-		{
-			SafeDelete(m_DynamicGlobalBuffer);
-			SafeDelete(m_ConstantGlobalBuffer);
-		}
-
+	{		
 		void GLShaderBufferContainer::Initialize(GLRenderer *a_Renderer)
 		{
 			m_Renderer = a_Renderer;
 
 			SShaderBufferDesc desc{};
 
-			m_ConstantGlobalBuffer = new GLShaderBuffer();
+			m_ConstantGlobalBuffer = std::make_unique<GLShaderBuffer>();
 
-			m_DynamicGlobalBuffer = new GLShaderBuffer();
+			m_DynamicGlobalBuffer = std::make_unique<GLShaderBuffer>();
 
 			desc = SShaderBufferDesc{};
 			desc.BufferIndex = EBufferIndex::GlobalDynamicBuffer;

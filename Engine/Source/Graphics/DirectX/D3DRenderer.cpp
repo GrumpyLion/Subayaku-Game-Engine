@@ -168,7 +168,7 @@ namespace Graphics
 			SafeRelease(adapter);
 			SafeRelease(factory);
 
-			m_BufferContainer = new D3DShaderBufferContainer();
+			m_BufferContainer = std::make_unique<D3DShaderBufferContainer>();
 			m_BufferContainer->Initialize(this);
 
 			if (Core::Engine::StaticClass()->GetScene() != nullptr)
@@ -216,16 +216,15 @@ namespace Graphics
 				return;
 			}
 
-			D3DEntity *temp = new D3DEntity();
+			auto temp = std::make_unique<D3DEntity>();
 
 			if (!temp->Initialize(a_MeshRenderer->GetMesh(), a_MeshRenderer->GetMaterial(), a_MeshRenderer->Parent))
 			{
 				LogErr("Error while trying to add a new Renderable\n");
-				SafeDelete(temp);
 				return;
 			}
 
-			m_Entities.insert({ a_MeshRenderer, temp });
+			m_Entities.insert({ a_MeshRenderer, std::move(temp) });
 		}
 		
 		void D3DRenderer::RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer)
@@ -240,8 +239,6 @@ namespace Graphics
 			}
 			else
 			{
-				D3DEntity *temp = m_Entities.find(a_MeshRenderer)->second;
-				SafeDelete(temp);
 				m_Entities.erase(a_MeshRenderer);
 			}
 		}
@@ -262,11 +259,7 @@ namespace Graphics
 
 		void D3DRenderer::Shutdown()
 		{
-			SafeDelete(m_BufferContainer);
-			for (auto &temp : m_Entities)
-			{
-				SafeDelete(temp.second);
-			}
+			m_Entities.clear();
 
 			SafeRelease(m_DeviceContext);
 			SafeRelease(m_Device);

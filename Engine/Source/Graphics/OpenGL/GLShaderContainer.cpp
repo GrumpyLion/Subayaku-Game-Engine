@@ -1,50 +1,54 @@
 #include "GLShaderContainer.h"
 
-#include "GLShader.h"
 #include "Graphics\Material.h"
 #include "Utilities\Utilities.h"
+
+#include "Core\Engine.h"
+#include "Utilities\Cache.h"
 
 namespace Graphics
 {
 	namespace OpenGL
 	{
-		GLShaderContainer::GLShaderContainer()
-		{
-
-		}
-
 		GLShaderContainer::~GLShaderContainer()
 		{
 			glDeleteProgram(m_Program);
 		}
 
-		bool GLShaderContainer::Initialize(Material *a_Material)
+		bool GLShaderContainer::Initialize(SShaderContainerDesc a_Desc)
 		{
 			m_Program = glCreateProgram();
 
-			//Shaders will be automatically destroyed after this scope. We don't need them anymore if they're bound to the program
-			GLShader vertex = GLShader();
-			GLShader fragment = GLShader();
+			SShaderDesc temp{};
+			temp.Type = EShaderType::VertexShader;
+			temp.FilePath = a_Desc.VertexShaderPath;
 
-			if (!vertex.Initialize(EShaderTypes::VertexShader, a_Material->VertexShader))
+			GLShader *vertex = static_cast<GLShader*>(Core::Engine::StaticClass()->GetCache()->LoadShader(temp));
+
+			if (vertex == nullptr)
 			{
 				LogErr("Vertex Init failed\n");
 				return false;
 			}
 
 			//Attach the Shaders to the program
-			glAttachShader(m_Program, vertex.GetProgram());
+			glAttachShader(m_Program, vertex->GetProgram());
 			if (GetError())
 				return false;
 
-			if (!fragment.Initialize(EShaderTypes::FragmentShader, a_Material->FragmentShader))
+			temp.Type = EShaderType::FragmentShader;
+			temp.FilePath = a_Desc.FragmentShaderPath;
+
+			GLShader *fragment = static_cast<GLShader*>(Core::Engine::StaticClass()->GetCache()->LoadShader(temp));
+
+			if (fragment == nullptr)
 			{
 				LogErr("Fragment Init failed\n");
 				return false;
 			}
 
 			//Attach the Shaders to the program
-			glAttachShader(m_Program, fragment.GetProgram());
+			glAttachShader(m_Program, fragment->GetProgram());
 			if (GetError())
 				return false;
 
@@ -55,43 +59,6 @@ namespace Graphics
 			return true;
 		}
 		
-		bool GLShaderContainer::Initialize(const char* a_VS, const char* a_PS)
-		{
-			m_Program = glCreateProgram();
-
-			//Shaders will be automatically destroyed after this scope. We don't need them anymore if they're bound to the program
-			GLShader vertex = GLShader();
-			GLShader fragment = GLShader();
-
-			if (!vertex.Initialize(EShaderTypes::VertexShader, a_VS))
-			{
-				LogErr("Vertex Init failed\n");
-				return false;
-			}
-
-			//Attach the Shaders to the program
-			glAttachShader(m_Program, vertex.GetProgram());
-			if (GetError())
-				return false;
-
-			if (!fragment.Initialize(EShaderTypes::FragmentShader, a_PS))
-			{
-				LogErr("Fragment Init failed\n");
-				return false;
-			}
-
-			//Attach the Shaders to the program
-			glAttachShader(m_Program, fragment.GetProgram());
-			if (GetError())
-				return false;
-
-			glLinkProgram(m_Program);
-			if (GetError())
-				return false;
-
-			return true;
-		}
-
 		void GLShaderContainer::BindProgram()
 		{
 			glUseProgram(m_Program);

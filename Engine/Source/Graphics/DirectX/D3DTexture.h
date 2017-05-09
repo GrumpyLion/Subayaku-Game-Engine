@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Graphics\Interface\ITexture.h"
-#include "D3DRenderer.h"
 
 #include <d3d11.h>
 
@@ -9,6 +8,8 @@ namespace Graphics
 {
 	namespace DirectX
 	{
+		class D3DRenderer;
+
 		class D3DTexture : public ITexture
 		{
 		private:

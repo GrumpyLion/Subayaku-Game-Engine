@@ -3,6 +3,7 @@
 #include "D3DShaderBuffer.h" 
 #include "Math\Math.h"
 #include "Graphics\GlobalIndices.h"
+#include <memory>
 
 namespace Graphics
 {
@@ -14,8 +15,8 @@ namespace Graphics
 		{
 		private:
 			D3DRenderer *m_Renderer = nullptr;
-			D3DShaderBuffer *m_ConstantGlobalBuffer = nullptr;
-			D3DShaderBuffer *m_DynamicGlobalBuffer = nullptr;
+			std::unique_ptr<D3DShaderBuffer> m_ConstantGlobalBuffer;
+			std::unique_ptr<D3DShaderBuffer> m_DynamicGlobalBuffer;
 
 			//Standart CBuffer with some neat things
 			//16 Bit ALIGNMENT !!
@@ -30,8 +31,6 @@ namespace Graphics
 			};
 
 		public:
-			~D3DShaderBufferContainer();
-
 			void Initialize(D3DRenderer *a_Renderer);
 			void Bind();
 		};

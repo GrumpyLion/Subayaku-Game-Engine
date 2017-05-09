@@ -2,11 +2,14 @@
 
 #include "Interface\IComponent.h"
 #include "Graphics\Cache\SMeshDesc.h"
+#include "Scene\GameObject\GameObject.h"
+#include "Graphics\Material.h"
+
+#include <memory>
 
 namespace Graphics
 {
 	class Mesh;
-	class Material;
 }
 
 namespace Scene
@@ -15,12 +18,13 @@ namespace Scene
 	{
 	protected:
 		Graphics::SMeshDesc m_Mesh {};
-		Graphics::Material *m_Material = nullptr;
+		std::unique_ptr<Graphics::Material> m_Material = nullptr;
 
 	public:
-		virtual bool Initialize(GameObject *a_Parent, const char* a_ModelLocation, Graphics::Material *a_Material);
-		virtual void Update();
-		void Shutdown();
+		~CMeshRenderer();
+
+		virtual bool Initialize(GameObject *a_Parent, const char* a_ModelLocation, std::unique_ptr<Graphics::Material> a_Material);
+		virtual void Update() override;
 
 		Graphics::SMeshDesc &GetMesh();
 		Graphics::Material *GetMaterial();

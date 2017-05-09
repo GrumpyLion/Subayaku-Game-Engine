@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics\Interface\SShaderBufferDesc.h"
+#include "Graphics\Cache\SShaderBufferDesc.h"
 
 namespace Graphics
 {

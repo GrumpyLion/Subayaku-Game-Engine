@@ -8,6 +8,7 @@
 #include "GLEntity.h"
 
 #include <unordered_map>
+#include <memory>
 
 namespace Graphics
 {
@@ -22,9 +23,9 @@ namespace Graphics
 			SRendererDesc m_Desc{};
 			HGLRC m_Context{};
 
-			GLShaderBufferContainer *m_Container = nullptr;
+			std::unique_ptr<GLShaderBufferContainer> m_Container;
 
-			std::unordered_map<Scene::CMeshRenderer*, GLEntity*> m_Entities;
+			std::unordered_map<Scene::CMeshRenderer*, std::unique_ptr<GLEntity>> m_Entities;
 
 		public:
 			Scene::CCamera *Camera = nullptr;

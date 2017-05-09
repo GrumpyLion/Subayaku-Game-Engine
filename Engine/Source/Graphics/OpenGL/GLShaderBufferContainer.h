@@ -2,6 +2,8 @@
 
 #include "GLShaderBuffer.h"
 
+#include <memory>
+
 namespace Graphics
 {
 	namespace OpenGL
@@ -13,8 +15,8 @@ namespace Graphics
 		private:
 			GLRenderer *m_Renderer = nullptr;
 
-			GLShaderBuffer *m_DynamicGlobalBuffer = nullptr;
-			GLShaderBuffer *m_ConstantGlobalBuffer = nullptr;
+			std::unique_ptr<GLShaderBuffer> m_DynamicGlobalBuffer = nullptr;
+			std::unique_ptr<GLShaderBuffer> m_ConstantGlobalBuffer = nullptr;
 
 			//OpenGL has another way of sorting data (std140)
 			//In the std140 Format everything is either 2 elements big or 4
@@ -30,8 +32,6 @@ namespace Graphics
 			};
 
 		public:
-			~GLShaderBufferContainer();
-
 			void Initialize(GLRenderer *a_Renderer);
 			void Bind();
 		};

@@ -12,18 +12,18 @@ namespace Graphics
 			glDeleteShader(m_Handle);
 		}
 
-		bool GLShader::Initialize(EShaderTypes a_Type, std::string a_FilePath)
+		bool GLShader::Initialize(SShaderDesc &a_Desc)
 		{
-			Type = a_Type;
+			Type = a_Desc.Type;
 
-			std::ifstream input(GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_FilePath));
+			std::ifstream input(GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_Desc.FilePath));
 
 			std::string source((std::istreambuf_iterator<char>(input)),
 				std::istreambuf_iterator<char>());
 
 			if (!input.good())
 			{
-				LogErr("Shader File not found %s\n", a_FilePath);
+				LogErr("Shader File not found %s\n", a_Desc.FilePath);
 				return false;
 			}
 
@@ -31,10 +31,10 @@ namespace Graphics
 			
 			switch (Type)
 			{
-			case EShaderTypes::VertexShader:
+			case EShaderType::VertexShader:
 				type = GL_VERTEX_SHADER;
 				break;
-			case EShaderTypes::FragmentShader:
+			case EShaderType::FragmentShader:
 				type = GL_FRAGMENT_SHADER;
 				break;
 			default:

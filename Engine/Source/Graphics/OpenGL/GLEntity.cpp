@@ -7,7 +7,6 @@
 #include "Utilities\Utilities.h"
 #include "Utilities\Cache.h"
 
-#include "GLMaterial.h"
 #include "GLMesh.h"
 #include "GLShaderContainer.h"
 #include "GLHelper.h"
@@ -16,32 +15,25 @@ namespace Graphics
 {
 	namespace OpenGL
 	{
-		GLEntity::~GLEntity()
-		{
-			SafeDelete(m_Material);
-			if(m_IsPrimitive)
-				SafeDelete(m_Mesh);
-		}
-
-		bool GLEntity::Initialize(SMeshDesc &a_Mesh, Material *a_Material, Scene::GameObject *a_Parent)
+		bool GLEntity::Initialize(SMeshDesc &a_Mesh, Material* a_Material, Scene::GameObject *a_Parent)
 		{
 			m_Parent = a_Parent;
 
-			m_Material = new GLMaterial();
+			m_Material = std::make_unique<GLMaterial>();
+
 			if (!m_Material->Initialize(a_Material))
 				return false;
 
 			if (a_Mesh.Vertices.size() == 0)
 			{
 				m_IsPrimitive = false;
-				m_Mesh = dynamic_cast<GLMesh*>(Core::Engine::StaticClass()->GetCache()->LoadMesh(a_Mesh));
+				m_Mesh = static_cast<GLMesh*>(Core::Engine::StaticClass()->GetCache()->LoadMesh(a_Mesh));
 			}
 			else
 			{
-				m_IsPrimitive = true;
-				m_Mesh = new GLMesh();
-				m_Mesh->Initialize(a_Mesh);
+				return false;
 			}
+
 			return true;
 		}
 

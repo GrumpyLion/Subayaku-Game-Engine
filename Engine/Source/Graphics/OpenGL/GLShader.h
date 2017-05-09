@@ -1,23 +1,24 @@
 #pragma once
 
+#include "Graphics\Interface\IShader.h"
+
 #include <GLEW\Include\glew.h>
-#include "GLEShaderTypes.h"
 #include <string>
 
 namespace Graphics
 {
 	namespace OpenGL
 	{
-		class GLShader
+		class GLShader : public IShader
 		{
 		private:
 			GLuint m_Handle = 0;
 
 		public:
-			EShaderTypes Type;
+			EShaderType Type;
 			
 			~GLShader();
-			bool Initialize(EShaderTypes a_Type, std::string a_FilePath);
+			bool Initialize(SShaderDesc &a_Desc) override;
 			bool GetError();
 			GLuint GetProgram() const;
 		};

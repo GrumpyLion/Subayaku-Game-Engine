@@ -80,7 +80,7 @@ namespace Graphics
 				SetCamera(Core::Engine::StaticClass()->GetScene()->GetCamera());
 			}
 
-			m_Container = new GLShaderBufferContainer();
+			m_Container = std::make_unique<GLShaderBufferContainer>();
 			m_Container->Initialize(this);
 
 			return true;
@@ -92,7 +92,6 @@ namespace Graphics
 			glClearColor(0.2f, 0.4f, 0.6f, 1);
 
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 			m_Container->Bind();
 
 			for (auto &temp : m_Entities)
@@ -112,16 +111,15 @@ namespace Graphics
 				return;
 			}
 
-			GLEntity *temp = new GLEntity();
+			auto temp = std::make_unique<GLEntity>();
 			
 			if (!temp->Initialize(a_MeshRenderer->GetMesh(), a_MeshRenderer->GetMaterial(), a_MeshRenderer->Parent))
 			{
 				LogErr("While trying to add a new Renderable\n");
-				SafeDelete(temp);
 				return;
 			}
 
-			m_Entities.insert({ a_MeshRenderer, temp });
+			m_Entities.insert({ a_MeshRenderer, std::move(temp) });
 		}
 
 		void GLRenderer::RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer)
@@ -136,8 +134,6 @@ namespace Graphics
 			}
 			else
 			{
-				GLEntity *temp = m_Entities.find(a_MeshRenderer)->second;
-				SafeDelete(temp);
 				m_Entities.erase(a_MeshRenderer);
 			}
 		}
@@ -154,14 +150,8 @@ namespace Graphics
 
 		void GLRenderer::Shutdown()
 		{
-			for (auto &temp : m_Entities)
-			{
-				SafeDelete(temp.second);
-			}
 			m_Entities.clear();
-
-			SafeDelete(m_Container);
-
+			
 			if (m_HDC != nullptr)
 			{
 				ReleaseDC(m_Desc.Handle, m_HDC);

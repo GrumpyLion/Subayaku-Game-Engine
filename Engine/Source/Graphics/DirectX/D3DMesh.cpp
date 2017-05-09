@@ -1,5 +1,5 @@
 #include "D3DMesh.h"
-
+#include "D3DRenderer.h"
 #include "D3DHelper.h"
 
 #include "Core\Engine.h"
@@ -16,11 +16,13 @@ namespace Graphics
 			SafeRelease(m_UVBuffer);
 			SafeRelease(m_IndexBuffer);
 			SafeRelease(m_NormalBuffer);
+
+			SafeRelease(m_Layout);
 		}
 
 		bool D3DMesh::Initialize(SMeshDesc &a_Desc)
 		{
-			m_Renderer = dynamic_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
+			m_Renderer = static_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
 
 			//For the buffer we need the descriptions
 			D3D11_BUFFER_DESC 

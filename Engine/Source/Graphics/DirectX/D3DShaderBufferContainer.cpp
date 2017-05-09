@@ -10,21 +10,15 @@ namespace Graphics
 {
 	namespace DirectX
 	{
-		D3DShaderBufferContainer::~D3DShaderBufferContainer()
-		{
-			SafeDelete(m_ConstantGlobalBuffer);
-			SafeDelete(m_DynamicGlobalBuffer);
-		}
-
 		void D3DShaderBufferContainer::Initialize(D3DRenderer *a_Renderer)
 		{
 			m_Renderer = a_Renderer;
 			SShaderBufferDesc desc{};
-			m_ConstantGlobalBuffer = new D3DShaderBuffer();
+			m_ConstantGlobalBuffer = std::make_unique<D3DShaderBuffer>();
 
 			desc.BufferIndex = EBufferIndex::GlobalDynamicBuffer;
 			desc.BufferSize = sizeof(DynamicBuffer);
-			m_DynamicGlobalBuffer = new D3DShaderBuffer();
+			m_DynamicGlobalBuffer = std::make_unique<D3DShaderBuffer>();
 			m_DynamicGlobalBuffer->Initialize(desc);
 		}
 

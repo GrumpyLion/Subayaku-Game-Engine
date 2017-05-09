@@ -10,7 +10,7 @@ namespace Graphics
 	{
 	public:
 		virtual ~IEntity() { }
-		virtual	bool Initialize(SMeshDesc &a_Mesh, Material *a_Material, Scene::GameObject *a_Parent) = 0;
+		virtual	bool Initialize(SMeshDesc &a_Mesh, Material* a_Material, Scene::GameObject *a_Parent) = 0;
 		virtual void Render() = 0;
 	};
 }

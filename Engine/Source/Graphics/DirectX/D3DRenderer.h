@@ -15,7 +15,7 @@ namespace Graphics
 		{
 		private:
 			SRendererDesc m_Desc{};
-			D3DShaderBufferContainer *m_BufferContainer = nullptr;
+			std::unique_ptr<D3DShaderBufferContainer> m_BufferContainer = nullptr;
 
 			ID3D11Device* m_Device = nullptr;
 			ID3D11DeviceContext* m_DeviceContext = nullptr;
@@ -28,7 +28,7 @@ namespace Graphics
 			ID3D11DepthStencilView *m_DepthStencilView = nullptr;
 			ID3D11Texture2D *m_StencilBuffer = nullptr;
 			
-			std::unordered_map<Scene::CMeshRenderer*, D3DEntity*> m_Entities;
+			std::unordered_map<Scene::CMeshRenderer*, std::unique_ptr<D3DEntity>> m_Entities;
 
 		public:
 			Scene::CCamera *Camera = nullptr;

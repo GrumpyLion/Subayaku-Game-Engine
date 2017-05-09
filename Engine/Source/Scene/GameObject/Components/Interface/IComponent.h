@@ -26,10 +26,9 @@ namespace Scene
 		{
 			Parent = a_Parent;	
 			return true;
-		}
+		}		
+		
 		//Called 60 times a second
 		virtual void Update() = 0;
-		//Called if the GameObject or this particular component gets destroyed
-		virtual void Shutdown() = 0;
 	};
 }

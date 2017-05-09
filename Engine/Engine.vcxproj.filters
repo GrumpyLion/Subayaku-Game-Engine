@@ -84,9 +84,6 @@
     <ClInclude Include="Source\Graphics\OpenGL\GLEntity.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\OpenGL\GLEShaderTypes.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\OpenGL\GLMaterial.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -189,9 +186,6 @@
     <ClInclude Include="Source\Graphics\Interface\IShaderBuffer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Interface\SShaderBufferDesc.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\DirectX\D3DShaderBuffer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -208,6 +202,21 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\GlobalIndices.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Cache\SShaderContainerDesc.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Cache\SShaderBufferDesc.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Interface\IShader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Cache\SShaderDesc.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\DirectX\D3DShader.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -303,6 +312,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\OpenGL\GLShaderBufferContainer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\DirectX\D3DShader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

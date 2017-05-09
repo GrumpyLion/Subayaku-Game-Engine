@@ -1,32 +1,31 @@
 #pragma once
 
-#include <d3d11.h>
-#include <D3Dcompiler.h>
-
-#include <fstream>
-
-#include "Math\Math.h"
-#include "D3DHelper.h"
-#include "D3DRenderer.h"
+#include "Graphics\Cache\SShaderContainerDesc.h"
 #include "Graphics\Interface\IShaderContainer.h"
+#include "D3DShader.h"
+
+#include <memory>
 
 namespace Graphics
 {
 	namespace DirectX
 	{
+		class D3DRenderer;
+		class D3DShader;
+
 		class D3DShaderContainer : public IShaderContainer
 		{
 		private:
-			ID3D11VertexShader *m_VertexShader = nullptr;
-			ID3D11PixelShader *m_PixelShader = nullptr;
-
-			D3DRenderer *m_Renderer = nullptr;
 			ID3D11InputLayout *m_Layout = nullptr;
+			D3DRenderer *m_Renderer = nullptr;
+
+			D3DShader *m_VertexShader;
+			D3DShader *m_FragmentShader;
 
 		public:			
 			~D3DShaderContainer();
 
-			bool Initialize(Material *a_Material) override;
+			bool Initialize(SShaderContainerDesc a_Desc) override;
 
 			void BindProgram() override;
 			void UnbindProgram() override;

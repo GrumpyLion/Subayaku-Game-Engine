@@ -30,6 +30,16 @@ inline void ErrorBox(LPWSTR a_Text)
 	MessageBox(nullptr, a_Text, L"Error", MB_OK | MB_ICONERROR);
 }
 
+#define LogErrorFunction(format, ...) _Log(__FUNCTION__, format, __VA_ARGS__)
+
+template<typename...Args>
+void _Log(const std::string& func, const std::string& format, Args&&...args)
+{
+	printf("Error in function %s ", func.c_str());
+	printf(format.c_str(), std::forward<Args>(args)...);
+	printf("\n");
+}
+
 inline void LogErr(std::string a_Format, ...)
 {
 	va_list v1;

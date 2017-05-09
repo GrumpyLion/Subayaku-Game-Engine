@@ -1,5 +1,8 @@
 #include "D3DRenderFactory.h"
 #include "D3DTexture.h"
+#include "D3DMesh.h"
+#include "D3DShader.h"
+#include "D3DShaderBuffer.h"
 
 #include "Graphics\Loaders\BMP.h"
 #include "Graphics\Loaders\TGA.h"
@@ -11,19 +14,19 @@ namespace Graphics
 {
 	namespace DirectX
 	{
-		D3DMesh *D3DRenderFactory::CreateMesh(SMeshDesc a_Desc)
+		std::unique_ptr<IMesh> D3DRenderFactory::CreateMesh(SMeshDesc a_Desc)
 		{
-			D3DMesh *temp = new D3DMesh();
+			auto temp = std::make_unique<D3DMesh>();
 
 			LoadAssimpObj(a_Desc);
 			temp->Initialize(a_Desc);
 
-			return temp;
+			return std::move(temp);
 		}
 
-		ITexture *D3DRenderFactory::CreateTexture(STextureDesc a_Desc)
+		std::unique_ptr<ITexture> D3DRenderFactory::CreateTexture(STextureDesc a_Desc)
 		{
-			D3DTexture *temp = new D3DTexture();
+			auto temp = std::make_unique<D3DTexture>();
 
 			std::string extension = GetExtension(a_Desc.FilePath);
 			ToLowerCase(extension);
@@ -34,10 +37,9 @@ namespace Graphics
 
 				if (!temp->Initialize(a_Desc))
 				{
-					delete temp;
 					return nullptr;
 				}
-				return temp;
+				return std::move(temp);
 			}
 			else if (extension == "bmp")
 			{
@@ -45,16 +47,34 @@ namespace Graphics
 
 				if (!temp->Initialize(a_Desc))
 				{
-					delete temp;
 					return nullptr;
 				}
 				return temp;
 			}
 			else
 			{
-				delete temp;
 				return nullptr;
 			}
+			return nullptr;
+		}
+
+		std::unique_ptr<IShader> D3DRenderFactory::CreateShader(SShaderDesc a_Desc)
+		{
+			auto temp = std::make_unique<D3DShader>();
+
+			if (temp->Initialize(a_Desc))
+				return std::move(temp);
+
+			return nullptr;
+		}
+
+		std::unique_ptr<IShaderBuffer> D3DRenderFactory::CreateShaderBuffer(SShaderBufferDesc a_Desc)
+		{
+			auto temp = std::make_unique<D3DShaderBuffer>();
+
+			if (temp->Initialize(a_Desc))
+				return std::move(temp);
+
 			return nullptr;
 		}
 	}

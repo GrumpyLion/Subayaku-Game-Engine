@@ -2,36 +2,26 @@
 
 #include "Utilities\Utilities.h"
 #include "Components\Transformation.h"
+#include <memory>
+#include "Scene\GameObject\Components\CCamera.h"
 
 namespace Scene
 {
 	GameObject::~GameObject()
-	{	Shutdown();	}
+	{
+		m_Components.clear();
+	}
 
 	bool GameObject::Initialize()
 	{
 		m_Components.clear();
-
 		return true;
 	}
 
-	bool GameObject::AddComponent(IComponent *a_ToAdd)
+	bool GameObject::AddComponent(std::unique_ptr<IComponent> a_ToAdd)
 	{
-		if (CheckIfPointerIsInvalid(a_ToAdd))
-			return false;
-
-		a_ToAdd->Initialize(this);
-		m_Components.push_back(a_ToAdd);
+		m_Components.push_back(std::move(a_ToAdd));
 		return true;
-	}
-
-	void GameObject::RemoveAllComponents()
-	{
-		for (auto &temp : m_Components)
-		{
-			SHUTDOWN_AND_DELETE(temp);
-		}
-		m_Components.clear();
 	}
 
 	void GameObject::RemoveComponentByType(ComponentType &a_Type)
@@ -40,7 +30,7 @@ namespace Scene
 		{
 			if (temp->Type == a_Type)
 			{
-				SHUTDOWN_AND_DELETE(temp);
+				//TODO
 				break;
 			}
 		}
@@ -50,11 +40,5 @@ namespace Scene
 	{
 		for (auto &temp : m_Components)
 			temp->Update();
-	}
-
-	void GameObject::Shutdown()
-	{
-		SafeDelete(Transform);
-		RemoveAllComponents();
 	}
 }

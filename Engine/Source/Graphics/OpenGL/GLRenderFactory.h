@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Graphics\Interface\IRenderFactory.h"
-#include "GLTexture.h"
-#include "GLMesh.h"
 
 namespace Graphics
 {
@@ -11,8 +9,10 @@ namespace Graphics
 		class GLRenderFactory : public IRenderFactory
 		{
 		public:
-			GLTexture *CreateTexture(STextureDesc a_Desc) override;
-			IMesh *CreateMesh(SMeshDesc a_Desc) override;
+			std::unique_ptr<ITexture> CreateTexture(STextureDesc a_Desc) override;
+			std::unique_ptr<IMesh> CreateMesh(SMeshDesc a_Desc) override;
+			std::unique_ptr<IShader> CreateShader(SShaderDesc a_Desc) override;
+			std::unique_ptr<IShaderBuffer> CreateShaderBuffer(SShaderBufferDesc a_Desc) override;
 		};
 	}
 }

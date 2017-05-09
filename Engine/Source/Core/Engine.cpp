@@ -37,6 +37,10 @@ namespace Core
 		if (!SwitchRenderer(a_Context))
 			return false;
 
+		m_InputManager = new InputManager();
+
+		m_InputManager->Initialize();
+
 		m_Scene = new Scene::Scene();
 
 		if (!m_Scene->Initialize())
@@ -44,10 +48,6 @@ namespace Core
 			ErrorBox(L"Scene Init Failure");
 			return false;
 		}
-
-		m_InputManager = new InputManager();
-
-		m_InputManager->Initialize();
 		
 		return true;
 	}
@@ -73,11 +73,10 @@ namespace Core
 
 		while (!done)
 		{
+
 			//We need to check for messages if we get an Quit message we end the loop
 			if (!m_Window->Update())
 				done = true;
-
-			GetInputManager()->Update();
 
 			auto delta = clock::now() - start;
 			start = clock::now();
@@ -85,50 +84,51 @@ namespace Core
 
 			while (lag >= timestep)
 			{
+				GetInputManager()->GetKeyboard()->Update();
 				lag -= timestep;
 				updates++;
-				if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_ESCAPE))
+				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_ESCAPE))
 				{
 					done = true;
 				}
+
+				GetInputManager()->Update();
 				
 				m_Scene->Update();
-			}
-
-			//Remove later..
-			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_O))
-			{
-				m_Context.RDevice = RenderDevice::DirectX;
-				SwitchRenderer(m_Context);
-			}
-
-			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_P))
-			{
-				m_Context.RDevice = RenderDevice::OpenGL;
-				SwitchRenderer(m_Context);
-			}
-
-			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_Z))
-			{
-				m_Scene->ClearScene();
-				m_Scene->Initialize();
-				index = 0;
-			}
-
-			if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_U))
-			{
-				index++;
-				Scene::GameObject *temp = new Scene::GameObject();
-				temp->Name = std::to_string(index);
-				temp->Transform = new Scene::Transformation();
-				temp->Transform->Position = Vector3f(rand() % 10, rand() % 10, rand() % 10);
-				temp->Transform->Scale = Vector3f(150, 150, 150);
-
-				if (m_Scene->AddGameObject(temp))
+			
+				//Remove later..
+				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_O))
 				{
-					Scene::CMeshRenderer *mesh = new Scene::CMeshRenderer();
+					m_Context.RDevice = RenderDevice::DirectX;
+					SwitchRenderer(m_Context);
+				}
 
-					Graphics::Material *tempMat = new Graphics::Material();
+				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_P))
+				{
+					m_Context.RDevice = RenderDevice::OpenGL;
+					SwitchRenderer(m_Context);
+				}
+
+				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_Z))
+				{
+					m_Scene->ClearScene();
+					m_Scene->Initialize();
+					index = 0;
+				}
+
+				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_U))
+				{
+					index++;
+					auto temp = std::make_unique<Scene::GameObject>();
+					temp->Name = std::to_string(index);
+					temp->Transform = std::make_unique<Scene::Transformation>();
+					temp->Transform->Position = Vector3f(rand() % 25 - 25, rand() % 25 - 25, rand() % 25 - 25);
+					temp->Transform->Scale = Vector3f(150, 150, 150);
+
+					auto ptr = temp.get();
+					auto mesh = std::make_unique<Scene::CMeshRenderer>();
+
+					auto tempMat = std::make_unique<Graphics::Material>();
 					tempMat->TextureFilter = Graphics::ETextureFilter::LINEAR;
 
 					Graphics::STextureDesc texInfo;
@@ -157,12 +157,17 @@ namespace Core
 					texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
 					tempMat->AddTexture(texInfo);
 
-					tempMat->VertexShader = "Test.vs";
-					tempMat->FragmentShader = "Test.fs";
+					tempMat->Shaders.VertexShaderPath = "Test.vs";
+					tempMat->Shaders.FragmentShaderPath = "Test.fs";
+					tempMat->Shaders.ShaderContainerName = "Earth";
 
-					mesh->Initialize(temp, "Assets/Models/kögel.obj", tempMat);
-					temp->AddComponent(mesh);
+					mesh->Initialize(ptr, "Assets/Models/kögel.obj", std::move(tempMat));
+					temp->AddComponent(std::move(mesh));
+					m_Scene->AddGameObject(std::move(temp));
 				}
+
+				
+				GetInputManager()->GetKeyboard()->Refresh();
 			}
 
 			auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - deltaTimer);
@@ -180,7 +185,7 @@ namespace Core
 
 			m_Renderer->Render();
 			frames++;
-			Sleep(2);
+			Sleep(1);
 		}
 
 		Shutdown();
@@ -196,7 +201,7 @@ namespace Core
 		
 		SHUTDOWN_AND_DELETE(m_Window);
 
-		SHUTDOWN_AND_DELETE(m_Cache);
+		SafeDelete(m_Cache);
 
 		return true;
 	}
@@ -205,8 +210,7 @@ namespace Core
 	{
 		//Shutdown the old renderer
 		SHUTDOWN_AND_DELETE(m_Renderer);
-		//Shutdown Cache because cache is renderer relevant
-		SHUTDOWN_AND_DELETE(m_Cache);
+		SafeDelete(m_Cache);
 
 		m_Cache = new Cache();
 
@@ -214,12 +218,12 @@ namespace Core
 		{
 		case RenderDevice::OpenGL:
 			m_Renderer = new Graphics::OpenGL::GLRenderer();
-			m_Cache->Initialize(new Graphics::OpenGL::GLRenderFactory());
+			m_Cache->Initialize(std::make_unique<Graphics::OpenGL::GLRenderFactory>());
 			break;
 
 		case RenderDevice::DirectX:
 			m_Renderer = new Graphics::DirectX::D3DRenderer();
-			m_Cache->Initialize(new Graphics::DirectX::D3DRenderFactory());
+			m_Cache->Initialize(std::make_unique<Graphics::DirectX::D3DRenderFactory>());
 			break;
 		
 		default:

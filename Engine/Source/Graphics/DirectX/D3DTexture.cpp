@@ -1,5 +1,6 @@
 #include "D3DTexture.h"
 #include "D3DHelper.h"
+#include "D3DRenderer.h"
 
 #include "Core\Engine.h"
 
@@ -18,7 +19,7 @@ namespace Graphics
 		{
 			D3D11_SAMPLER_DESC samplerDesc{};
 
-			m_Renderer = dynamic_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
+			m_Renderer = static_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
 
 			RegisterIndex = a_Desc.RegisterIndex;
 

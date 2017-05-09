@@ -1,29 +1,34 @@
 #include "CCamera.h"
 #include "Core\Engine.h"
 #include "Scene\Scene.h"
+
 #include "Graphics\Interface\IRenderer.h"
-#include "Scene\GameObject\GameObject.h"
 #include "Input\InputManager.h"
-#include "Scene\GameObject\Components\Transformation.h"
 
 namespace Scene
 {
+	CCamera::~CCamera()
+	{
+		Core::Engine::StaticClass()->GetRenderer()->SetCamera(nullptr);
+	}
+
 	bool CCamera::Initialize(GameObject *a_Parent, float a_FOV, float a_Near, float a_Far)
 	{
 		IComponent::Initialize(a_Parent);
+
 		FOV = a_FOV;
 		Near = a_Near;
 		Far = a_Far;
 
 		CurrentCamera = true;
-		Core::Engine::StaticClass()->GetRenderer()->SetCamera(this);
-		Core::Engine::StaticClass()->GetScene()->SetCamera(this);
-
 		return true;
 	}
 
 	void CCamera::Update()
 	{
+		Core::Engine::StaticClass()->GetRenderer()->SetCamera(this);
+		Core::Engine::StaticClass()->GetScene()->SetCamera(this);
+
 		if (Core::Engine::StaticClass()->GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_E))
 		{
 			m_Radius++;
@@ -96,10 +101,5 @@ namespace Scene
 		temp *= Matrix4f::RotateZ(Parent->Transform->Rotation.z * DEGTORAD);
 		temp *= Matrix4f::Translate(Parent->Transform->Position * Vector3f(1, 1, 1));
 		return temp;
-	}
-
-	void CCamera::Shutdown()
-	{
-		Core::Engine::StaticClass()->GetRenderer()->SetCamera(nullptr);
 	}
 }

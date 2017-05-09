@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "Graphics\Cache\SShaderContainerDesc.h"
 #include "Graphics\Cache\STextureDesc.h"
 
 namespace Graphics
@@ -25,7 +26,6 @@ namespace Graphics
 
 		ETextureFilter TextureFilter = ETextureFilter::NEAREST;
 
-		std::string VertexShader = "";
-		std::string FragmentShader = "";
+		Graphics::SShaderContainerDesc Shaders{};
 	};
 }

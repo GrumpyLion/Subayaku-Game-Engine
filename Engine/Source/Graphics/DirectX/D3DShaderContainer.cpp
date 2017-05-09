@@ -1,5 +1,8 @@
 #include "D3DShaderContainer.h"
+#include "D3DHelper.h"
+#include "D3DRenderer.h"
 
+#include "Utilities\Cache.h"
 #include "Utilities\Utilities.h"
 #include "Core\Engine.h"
 
@@ -10,69 +13,31 @@ namespace Graphics
 		D3DShaderContainer::~D3DShaderContainer()
 		{
 			SafeRelease(m_Layout);
-			SafeRelease(m_PixelShader);
-			SafeRelease(m_VertexShader);
 		}
 
-		bool D3DShaderContainer::Initialize(Material *a_Material)
+		bool D3DShaderContainer::Initialize(SShaderContainerDesc a_Desc)
 		{
-			m_Renderer = dynamic_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
+			m_Renderer = static_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
 
-			ID3D10Blob *errorMessage = nullptr;
-			ID3D10Blob *vertexShaderBuffer = nullptr;
-			ID3D10Blob *pixelShaderBuffer = nullptr;
+			SShaderDesc temp{};
+			temp.FilePath = a_Desc.VertexShaderPath;
+			temp.Type = EShaderType::VertexShader;
+
+			m_VertexShader = static_cast<D3DShader*>(Core::Engine::StaticClass()->GetCache()->LoadShader(temp));
+
+			if (m_VertexShader == nullptr)
+				return false;
+
+			temp.FilePath = a_Desc.FragmentShaderPath;
+			temp.Type = EShaderType::FragmentShader;
+
+			m_FragmentShader = static_cast<D3DShader*>(Core::Engine::StaticClass()->GetCache()->LoadShader(temp));
+
+			if (m_FragmentShader == nullptr)
+				return false;
+			
 			D3D11_INPUT_ELEMENT_DESC polygonLayout[5];
 			unsigned int numElements;
-
-			std::ifstream fileStream(GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_Material->VertexShader));
-
-			//Vertex Shader
-			if (!fileStream)
-			{
-				LogErr("Error File not found %s\n", a_Material->VertexShader);
-				return false;
-			}
-
-			std::string source((std::istreambuf_iterator<char>(fileStream)),
-				std::istreambuf_iterator<char>());
-
-			if (FAILED(D3DCompile(source.c_str(), source.length(), a_Material->VertexShader.c_str(), nullptr, nullptr, "VS_Main", "vs_5_0", 0, 0, &vertexShaderBuffer, &errorMessage)))
-			{
-				if (errorMessage != nullptr)
-				{
-					char* ptr = (char*)errorMessage->GetBufferPointer();
-					OutputDebugStringA(ptr);
-				}
-				return false;
-			}
-
-			fileStream = std::ifstream(GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_Material->FragmentShader));
-
-			//Fragment Shader
-			if (!fileStream)
-			{
-				LogErr("Error File not found %s\n", a_Material->FragmentShader);
-				return false;
-			}
-
-			source = std::string((std::istreambuf_iterator<char>(fileStream)),
-				std::istreambuf_iterator<char>());
-
-			if (FAILED(D3DCompile(source.c_str(), source.length(), a_Material->FragmentShader.c_str(), nullptr, nullptr, "PS_Main", "ps_5_0", 0, 0, &pixelShaderBuffer, &errorMessage)))
-			{
-				if (errorMessage != nullptr)
-				{
-					char* ptr = (char*)errorMessage->GetBufferPointer();
-					OutputDebugStringA(ptr);
-				}
-				return false;
-			}
-
-			if (Failed(m_Renderer->GetDevice()->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), nullptr, &m_VertexShader)))
-				return false;
-
-			if (Failed(m_Renderer->GetDevice()->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), nullptr, &m_PixelShader)))
-				return false;
 
 			polygonLayout[0].SemanticName = "POSITION";
 			polygonLayout[0].SemanticIndex = 0;
@@ -114,17 +79,13 @@ namespace Graphics
 			polygonLayout[4].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			polygonLayout[4].InstanceDataStepRate = 0;
 
-			numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
+			numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);			
 
-			if (Failed(m_Renderer->GetDevice()->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &m_Layout)))
+			if (Failed(m_Renderer->GetDevice()->CreateInputLayout(
+				polygonLayout, numElements, m_VertexShader->GetShaderBuffer()->GetBufferPointer(),
+				m_VertexShader->GetShaderBuffer()->GetBufferSize(), &m_Layout)))
+
 				return false;
-
-			//Release the shader buffer 
-			vertexShaderBuffer->Release();
-			vertexShaderBuffer = nullptr;
-
-			pixelShaderBuffer->Release();
-			pixelShaderBuffer = nullptr;
 
 			return true;
 		}
@@ -133,8 +94,8 @@ namespace Graphics
 		{
 			m_Renderer->GetDeviceContext()->IASetInputLayout(m_Layout);
 
-			m_Renderer->GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-			m_Renderer->GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+			m_VertexShader->Bind();
+			m_FragmentShader->Bind();
 		}
 
 		void D3DShaderContainer::UnbindProgram() 

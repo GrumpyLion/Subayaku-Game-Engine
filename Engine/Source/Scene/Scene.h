@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <memory>
+
 namespace Graphics
 {
 	class IRenderable;
@@ -21,10 +23,10 @@ namespace Scene
 		CCamera *m_Camera = nullptr;
 
 		//The Name of the GameObject will be the key
-		std::unordered_map<std::string, GameObject*> m_GameObjects{};
+		std::unordered_map<std::string, std::unique_ptr<GameObject>> m_GameObjects;
 
 		//A collection of all object that can be rendered. The Renderer will get this list and uses this.
-		std::unordered_map<GameObject*, CMeshRenderer*> m_Renderarbles{};
+		std::unordered_map<GameObject*, CMeshRenderer*> m_Renderables;
 
 	public:
 		bool Initialize();
@@ -34,7 +36,7 @@ namespace Scene
 		void AddRenderable(GameObject *a_Parent, CMeshRenderer *a_Renderable);
 		void RemoveRenderable(GameObject *a_Parent);
 
-		bool AddGameObject(GameObject *a_ToAdd);
+		bool AddGameObject(std::unique_ptr<GameObject> a_ToAdd);
 		void RemoveGameObject(std::string &a_Name);
 		void ClearScene();
 

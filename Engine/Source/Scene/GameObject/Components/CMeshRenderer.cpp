@@ -1,16 +1,17 @@
 #include "CMeshRenderer.h"
 
-#include "Graphics\Material.h"
 #include "Core\Engine.h"
 #include "Scene\Scene.h"
 #include "Graphics\Primitives.h"
 
-#include "Scene\GameObject\GameObject.h"
-#include "Scene\GameObject\Components\Transformation.h"
-
 namespace Scene
 {
-	bool CMeshRenderer::Initialize(GameObject *a_Parent, const char* a_ModelLocation, Graphics::Material *a_Material)
+	CMeshRenderer::~CMeshRenderer()
+	{
+		Core::Engine::StaticClass()->GetScene()->RemoveRenderable(Parent);
+	}
+
+	bool CMeshRenderer::Initialize(GameObject *a_Parent, const char* a_ModelLocation, std::unique_ptr<Graphics::Material> a_Material)
 	{
 		IComponent::Initialize(a_Parent);
 
@@ -20,7 +21,7 @@ namespace Scene
 		m_Mesh.ShouldCull = false;
 		m_Mesh.Mode = Graphics::EMeshPrimitive::TRIANGLES;
 		
-		m_Material = a_Material;
+		m_Material = std::move(a_Material);
 		
 		Core::Engine::StaticClass()->GetScene()->AddRenderable(Parent, this);
 		return true;
@@ -31,15 +32,9 @@ namespace Scene
 		Parent->Transform->Rotation.y += 0.1f;
 	}
 
-	void CMeshRenderer::Shutdown()
-	{
-		delete m_Material;
-		Core::Engine::StaticClass()->GetScene()->RemoveRenderable(Parent);
-	}
-
 	Graphics::SMeshDesc &CMeshRenderer::GetMesh()
 	{	return m_Mesh;	}
 
 	Graphics::Material *CMeshRenderer::GetMaterial()
-	{	return m_Material; 	}
+	{	return m_Material.get(); 	}
 }

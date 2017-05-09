@@ -1,5 +1,6 @@
 #include "D3DMaterial.h"
 #include "D3DHelper.h"
+#include "D3DRenderer.h"
 
 #include "Core\Engine.h"
 #include "Utilities\Cache.h"
@@ -10,24 +11,19 @@
 namespace Graphics
 {
 	namespace DirectX
-	{
-		D3DMaterial::~D3DMaterial()
-		{
-			SafeDelete(m_Container);
-			SafeDelete(m_ObjectBuffer);
-		}
-
+	{		
 		bool D3DMaterial::Initialize(Material *a_Material)
 		{
-			m_Renderer = dynamic_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
-			m_Container = new D3DShaderContainer();
+			m_Renderer = static_cast<D3DRenderer*>(Core::Engine::StaticClass()->GetRenderer());
 
-			if (!m_Container->Initialize(a_Material))
+			m_Container = std::make_unique<D3DShaderContainer>();
+
+			if (!m_Container->Initialize(a_Material->Shaders))
 				return false;
 
 			for (auto &temp : a_Material->GetTextures())
 			{
-				D3DTexture *tex = dynamic_cast<D3DTexture*>(Core::Engine::StaticClass()->GetCache()->LoadTexture(temp.second));
+				D3DTexture *tex = static_cast<D3DTexture*>(Core::Engine::StaticClass()->GetCache()->LoadTexture(temp.second));
 
 				if (CheckIfPointerIsInvalid(tex))
 					return false;
@@ -39,9 +35,12 @@ namespace Graphics
 			desc.BufferSize = sizeof(ObjectBuffer);
 			//The fifth index is reserved for the world matrix buffer
 			desc.BufferIndex = 5;
+			desc.BufferName = "World";
 
-			m_ObjectBuffer = new D3DShaderBuffer();
-			m_ObjectBuffer->Initialize(desc);
+			m_ObjectBuffer = static_cast<D3DShaderBuffer*>(Core::Engine::StaticClass()->GetCache()->LoadShaderBuffer(desc));
+
+			if (m_ObjectBuffer == nullptr)
+				return false;
 
 			return true;
 		}
@@ -72,8 +71,6 @@ namespace Graphics
 		}
 
 		D3DShaderContainer *D3DMaterial::GetContainer()
-		{
-			return m_Container;
-		}
+		{		return m_Container.get();		}
 	}
 }

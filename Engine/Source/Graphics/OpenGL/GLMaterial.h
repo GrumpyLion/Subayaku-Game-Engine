@@ -1,8 +1,8 @@
 #pragma once
 
 #include <unordered_map>
-#include "GLEShaderTypes.h"
-
+#include "GLShaderContainer.h"
+#include <memory>
 
 namespace Graphics
 {
@@ -17,16 +17,14 @@ namespace Graphics
 		class GLMaterial
 		{
 		private:
-			GLShaderContainer *m_Container = nullptr;
+			std::unique_ptr<GLShaderContainer> m_Container = nullptr;
+
 			GLRenderer *m_Renderer = nullptr;
 
 			std::unordered_map<std::string, GLTexture*> m_Textures;
 			std::unordered_map<std::string, float> m_FloatUniforms;
-			std::unordered_map<std::string, bool> m_FoundUniforms;
 
 		public:
-			~GLMaterial();
-
 			bool Initialize(Material *a_Material);
 			void Bind();
 			GLShaderContainer *GetContainer();

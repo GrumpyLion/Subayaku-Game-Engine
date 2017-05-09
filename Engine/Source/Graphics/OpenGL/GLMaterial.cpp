@@ -1,14 +1,13 @@
 #include "GLMaterial.h"
-#include "GLShaderContainer.h"
-#include "Utilities\Utilities.h"
+#include "GLHelper.h"
 #include "Graphics\Material.h"
-
-#include "Core\Engine.h"
-#include "Graphics\Interface\IRenderer.h"
 #include "GLRenderer.h"
 #include "GLTexture.h"
+
+#include "Utilities\Utilities.h"
 #include "Core\Engine.h"
-#include "GLHelper.h"
+#include "Graphics\Interface\IRenderer.h"
+#include "Core\Engine.h"
 #include "Utilities\Cache.h"
 #include "Scene\GameObject\GameObject.h"
 #include "Scene\GameObject\Components\Transformation.h"
@@ -17,40 +16,26 @@ namespace Graphics
 {
 	namespace OpenGL
 	{
-		GLMaterial::~GLMaterial()
-		{
-			SafeDelete(m_Container);
-
-			m_Textures.clear();
-		}
-
 		bool GLMaterial::Initialize(Material *a_Material)
 		{
-			m_Container = new GLShaderContainer();
+			m_Container = std::make_unique<GLShaderContainer>();
 
-			if (!m_Container->Initialize(a_Material))
+			if (!m_Container->Initialize(a_Material->Shaders))
 				return false;
-			
+
 			m_FloatUniforms = a_Material->GetFloats();
 
 			for (auto &temp : a_Material->GetTextures())
 			{
-				GLTexture *tex = dynamic_cast<GLTexture*>(Core::Engine::StaticClass()->GetCache()->LoadTexture(temp.second));
+				GLTexture *tex = static_cast<GLTexture*>(Core::Engine::StaticClass()->GetCache()->LoadTexture(temp.second));
 
 				if (CheckIfPointerIsInvalid(tex))
 					return false;
 				
-				m_Textures.insert(std::pair<std::string, GLTexture*>(temp.second.UniformName, tex));
+				m_Textures.insert({ temp.second.UniformName, tex });
 			}
 
 			m_Renderer = static_cast<GLRenderer*>(Core::Engine::StaticClass()->GetRenderer());
-
-			//Set Engine uniforms
-			m_FoundUniforms.insert(std::pair<std::string, bool>("uPRMatrix", true));
-			m_FoundUniforms.insert(std::pair<std::string, bool>("uORMatrix", true));
-			m_FoundUniforms.insert(std::pair<std::string, bool>("uVWMatrix", true));
-			m_FoundUniforms.insert(std::pair<std::string, bool>("uTime", true));
-			m_FoundUniforms.insert(std::pair<std::string, bool>("uCameraPos", true));
 			return true;
 		}
 
@@ -73,15 +58,9 @@ namespace Graphics
 				//TODO Check if the uniform was found 
 				m_Container->SetFloat(temp.first.c_str(), temp.second);
 			}
-
-			if (m_FoundUniforms.find("uORMatrix")->second)
-			{
-				if (!m_Container->SetMatrix4f("uORMatrix", Matrix4f::Orthograpic(0.0f, 4.0f, 0.0f, 2.5f, -1.0f, 10.0f)))
-					m_FoundUniforms.find("uORMatrix")->second = false;
-			}
 		}
 
 		GLShaderContainer *GLMaterial::GetContainer()
-		{		return m_Container;		}
+		{		return m_Container.get();		}
 	}
 }

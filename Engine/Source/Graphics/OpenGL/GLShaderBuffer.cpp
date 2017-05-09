@@ -29,7 +29,7 @@ namespace Graphics
 		{
 			glBindBuffer(GL_UNIFORM_BUFFER, m_UBO);
 
-			GLvoid* p = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
+			GLvoid* p = glMapBufferRange(GL_UNIFORM_BUFFER, 0, m_Desc.BufferSize, GL_MAP_UNSYNCHRONIZED_BIT | GL_MAP_WRITE_BIT);
 			memcpy(p, a_BufferData, m_Desc.BufferSize);
 
 			glUnmapBuffer(GL_UNIFORM_BUFFER);

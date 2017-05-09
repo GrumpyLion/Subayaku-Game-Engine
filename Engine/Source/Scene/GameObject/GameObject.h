@@ -1,33 +1,30 @@
 #pragma once
 
 #include "Components\Interface\IComponent.h"
+#include "Components\Transformation.h"
 
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace Scene
 {
-	class IComponent;
-	class Transformation;
-
 	class GameObject
 	{
 	private:
-		std::vector<IComponent*> m_Components{};
+		std::vector<std::unique_ptr<IComponent>> m_Components;
 
 	public:
 		//This represents the position, rotation and the scale
-		Transformation *Transform = nullptr;
+		std::unique_ptr<Transformation> Transform;
 		std::string Name = "Unnamed";
 
 		~GameObject();
 		
 		bool Initialize();
 		void Update();
-		void Shutdown();
 
-		bool AddComponent(IComponent *a_ToAdd);
-		void RemoveAllComponents();
+		bool AddComponent(std::unique_ptr<IComponent> a_ToAdd);
 		void RemoveComponentByType(ComponentType &a_Type);
 	};
 }
