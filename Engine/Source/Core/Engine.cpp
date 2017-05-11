@@ -1,5 +1,4 @@
 #include "Engine.h"
-#include "SubayakuCore.h"
 #include <chrono>
 #include <thread>
 
@@ -26,7 +25,7 @@ namespace Core
 	{		
 		m_Context = a_Context;
 
-		m_Window = new CWindow();
+		m_Window = std::make_unique<Window>();
 
 		if (!m_Window->Initialize(a_Context))
 		{
@@ -37,11 +36,11 @@ namespace Core
 		if (!SwitchRenderer(a_Context))
 			return false;
 
-		m_InputManager = new InputManager();
+		m_InputManager = std::make_unique<InputManager>();
 
 		m_InputManager->Initialize();
 
-		m_Scene = new Scene::Scene();
+		m_Scene = std::make_unique<Scene::Scene>();
 
 		if (!m_Scene->Initialize())
 		{
@@ -116,7 +115,7 @@ namespace Core
 					index = 0;
 				}
 
-				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_U))
+				if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_U))
 				{
 					index++;
 					auto temp = std::make_unique<Scene::GameObject>();
@@ -187,42 +186,40 @@ namespace Core
 			frames++;
 			Sleep(1);
 		}
-
-		Shutdown();
 	}
 
 	bool Engine::Shutdown()
 	{
-		SafeDelete(m_InputManager);
+		m_InputManager.reset();
 
-		SHUTDOWN_AND_DELETE(m_Scene);
-	
-		SHUTDOWN_AND_DELETE(m_Renderer);
-		
-		SHUTDOWN_AND_DELETE(m_Window);
+		m_Scene->ClearScene();
+		m_Scene.reset();
 
-		SafeDelete(m_Cache);
+		m_Renderer.reset();
 
+		m_Window.reset();
+
+		m_Cache.reset();
 		return true;
 	}
 	
 	bool Engine::SwitchRenderer(SEngineContext &a_Context)
 	{
 		//Shutdown the old renderer
-		SHUTDOWN_AND_DELETE(m_Renderer);
-		SafeDelete(m_Cache);
+		m_Renderer.reset();
+		m_Cache.reset();
 
-		m_Cache = new Cache();
+		m_Cache = std::make_unique<Cache>();
 
 		switch (a_Context.RDevice)
 		{
 		case RenderDevice::OpenGL:
-			m_Renderer = new Graphics::OpenGL::GLRenderer();
+			m_Renderer = std::make_unique<Graphics::OpenGL::GLRenderer>();
 			m_Cache->Initialize(std::make_unique<Graphics::OpenGL::GLRenderFactory>());
 			break;
 
 		case RenderDevice::DirectX:
-			m_Renderer = new Graphics::DirectX::D3DRenderer();
+			m_Renderer = std::make_unique<Graphics::DirectX::D3DRenderer>();
 			m_Cache->Initialize(std::make_unique<Graphics::DirectX::D3DRenderFactory>());
 			break;
 		
@@ -231,9 +228,8 @@ namespace Core
 			return false;
 		}
 
-
 		Graphics::SRendererDesc rendererDesc{};
-		rendererDesc.Handle = static_cast<CWindow*>(m_Window)->GetHandle();
+		rendererDesc.Handle = static_cast<Window*>(GetWindow())->GetHandle();
 		rendererDesc.Width = a_Context.Width;
 		rendererDesc.Height = a_Context.Height;
 
@@ -254,19 +250,19 @@ namespace Core
 	}
 
 	Cache *Engine::GetCache()
-	{	return m_Cache;		}
+	{	return m_Cache.get();		}
 
 	IWindow *Engine::GetWindow()
-	{	return m_Window;	}
+	{	return m_Window.get();	}
 
 	Graphics::IRenderer *Engine::GetRenderer()
-	{	return m_Renderer;	}
+	{	return m_Renderer.get();	}
 
 	InputManager *Engine::GetInputManager()
-	{	return m_InputManager;	}
+	{	return m_InputManager.get();	}
 
 	Scene::Scene *Engine::GetScene()
-	{	return m_Scene;		}
+	{	return m_Scene.get();		}
 
 	SEngineContext &Engine::GetContext()
 	{	return m_Context;	}

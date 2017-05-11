@@ -84,7 +84,7 @@ namespace Scene
 		}
 	}
 
-	void Scene::Shutdown()
+	Scene::~Scene()
 	{
 		ClearScene();
 	}

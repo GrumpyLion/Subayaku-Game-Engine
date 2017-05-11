@@ -148,7 +148,7 @@ namespace Graphics
 			return Camera;
 		}
 
-		void GLRenderer::Shutdown()
+		GLRenderer::~GLRenderer()
 		{
 			m_Entities.clear();
 			

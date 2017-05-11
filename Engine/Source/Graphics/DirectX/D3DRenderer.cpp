@@ -257,7 +257,7 @@ namespace Graphics
 		ID3D11DeviceContext* D3DRenderer::GetDeviceContext()
 		{	return m_DeviceContext;		}
 
-		void D3DRenderer::Shutdown()
+		D3DRenderer::~D3DRenderer()
 		{
 			m_Entities.clear();
 

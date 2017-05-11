@@ -5,7 +5,7 @@
 
 namespace Core
 {
-	class CWindow : public IWindow
+	class Window : public IWindow
 	{
 	private:
 		HWND m_Handle{};
@@ -13,11 +13,10 @@ namespace Core
 		SEngineContext m_Context{};
 		DWORD m_Style;
 	public:
-		~CWindow() override;
+		~Window();
 
 		bool Initialize(SEngineContext &a_EngineContext) override;
 		bool Update() override;
-		bool Shutdown() override;
 
 		void Resize();
 

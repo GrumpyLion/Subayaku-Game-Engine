@@ -2,40 +2,26 @@
 
 #include "SEngineContext.h"
 #include "Graphics\Interface\SRendererDesc.h"
+#include "SubayakuCore.h"
 
-namespace Scene
-{
-	class Scene;
-}
-
-namespace Graphics
-{
-	class IRenderer;
-	class TextureCache;
-	class IRenderFactory;
-}
+#include <memory>
 
 namespace Core
 {
-	class IWindow;
-	class Keyboard;
-	class Cache;
-	class InputManager;
-
 	class Engine
 	{
 	private:
 		SEngineContext m_Context{};
 
 		static Engine* m_SharedInstance;
-		IWindow* m_Window = nullptr;
-		InputManager* m_InputManager = nullptr;
-		Cache *m_Cache = nullptr;
+		std::unique_ptr<IWindow> m_Window = nullptr;
+		std::unique_ptr<InputManager> m_InputManager = nullptr;
+		std::unique_ptr<Cache> m_Cache = nullptr;
 
-		Scene::Scene *m_Scene = nullptr;
+		std::unique_ptr<Scene::Scene> m_Scene = nullptr;
 
-		Graphics::IRenderer* m_Renderer = nullptr;
-		Graphics::IRenderFactory* m_RenderFactory = nullptr;
+		std::unique_ptr<Graphics::IRenderer> m_Renderer = nullptr;
+		std::unique_ptr<Graphics::IRenderFactory> m_RenderFactory = nullptr;
 		
 
 		//Graphics::TextureCache *m_TextureCache = nullptr;

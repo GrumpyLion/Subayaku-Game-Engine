@@ -1,7 +1,5 @@
 #pragma once
 
-#define SHUTDOWN_AND_DELETE(p) if(p!= nullptr) { p->Shutdown(); SafeDelete(p); } 
-
 #include <Windows.h>
 #include <stdio.h>
 #include <string>

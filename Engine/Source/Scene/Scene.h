@@ -29,9 +29,10 @@ namespace Scene
 		std::unordered_map<GameObject*, CMeshRenderer*> m_Renderables;
 
 	public:
+		~Scene();
+
 		bool Initialize();
 		void Update();
-		void Shutdown();
 
 		void AddRenderable(GameObject *a_Parent, CMeshRenderer *a_Renderable);
 		void RemoveRenderable(GameObject *a_Parent);

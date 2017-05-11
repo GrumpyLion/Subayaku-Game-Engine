@@ -5,12 +5,16 @@
 
 namespace Core
 {
-	CWindow::~CWindow()
+	Window::~Window()
 	{
-		Shutdown();
+		DestroyWindow(m_Handle);
+		m_Handle = nullptr;
+
+		UnregisterClass(m_Context.Title, m_HInstance);
+		m_HInstance = nullptr;
 	}
 
-	bool CWindow::Initialize(SEngineContext &a_EngineContext)
+	bool Window::Initialize(SEngineContext &a_EngineContext)
 	{
 		m_Context = a_EngineContext;
 
@@ -79,7 +83,7 @@ namespace Core
 		return true;
 	}
 	
-	bool CWindow::Update()
+	bool Window::Update()
 	{
 		MSG msg{};
 
@@ -104,7 +108,7 @@ namespace Core
 		return true;
 	}
 
-	void CWindow::Resize()
+	void Window::Resize()
 	{
 		RECT rect;
 		if (GetWindowRect(m_Handle, &rect))
@@ -114,13 +118,13 @@ namespace Core
 		}
 	}
 
-	LRESULT CWindow::WndProc(HWND a_HWND, unsigned int a_Message, WPARAM a_WParam, LPARAM a_LParam)
+	LRESULT Window::WndProc(HWND a_HWND, unsigned int a_Message, WPARAM a_WParam, LPARAM a_LParam)
 	{
 		switch (a_Message)
 		{
 		case WM_SIZE:
 		{
-			static_cast<CWindow*>(Engine::StaticClass()->GetWindow())->Resize();
+			static_cast<Window*>(Engine::StaticClass()->GetWindow())->Resize();
 			break;
 		}
 
@@ -165,17 +169,6 @@ namespace Core
 		return DefWindowProc(a_HWND, a_Message, a_WParam, a_LParam);
 	}
 
-	bool CWindow::Shutdown()
-	{
-		DestroyWindow(m_Handle);
-		m_Handle = nullptr;
-
-		UnregisterClass(m_Context.Title, m_HInstance);
-		m_HInstance = nullptr;
-		
-		return true;
-	}
-
-	HWND CWindow::GetHandle()
+	HWND Window::GetHandle()
 	{	return m_Handle;	}
 }

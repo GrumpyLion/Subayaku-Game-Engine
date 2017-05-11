@@ -11,7 +11,6 @@ namespace Core
 
 		virtual bool Initialize(SEngineContext &a_EngineContext) = 0;
 		virtual bool Update() = 0;
-		virtual bool Shutdown() = 0;
 
 	};
 }

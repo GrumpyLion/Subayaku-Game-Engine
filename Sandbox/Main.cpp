@@ -6,16 +6,17 @@
 
 int main()
 {
-	Core::Engine engine = Core::Engine();
+	
+	auto engine = std::make_unique<Core::Engine>();
 	Core::SEngineContext context{};
 	context.RDevice = Core::RenderDevice::OpenGL;
 	context.Width = 1360;
 	context.Height = 850;
 
 	//Check for errors while init
-	if (engine.Initialize(context))
+	if (engine->Initialize(context))
 	{
-		engine.Run();
+		engine->Run();
 	}
 	
 	return 0;
