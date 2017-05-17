@@ -5,8 +5,7 @@
 #include "Utilities\Utilities.h"
 
 int main()
-{
-	
+{	
 	auto engine = std::make_unique<Core::Engine>();
 	Core::SEngineContext context{};
 	context.RDevice = Core::RenderDevice::OpenGL;

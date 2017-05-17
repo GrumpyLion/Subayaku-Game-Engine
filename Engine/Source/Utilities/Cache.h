@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <GrumpyZip\ZipFile.h>
 
 #include "Graphics\Cache\STextureDesc.h"
 #include "Graphics\Cache\SMeshDesc.h"
@@ -21,6 +22,8 @@ namespace Core
 	class Cache
 	{
 	private:
+		std::unique_ptr<GrumpyZip::ZipFile> m_ZipFile;
+
 		std::unordered_map<std::string, std::unique_ptr<Graphics::ITexture>> m_Textures;
 		std::unordered_map<std::string, std::unique_ptr<Graphics::IMesh>> m_Meshes;
 		std::unordered_map<std::string, std::unique_ptr<Graphics::IShader>> m_Shaders;
@@ -29,11 +32,13 @@ namespace Core
 		std::unique_ptr<Graphics::IRenderFactory> m_RenderFactory = nullptr;
 
 	public:
-		void Initialize(std::unique_ptr<Graphics::IRenderFactory> a_Factory);
+		void Initialize(std::unique_ptr<Graphics::IRenderFactory> a_Factory, std::string a_PathToPak);
 		
 		Graphics::ITexture* LoadTexture(Graphics::STextureDesc &a_Desc);
 		Graphics::IMesh* LoadMesh(Graphics::SMeshDesc &a_Desc);
 		Graphics::IShader* LoadShader(Graphics::SShaderDesc &a_Desc);
 		Graphics::IShaderBuffer* LoadShaderBuffer(Graphics::SShaderBufferDesc &a_Desc);
+
+		GrumpyZip::ZipFile *GetZipFile();
 	};
 }

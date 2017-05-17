@@ -1,7 +1,7 @@
 #include "GLShader.h"
-#include "Utilities\Utilities.h"
 #include "Core\Engine.h"
-#include <fstream>
+#include "Utilities\Utilities.h"
+#include "Utilities\Cache.h"
 
 namespace Graphics
 {
@@ -16,12 +16,11 @@ namespace Graphics
 		{
 			Type = a_Desc.Type;
 
-			std::ifstream input(GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_Desc.FilePath));
+			std::string path = GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_Desc.FilePath);
 
-			std::string source((std::istreambuf_iterator<char>(input)),
-				std::istreambuf_iterator<char>());
+			auto temp = Core::Engine::StaticClass()->GetCache()->GetZipFile()->GetFile(path);
 
-			if (!input.good())
+			if (temp == nullptr)
 			{
 				LogErr("Shader File not found %s\n", a_Desc.FilePath);
 				return false;
@@ -51,7 +50,7 @@ namespace Graphics
 			}
 
 			//Bind the Shader src into opengl
-			const GLchar* src = reinterpret_cast<const GLchar*>(source.c_str());
+			const GLchar* src = reinterpret_cast<const GLchar*>(temp->Data.data());
 			glShaderSource(m_Handle, 1, &src, 0);
 			if (GetError())
 				return false;

@@ -3,11 +3,13 @@
 
 namespace Core
 {
-	void Cache::Initialize(std::unique_ptr<Graphics::IRenderFactory> a_Factory)
+	void Cache::Initialize(std::unique_ptr<Graphics::IRenderFactory> a_Factory, std::string a_PathToPak)
 	{
+		m_ZipFile = std::make_unique<GrumpyZip::ZipFile>();
+		m_ZipFile->LoadZipFile(a_PathToPak);
 		m_RenderFactory = std::move(a_Factory);
 	}
-
+	
 	Graphics::IMesh* Cache::LoadMesh(Graphics::SMeshDesc &a_Desc)
 	{
 		if (a_Desc.FilePath == "")
@@ -106,5 +108,10 @@ namespace Core
 
 			return m_ShaderBuffers[a_Desc.BufferName].get();
 		}
+	}
+
+	GrumpyZip::ZipFile* Cache::GetZipFile()
+	{
+		return m_ZipFile.get();
 	}
 }

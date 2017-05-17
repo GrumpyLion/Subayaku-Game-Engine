@@ -69,7 +69,7 @@ namespace Scene
 		tempMat->Shaders.FragmentShaderPath = "Test.fs";
 		tempMat->Shaders.ShaderContainerName = "Earth";
 
-		mesh->Initialize(ptr, "Assets/Models/kögel.obj", std::move(tempMat));
+		mesh->Initialize(ptr, "Assets/Models/Koegel.obj", std::move(tempMat));
 		temp->AddComponent(std::move(mesh));
 		AddGameObject(std::move(temp));
 

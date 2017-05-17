@@ -1,10 +1,11 @@
 #include "D3DShader.h"
+#include "D3DRenderer.h"
 
 #include "Math\Math.h"
 #include "D3DHelper.h"
 #include "Core\Engine.h"
 #include "Utilities\Utilities.h"
-#include "D3DRenderer.h"
+#include "Utilities\Cache.h"
 
 namespace Graphics
 {
@@ -25,23 +26,22 @@ namespace Graphics
 
 			ID3D10Blob *errorMessage = nullptr;		
 
-			std::ifstream fileStream(GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_Desc.FilePath));
+			std::string path = GetShaderLocation(Core::Engine::StaticClass()->GetContext(), a_Desc.FilePath);
+			
+			auto file = Core::Engine::StaticClass()->GetCache()->GetZipFile()->GetFile(path);
 
 			//Vertex Shader
-			if (!fileStream)
+			if (file == nullptr)
 			{
 				LogErr("File not found %s\n", a_Desc.FilePath);
 				return false;
 			}
 
-			std::string source((std::istreambuf_iterator<char>(fileStream)),
-				std::istreambuf_iterator<char>());
-
 			switch (a_Desc.Type)
 			{
 				case EShaderType::VertexShader:
 				{
-					if (FAILED(D3DCompile(source.c_str(), source.length(), a_Desc.FilePath.c_str(), nullptr, nullptr, "VS_Main", "vs_5_0", 0, 0, &m_ShaderBuffer, &errorMessage)))
+					if (FAILED(D3DCompile(file->Data.data(), file->Data.size(), a_Desc.FilePath.c_str(), nullptr, nullptr, "VS_Main", "vs_5_0", 0, 0, &m_ShaderBuffer, &errorMessage)))
 					{
 						if (errorMessage != nullptr)
 						{
@@ -59,7 +59,7 @@ namespace Graphics
 
 				case EShaderType::FragmentShader:
 				{
-					if (FAILED(D3DCompile(source.c_str(), source.length(), a_Desc.FilePath.c_str(), nullptr, nullptr, "PS_Main", "ps_5_0", 0, 0, &m_ShaderBuffer, &errorMessage)))
+					if (FAILED(D3DCompile(file->Data.data(), file->Data.size(), a_Desc.FilePath.c_str(), nullptr, nullptr, "PS_Main", "ps_5_0", 0, 0, &m_ShaderBuffer, &errorMessage)))
 					{
 						if (errorMessage != nullptr)
 						{
@@ -76,7 +76,6 @@ namespace Graphics
 				}
 			}
 
-			fileStream.close();
 			SafeRelease(errorMessage);
 			return true;
 		}

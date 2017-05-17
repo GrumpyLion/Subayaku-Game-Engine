@@ -111,7 +111,7 @@ namespace Graphics
 					return false;
 			}
 			else
-				m_Count = a_Desc.Vertices.size();
+				m_Count = (unsigned int)a_Desc.Vertices.size();
 
 			return true;
 		}

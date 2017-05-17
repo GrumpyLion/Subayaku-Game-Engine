@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Windows.h>
+#include <string>
 
 namespace Core
 {
@@ -13,6 +14,7 @@ namespace Core
 	struct SEngineContext
 	{
 		RenderDevice RDevice = RenderDevice::OpenGL;
+		std::string PathToPak = "Assets.paklol";
 		LPCWSTR Title = L"Subayaku";
 
 		int AdjustedWidth, AdjustedHeight;

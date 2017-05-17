@@ -3,10 +3,11 @@
 #include "Utilities\Utilities.h"
 
 #include <Windows.h>
-#include <fstream>
-#include <gl\GL.h>
 #include <vector>
+
 #include "Graphics\Cache\STextureDesc.h"
+#include "Core\Engine.h"
+#include "Utilities\Cache.h"
 
 namespace Graphics
 {
@@ -31,15 +32,19 @@ namespace Graphics
 
 		TGA(STextureDesc &a_Desc)
 		{
-			std::fstream hFile(a_Desc.FilePath, std::ios::in | std::ios::binary);
-			if (!hFile.is_open()) { throw std::invalid_argument("File Not Found."); }
+			auto temp = Core::Engine::StaticClass()->GetCache()->GetZipFile()->GetFile(a_Desc.FilePath);
+
+			if(temp == nullptr)
+				throw std::invalid_argument("File Not Found.");
 
 			std::uint8_t Header[18] = { 0 };
 			std::vector<std::uint8_t> ImageData;
 			static std::uint8_t DeCompressed[12] = { 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
 			static std::uint8_t IsCompressed[12] = { 0x0, 0x0, 0xA, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
 
-			hFile.read(reinterpret_cast<char*>(&Header), sizeof(Header));
+			memcpy(&Header, &temp->Data[0], sizeof(Header));
+
+			int head = sizeof(Header);
 
 			if (!std::memcmp(DeCompressed, &Header, sizeof(DeCompressed)))
 			{
@@ -50,13 +55,14 @@ namespace Graphics
 
 				if ((BitsPerPixel != 24) && (BitsPerPixel != 32))
 				{
-					hFile.close();
 					throw std::invalid_argument("Invalid File Format. Required: 24 or 32 Bit Image.");
 				}
 
 				ImageData.resize(size);
 				ImageCompressed = false;
-				hFile.read(reinterpret_cast<char*>(ImageData.data()), size);
+				memcpy(reinterpret_cast<char*>(ImageData.data()), &temp->Data[head], size);
+
+				head += size;
 			}
 			else if (!std::memcmp(IsCompressed, &Header, sizeof(IsCompressed)))
 			{
@@ -68,7 +74,6 @@ namespace Graphics
 
 				if ((BitsPerPixel != 24) && (BitsPerPixel != 32))
 				{
-					hFile.close();
 					throw std::invalid_argument("Invalid File Format. Required: 24 or 32 Bit Image.");
 				}
 
@@ -82,14 +87,17 @@ namespace Graphics
 
 				do
 				{
-					hFile.read(reinterpret_cast<char*>(&ChunkHeader), sizeof(ChunkHeader));
+					memcpy(reinterpret_cast<char*>(&ChunkHeader), &temp->Data[head], sizeof(ChunkHeader));
+					head += sizeof(ChunkHeader);
+					//hFile.read(reinterpret_cast<char*>(&ChunkHeader), sizeof(ChunkHeader));
 
 					if (ChunkHeader < 128)
 					{
 						++ChunkHeader;
 						for (int I = 0; I < ChunkHeader; ++I, ++CurrentPixel)
 						{
-							hFile.read(reinterpret_cast<char*>(&Pixel), BytesPerPixel);
+							memcpy(reinterpret_cast<char*>(&Pixel), &temp->Data[head], BytesPerPixel);
+							head += BytesPerPixel;
 
 							ImageData[CurrentByte++] = Pixel.B;
 							ImageData[CurrentByte++] = Pixel.G;
@@ -103,7 +111,8 @@ namespace Graphics
 					else
 					{
 						ChunkHeader -= 127;
-						hFile.read(reinterpret_cast<char*>(&Pixel), BytesPerPixel);
+						memcpy(reinterpret_cast<char*>(&Pixel), &temp->Data[head], BytesPerPixel);
+						head += BytesPerPixel;
 
 						for (int I = 0; I < ChunkHeader; ++I, ++CurrentPixel)
 						{
@@ -120,11 +129,8 @@ namespace Graphics
 			}
 			else
 			{
-				hFile.close();
 				throw std::invalid_argument("Invalid File Format. Required: 24 or 32 Bit TGA File.");
 			}
-
-			hFile.close();
 
 			a_Desc.PixelData = ImageData;
 			a_Desc.Width = Width;

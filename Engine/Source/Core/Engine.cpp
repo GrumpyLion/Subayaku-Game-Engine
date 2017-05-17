@@ -160,7 +160,7 @@ namespace Core
 					tempMat->Shaders.FragmentShaderPath = "Test.fs";
 					tempMat->Shaders.ShaderContainerName = "Earth";
 
-					mesh->Initialize(ptr, "Assets/Models/kögel.obj", std::move(tempMat));
+					mesh->Initialize(ptr, "Assets/Models/Koegel.obj", std::move(tempMat));
 					temp->AddComponent(std::move(mesh));
 					m_Scene->AddGameObject(std::move(temp));
 				}
@@ -215,12 +215,12 @@ namespace Core
 		{
 		case RenderDevice::OpenGL:
 			m_Renderer = std::make_unique<Graphics::OpenGL::GLRenderer>();
-			m_Cache->Initialize(std::make_unique<Graphics::OpenGL::GLRenderFactory>());
+			m_Cache->Initialize(std::make_unique<Graphics::OpenGL::GLRenderFactory>(), m_Context.PathToPak);
 			break;
 
 		case RenderDevice::DirectX:
 			m_Renderer = std::make_unique<Graphics::DirectX::D3DRenderer>();
-			m_Cache->Initialize(std::make_unique<Graphics::DirectX::D3DRenderFactory>());
+			m_Cache->Initialize(std::make_unique<Graphics::DirectX::D3DRenderFactory>(), m_Context.PathToPak);
 			break;
 		
 		default:

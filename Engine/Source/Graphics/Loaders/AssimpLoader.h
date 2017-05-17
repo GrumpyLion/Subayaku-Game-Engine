@@ -4,13 +4,21 @@
 #include <Assimp/scene.h>         
 #include <Assimp/postprocess.h>
 
+#include "Core\Engine.h"
+#include "Utilities\Cache.h"
+
 #include "Graphics\Cache\SMeshDesc.h"
 
 inline bool LoadAssimpObj(Graphics::SMeshDesc &a_Desc)
 {
 	Assimp::Importer importer;
 
-	const aiScene* scene = importer.ReadFile(a_Desc.FilePath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals  | aiProcess_CalcTangentSpace);
+	auto temp = Core::Engine::StaticClass()->GetCache()->GetZipFile()->GetFile(a_Desc.FilePath);
+
+	if (temp == nullptr)
+		return false;
+
+	const aiScene* scene = importer.ReadFileFromMemory(&temp->Data[0], temp->FileSize, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals  | aiProcess_CalcTangentSpace);
 	if (!scene) {
 		fprintf(stderr, importer.GetErrorString());
 		getchar();
