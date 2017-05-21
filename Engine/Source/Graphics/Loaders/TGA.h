@@ -1,143 +1,156 @@
 #pragma once
 
-#include "Utilities\Utilities.h"
-
-#include <Windows.h>
-#include <vector>
+#include <fstream>
+#include <stdio.h>
+#include <string>
 
 #include "Graphics\Cache\STextureDesc.h"
 #include "Core\Engine.h"
 #include "Utilities\Cache.h"
 
+//Used help from this site
+//http://www.paulbourke.net/dataformats/tga/
+
 namespace Graphics
 {
-	typedef union PixelInfo
+
+#pragma pack(push, 1)
+
+	struct TGAHeader
 	{
-		std::uint32_t Colour;
-		struct
-		{
-			std::uint8_t R, G, B, A;
-		};
-	} *PPixelInfo;
+		char IDLength;
+		char ColorMapType;
+		char DataTypeCode;
+		short ColorMapOrigin;
+		short ColorMapLength;
+		char ColorMapDepth;
+		short XOrigin;
+		short YOrigin;
+		short Width;
+		short Height;
+		char BitsPerPixel;
+		char ImageDescriptor;
+	};
+
+#pragma pack(pop)
 
 	class TGA
 	{
-	private:
-		std::vector<std::uint8_t> Pixels;
-		bool ImageCompressed;
-		std::uint32_t size, BitsPerPixel;
-
 	public:
-		std::uint32_t Width, Height;
-
 		TGA(STextureDesc &a_Desc)
 		{
-			auto temp = Core::Engine::StaticClass()->GetCache()->GetZipFile()->GetFile(a_Desc.FilePath);
-
-			if(temp == nullptr)
-				throw std::invalid_argument("File Not Found.");
-
-			std::uint8_t Header[18] = { 0 };
-			std::vector<std::uint8_t> ImageData;
-			static std::uint8_t DeCompressed[12] = { 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
-			static std::uint8_t IsCompressed[12] = { 0x0, 0x0, 0xA, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
-
-			memcpy(&Header, &temp->Data[0], sizeof(Header));
-
-			int head = sizeof(Header);
-
-			if (!std::memcmp(DeCompressed, &Header, sizeof(DeCompressed)))
+			auto file = Core::Engine::StaticClass()->GetCache()->GetZipFile()->GetFile(a_Desc.FilePath);
+			
+			//Check if the compiler added padding bytes
+			if (sizeof(TGAHeader) != 18)
 			{
-				BitsPerPixel = Header[16];
-				Width = Header[13] * 256 + Header[12];
-				Height = Header[15] * 256 + Header[14];
-				size = ((Width * BitsPerPixel + 31) / 32) * 4 * Height;
-
-				if ((BitsPerPixel != 24) && (BitsPerPixel != 32))
-				{
-					throw std::invalid_argument("Invalid File Format. Required: 24 or 32 Bit Image.");
-				}
-
-				ImageData.resize(size);
-				ImageCompressed = false;
-				memcpy(reinterpret_cast<char*>(ImageData.data()), &temp->Data[head], size);
-
-				head += size;
+				printf("Error TGAHeader has a wrong size. Compiler has added padding bytes!\n");
+				return;
 			}
-			else if (!std::memcmp(IsCompressed, &Header, sizeof(IsCompressed)))
+
+			//Load the header
+			TGAHeader *header = (TGAHeader*)&file->Data[0];
+
+
+
+			std::vector<std::uint8_t> resultingData;
+			
+			//Data is compressed
+			if (header->DataTypeCode == 10)
 			{
-				BitsPerPixel = Header[16];
-				Width = Header[13] * 256 + Header[12];
-				Height = Header[15] * 256 + Header[14];
-				//Set the size always to 32 bits we will push 255 if there is no alpha
-				size = ((Width * 32 + 31) / 32) * 4 * Height;
+				a_Desc.Width = header->Width;
+				a_Desc.Height = header->Height;
 
-				if ((BitsPerPixel != 24) && (BitsPerPixel != 32))
+				std::uint32_t size = (a_Desc.Width + 32) * 4 * a_Desc.Height;
+
+				//Load the data
+				resultingData.resize(size);
+
+				std::uint32_t fileHead = 18;
+				std::uint32_t currentPixel = 0;
+				std::uint32_t currentByte = 0;
+				std::uint8_t chunkHead = 0;
+				std::uint8_t bytesPerPixel = header->BitsPerPixel / 8;
+				
+				while (currentPixel < (unsigned int)(a_Desc.Width * a_Desc.Height))
 				{
-					throw std::invalid_argument("Invalid File Format. Required: 24 or 32 Bit Image.");
-				}
+					memcpy(&chunkHead, &file->Data[fileHead], sizeof(unsigned char));
+					fileHead += sizeof(unsigned char);
 
-				PixelInfo Pixel = { 0 };
-				int CurrentByte = 0;
-				std::size_t CurrentPixel = 0;
-				ImageCompressed = true;
-				std::uint8_t ChunkHeader = { 0 };
-				int BytesPerPixel = (BitsPerPixel / 8);
-				ImageData.resize(Width * Height * sizeof(PixelInfo));
+					std::uint8_t type = (chunkHead & 0x80);
+					std::uint8_t count = (chunkHead & 0x7F) + 1;
 
-				do
-				{
-					memcpy(reinterpret_cast<char*>(&ChunkHeader), &temp->Data[head], sizeof(ChunkHeader));
-					head += sizeof(ChunkHeader);
-					//hFile.read(reinterpret_cast<char*>(&ChunkHeader), sizeof(ChunkHeader));
-
-					if (ChunkHeader < 128)
+					//If its a raw packet
+					if (type == 0)
 					{
-						++ChunkHeader;
-						for (int I = 0; I < ChunkHeader; ++I, ++CurrentPixel)
+						//just copy
+						if (header->BitsPerPixel == 32)
 						{
-							memcpy(reinterpret_cast<char*>(&Pixel), &temp->Data[head], BytesPerPixel);
-							head += BytesPerPixel;
+							memcpy(&resultingData[currentByte], &file->Data[fileHead], sizeof(unsigned char) * bytesPerPixel * count);
 
-							ImageData[CurrentByte++] = Pixel.B;
-							ImageData[CurrentByte++] = Pixel.G;
-							ImageData[CurrentByte++] = Pixel.R;
-							if (BitsPerPixel > 24) 
-								ImageData[CurrentByte++] = Pixel.A;
-							else
-								ImageData[CurrentByte++] = 255;
+							currentByte += bytesPerPixel * count;
+							currentPixel += count;
+							fileHead += bytesPerPixel * count;
+						}
+						else
+						{
+							for (int i = 0; i < count; i++, currentPixel++)
+							{
+								resultingData[currentByte++] = file->Data[fileHead + 0];
+								resultingData[currentByte++] = file->Data[fileHead + 1];
+								resultingData[currentByte++] = file->Data[fileHead + 2];
+								resultingData[currentByte++] = (header->BitsPerPixel == 24) ? 255 : file->Data[fileHead + 3];
+
+								fileHead += bytesPerPixel;
+							}
 						}
 					}
 					else
 					{
-						ChunkHeader -= 127;
-						memcpy(reinterpret_cast<char*>(&Pixel), &temp->Data[head], BytesPerPixel);
-						head += BytesPerPixel;
-
-						for (int I = 0; I < ChunkHeader; ++I, ++CurrentPixel)
+						//If its a run length packet then copy the same pixel n times
+						for (int i = 0; i < count; i++, currentPixel++)
 						{
-							ImageData[CurrentByte++] = Pixel.B;
-							ImageData[CurrentByte++] = Pixel.G;
-							ImageData[CurrentByte++] = Pixel.R;
-							if (BitsPerPixel > 24) 
-								ImageData[CurrentByte++] = Pixel.A;
-							else
-								ImageData[CurrentByte++] = 255;
+							resultingData[currentByte++] = file->Data[fileHead + 0];
+							resultingData[currentByte++] = file->Data[fileHead + 1];
+							resultingData[currentByte++] = file->Data[fileHead + 2];
+							resultingData[currentByte++] = (header->BitsPerPixel == 24) ? 255 : file->Data[fileHead + 3];
 						}
+						fileHead += bytesPerPixel;
 					}
-				} while (CurrentPixel < (Width * Height));
+				}
 			}
-			else
+			//Data is uncompressed
+			else if (header->DataTypeCode == 2)
 			{
-				throw std::invalid_argument("Invalid File Format. Required: 24 or 32 Bit TGA File.");
+				a_Desc.Width = header->Width;
+				a_Desc.Height = header->Height;
+
+				std::uint32_t size = (a_Desc.Width * 4) * a_Desc.Height;
+
+				//Load the data
+				resultingData.resize(file->FileSize - sizeof(TGAHeader));
+
+				//The image should have 32 bits if not we will just add full alpha (slow)
+				if(header->BitsPerPixel == 32)
+					memcpy(&resultingData[0], &file->Data[18], file->FileSize - sizeof(TGAHeader));
+				else
+				{
+					resultingData.resize(size);
+
+					unsigned int currentPixel = 0;
+					for (int i = 18; i < file->Data.size() - 3; i += 3)
+					{
+						resultingData[currentPixel++] = file->Data[i+2];
+						resultingData[currentPixel++] = file->Data[i+1];
+						resultingData[currentPixel++] = file->Data[i];
+						resultingData[currentPixel++] = (unsigned char)255;
+					}
+				}
 			}
 
-			a_Desc.PixelData = ImageData;
-			a_Desc.Width = Width;
-			a_Desc.Height = Height;
-			a_Desc.Format = ETextureFormat::RGBA;
-
+			//Because of DX11 we only can have BGRA
+			a_Desc.Format = ETextureFormat::BGRA;
+			a_Desc.PixelData = resultingData;
 		}
-
 	};
 }

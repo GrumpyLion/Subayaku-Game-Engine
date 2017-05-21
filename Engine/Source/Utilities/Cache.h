@@ -22,7 +22,7 @@ namespace Core
 	class Cache
 	{
 	private:
-		std::unique_ptr<GrumpyZip::ZipFile> m_ZipFile;
+		GrumpyZip::ZipFile *m_ZipFile = nullptr;
 
 		std::unordered_map<std::string, std::unique_ptr<Graphics::ITexture>> m_Textures;
 		std::unordered_map<std::string, std::unique_ptr<Graphics::IMesh>> m_Meshes;
@@ -32,7 +32,7 @@ namespace Core
 		std::unique_ptr<Graphics::IRenderFactory> m_RenderFactory = nullptr;
 
 	public:
-		void Initialize(std::unique_ptr<Graphics::IRenderFactory> a_Factory, std::string a_PathToPak);
+		void Initialize(std::unique_ptr<Graphics::IRenderFactory> a_Factory, GrumpyZip::ZipFile *a_ZipFile);
 		
 		Graphics::ITexture* LoadTexture(Graphics::STextureDesc &a_Desc);
 		Graphics::IMesh* LoadMesh(Graphics::SMeshDesc &a_Desc);

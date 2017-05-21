@@ -62,7 +62,7 @@ namespace Graphics
 				break;
 
 			//case ETextureFormat::RGB:
-			//	format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			//	format = DXGI_FORMAT_R8G8B8_UNORM;
 			//	break;
 
 			//case ETextureFormat::RG:

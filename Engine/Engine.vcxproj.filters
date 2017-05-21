@@ -147,9 +147,6 @@
     <ClInclude Include="Source\Graphics\Loaders\BMP.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Loaders\TGA.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Input\Mouse.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -217,6 +214,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\DirectX\D3DShader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Loaders\TGA.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

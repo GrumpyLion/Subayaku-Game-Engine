@@ -33,6 +33,11 @@ namespace Core
 			return false;
 		}
 
+		m_ZipFile = std::make_unique<GrumpyZip::ZipFile>();
+
+		if (!m_ZipFile->LoadZipFile(a_Context.PathToPak))
+			return false;		
+
 		if (!SwitchRenderer(a_Context))
 			return false;
 
@@ -164,7 +169,6 @@ namespace Core
 					temp->AddComponent(std::move(mesh));
 					m_Scene->AddGameObject(std::move(temp));
 				}
-
 				
 				GetInputManager()->GetKeyboard()->Refresh();
 			}
@@ -200,6 +204,8 @@ namespace Core
 		m_Window.reset();
 
 		m_Cache.reset();
+
+		m_ZipFile.reset();
 		return true;
 	}
 	
@@ -215,12 +221,12 @@ namespace Core
 		{
 		case RenderDevice::OpenGL:
 			m_Renderer = std::make_unique<Graphics::OpenGL::GLRenderer>();
-			m_Cache->Initialize(std::make_unique<Graphics::OpenGL::GLRenderFactory>(), m_Context.PathToPak);
+			m_Cache->Initialize(std::make_unique<Graphics::OpenGL::GLRenderFactory>(), m_ZipFile.get());
 			break;
 
 		case RenderDevice::DirectX:
 			m_Renderer = std::make_unique<Graphics::DirectX::D3DRenderer>();
-			m_Cache->Initialize(std::make_unique<Graphics::DirectX::D3DRenderFactory>(), m_Context.PathToPak);
+			m_Cache->Initialize(std::make_unique<Graphics::DirectX::D3DRenderFactory>(), m_ZipFile.get());
 			break;
 		
 		default:

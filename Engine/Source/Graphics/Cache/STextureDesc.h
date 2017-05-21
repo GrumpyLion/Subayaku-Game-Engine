@@ -16,7 +16,7 @@ namespace Graphics
 		int RegisterIndex = 0;
 		const char* UniformName = "";
 
-		std::vector<std::uint8_t> PixelData;
+		std::vector<unsigned char> PixelData;
 
 		int Width = 0;
 		int Height = 0;

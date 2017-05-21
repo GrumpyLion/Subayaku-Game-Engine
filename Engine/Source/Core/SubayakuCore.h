@@ -21,6 +21,7 @@
 #include "Graphics\OpenGL\GLRenderFactory.h"
 #include "Graphics\DirectX\D3DRenderFactory.h"
 #include "Utilities\Cache.h"
+#include <GrumpyZip\ZipFile.h>
 
 //IO
 #include "Window\Interface\IWindow.h"

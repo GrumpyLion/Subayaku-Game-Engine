@@ -28,7 +28,7 @@ namespace Scene
 		AddGameObject(std::move(temp2));
 
 		auto temp = std::make_unique<GameObject>();
-		temp->Name = "Penis";
+		temp->Name = "Earth";
 		temp->Transform = std::make_unique<Transformation>();
 		temp->Transform->Position = Vector3f(0, 0, 0);
 		temp->Transform->Scale = Vector3f(150, 150, 150);

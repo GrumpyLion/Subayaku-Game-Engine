@@ -3,10 +3,9 @@
 
 namespace Core
 {
-	void Cache::Initialize(std::unique_ptr<Graphics::IRenderFactory> a_Factory, std::string a_PathToPak)
+	void Cache::Initialize(std::unique_ptr<Graphics::IRenderFactory> a_Factory, GrumpyZip::ZipFile* a_ZipFile)
 	{
-		m_ZipFile = std::make_unique<GrumpyZip::ZipFile>();
-		m_ZipFile->LoadZipFile(a_PathToPak);
+		m_ZipFile = a_ZipFile;
 		m_RenderFactory = std::move(a_Factory);
 	}
 	
@@ -112,6 +111,6 @@ namespace Core
 
 	GrumpyZip::ZipFile* Cache::GetZipFile()
 	{
-		return m_ZipFile.get();
+		return m_ZipFile;
 	}
 }

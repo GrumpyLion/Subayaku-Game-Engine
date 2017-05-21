@@ -22,9 +22,8 @@ namespace Core
 
 		std::unique_ptr<Graphics::IRenderer> m_Renderer = nullptr;
 		std::unique_ptr<Graphics::IRenderFactory> m_RenderFactory = nullptr;
-		
+		std::unique_ptr<GrumpyZip::ZipFile> m_ZipFile = nullptr;
 
-		//Graphics::TextureCache *m_TextureCache = nullptr;
 	private:
 		//Switches to the currently defined renderer in the render context
 		bool SwitchRenderer(SEngineContext &a_Context);

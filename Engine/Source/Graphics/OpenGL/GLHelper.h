@@ -112,6 +112,9 @@ namespace Graphics
 
 			case ETextureFormat::BGR:
 				format = GL_BGR;
+
+			case ETextureFormat::BGRA:
+				format = GL_BGRA;
 				break;
 			}
 

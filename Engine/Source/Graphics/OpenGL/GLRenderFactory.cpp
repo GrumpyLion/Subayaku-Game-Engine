@@ -40,6 +40,8 @@ namespace Graphics
 				{
 					return nullptr;
 				}
+				a_Desc.PixelData.clear();
+
 				return std::move(temp);
 			}
 			else if (extension == "bmp")
