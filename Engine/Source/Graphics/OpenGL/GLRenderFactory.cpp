@@ -9,6 +9,7 @@
 
 #include "Graphics\Loaders\BMP.h"
 #include "Graphics\Loaders\TGA.h"
+#include "Graphics\Loaders\PNG.h"
 #include "Graphics\Loaders\AssimpLoader.h"
 
 namespace Graphics
@@ -19,7 +20,9 @@ namespace Graphics
 		{
 			auto temp = std::make_unique<GLMesh>();
 
-			LoadAssimpObj(a_Desc);
+			if (a_Desc.Vertices.size() == 0)
+				LoadAssimpObj(a_Desc);
+
 			temp->Initialize(a_Desc);
 
 			return std::move(temp);
@@ -53,6 +56,16 @@ namespace Graphics
 					return nullptr;
 				}
 				return std::move(temp);
+			}
+			else if (extension == "png")
+			{
+				PNG tga = PNG(a_Desc);
+
+				if (!temp->Initialize(a_Desc))
+				{
+					return nullptr;
+				}
+				return temp;
 			}
 			else
 			{

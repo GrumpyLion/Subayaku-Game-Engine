@@ -50,6 +50,7 @@
     <ClInclude Include="Source\Graphics\Interface\ITexture.h" />
     <ClInclude Include="Source\Graphics\Interface\SRendererDesc.h" />
     <ClInclude Include="Source\Graphics\Loaders\BMP.h" />
+    <ClInclude Include="Source\Graphics\Loaders\PNG.h" />
     <ClInclude Include="Source\Graphics\Loaders\TGA.h" />
     <ClInclude Include="Source\Graphics\Material.h" />
     <ClInclude Include="Source\Graphics\MeshInfo.h" />

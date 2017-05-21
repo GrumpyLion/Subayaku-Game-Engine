@@ -27,9 +27,18 @@ namespace Scene
 		return true;
 	}
 
+	bool CMeshRenderer::Initialize(GameObject *a_Parent, Graphics::SMeshDesc &a_Desc, std::unique_ptr<Graphics::Material> a_Material)
+	{
+		IComponent::Initialize(a_Parent);
+		m_Mesh = a_Desc;
+		m_Material = std::move(a_Material);
+
+		Core::Engine::StaticClass()->GetScene()->AddRenderable(Parent, this);
+		return true;
+	}
+
 	void CMeshRenderer::Update()
 	{
-		Parent->Transform->Rotation.y += 0.1f;
 	}
 
 	Graphics::SMeshDesc &CMeshRenderer::GetMesh()

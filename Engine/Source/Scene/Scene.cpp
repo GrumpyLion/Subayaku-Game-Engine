@@ -10,6 +10,7 @@
 #include "GameObject\Components\CMeshRenderer.h"
 #include "GameObject\Components\CCamera.h"
 #include "GameObject\Components\CSprite.h"
+#include "Graphics\Primitives.h"
 
 namespace Scene
 {
@@ -28,48 +29,40 @@ namespace Scene
 		AddGameObject(std::move(temp2));
 
 		auto temp = std::make_unique<GameObject>();
-		temp->Name = "Earth";
+		temp->Name = "Terrain";
 		temp->Transform = std::make_unique<Transformation>();
 		temp->Transform->Position = Vector3f(0, 0, 0);
-		temp->Transform->Scale = Vector3f(150, 150, 150);
+		temp->Transform->Scale = Vector3f(15, 15, 15);
 
 		ptr = temp.get();
 		auto mesh = std::make_unique<CMeshRenderer>();
 
 		auto tempMat = std::make_unique<Graphics::Material>();
-		tempMat->TextureFilter = Graphics::ETextureFilter::LINEAR;
+		tempMat->TextureFilter = Graphics::ETextureFilter::NEAREST;
 
 		Graphics::STextureDesc texInfo;
 		texInfo.RegisterIndex = 0;
-		texInfo.UniformName = "uDay";
-		texInfo.FilePath = "Assets/Textures/earth_day.tga";
+		texInfo.UniformName = "uNoise";
+		texInfo.FilePath = "Assets/Textures/Noise.tga";
 		tempMat->AddTexture(texInfo);
 
 		texInfo.RegisterIndex = 1;
-		texInfo.UniformName = "uNight";
-		texInfo.FilePath = "Assets/Textures/earth_night.tga";
+		texInfo.UniformName = "uColor";
+		texInfo.FilePath = "Assets/Textures/Colormap.tga";
 		tempMat->AddTexture(texInfo);
 
-		texInfo.RegisterIndex = 2;
-		texInfo.UniformName = "uNormal";
-		texInfo.FilePath = "Assets/Textures/earth_normal.tga";
-		tempMat->AddTexture(texInfo);
+		tempMat->Shaders.VertexShaderPath = "Terrain.vs";
+		tempMat->Shaders.FragmentShaderPath = "Terrain.fs";
+		tempMat->Shaders.ShaderContainerName = "Terrain";
 
-		texInfo.RegisterIndex = 3;
-		texInfo.UniformName = "uSpecular";
-		texInfo.FilePath = "Assets/Textures/earth_specular.tga";
-		tempMat->AddTexture(texInfo);
 
-		texInfo.RegisterIndex = 4;
-		texInfo.UniformName = "uClouds";
-		texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
-		tempMat->AddTexture(texInfo);
+		Graphics::SMeshDesc desc{};
+		Graphics::Primitives::GetPlaneTri(desc, 100, 0, 100);
+		desc.Mode = Graphics::EMeshPrimitive::TRIANGLES;
+		desc.HasIndices = true;
+		desc.FilePath = "Primitive";
 
-		tempMat->Shaders.VertexShaderPath = "Test.vs";
-		tempMat->Shaders.FragmentShaderPath = "Test.fs";
-		tempMat->Shaders.ShaderContainerName = "Earth";
-
-		mesh->Initialize(ptr, "Assets/Models/Koegel.obj", std::move(tempMat));
+		mesh->Initialize(ptr, desc, std::move(tempMat));
 		temp->AddComponent(std::move(mesh));
 		AddGameObject(std::move(temp));
 

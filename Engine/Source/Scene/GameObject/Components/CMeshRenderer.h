@@ -24,6 +24,7 @@ namespace Scene
 		~CMeshRenderer();
 
 		virtual bool Initialize(GameObject *a_Parent, const char* a_ModelLocation, std::unique_ptr<Graphics::Material> a_Material);
+		virtual bool Initialize(GameObject *a_Parent, Graphics::SMeshDesc &a_Desc, std::unique_ptr<Graphics::Material> a_Material);
 		virtual void Update() override;
 
 		Graphics::SMeshDesc &GetMesh();

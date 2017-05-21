@@ -31,12 +31,12 @@ namespace Scene
 
 		if (Core::Engine::StaticClass()->GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_E))
 		{
-			m_Radius++;
+			m_Radius += 5;
 		}
 
 		if (Core::Engine::StaticClass()->GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_Q))
 		{
-			m_Radius--;
+			m_Radius -= 5;
 		}
 
 		if (Core::Engine::StaticClass()->GetInputManager()->GetMouse()->LeftButton)

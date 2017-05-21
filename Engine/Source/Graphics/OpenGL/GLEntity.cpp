@@ -7,9 +7,9 @@
 #include "Utilities\Utilities.h"
 #include "Utilities\Cache.h"
 
-#include "GLMesh.h"
 #include "GLShaderContainer.h"
 #include "GLHelper.h"
+#include "GLMesh.h"
 
 namespace Graphics
 {
@@ -24,15 +24,10 @@ namespace Graphics
 			if (!m_Material->Initialize(a_Material))
 				return false;
 
-			if (a_Mesh.Vertices.size() == 0)
-			{
-				m_IsPrimitive = false;
-				m_Mesh = static_cast<GLMesh*>(Core::Engine::StaticClass()->GetCache()->LoadMesh(a_Mesh));
-			}
-			else
-			{
-				return false;
-			}
+			m_Mesh = static_cast<GLMesh*>(Core::Engine::StaticClass()->GetCache()->LoadMesh(a_Mesh));
+				
+			if (m_Mesh == nullptr)
+				return false;			
 
 			return true;
 		}
@@ -40,6 +35,7 @@ namespace Graphics
 		void GLEntity::Render()
 		{
 			m_Material->Bind();
+
 			m_Mesh->Bind();
 
 			Matrix4f temp = Matrix4f::Identity();

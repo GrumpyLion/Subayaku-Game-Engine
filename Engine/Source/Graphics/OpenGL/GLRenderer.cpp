@@ -89,7 +89,7 @@ namespace Graphics
 		void GLRenderer::Render()
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glClearColor(0.2f, 0.4f, 0.6f, 1);
+			glClearColor(1, 1, 1, 1);
 
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			m_Container->Bind();

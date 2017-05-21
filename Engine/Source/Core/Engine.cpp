@@ -113,63 +113,6 @@ namespace Core
 					SwitchRenderer(m_Context);
 				}
 
-				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_Z))
-				{
-					m_Scene->ClearScene();
-					m_Scene->Initialize();
-					index = 0;
-				}
-
-				if (GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_U))
-				{
-					index++;
-					auto temp = std::make_unique<Scene::GameObject>();
-					temp->Name = std::to_string(index);
-					temp->Transform = std::make_unique<Scene::Transformation>();
-					temp->Transform->Position = Vector3f(rand() % 25 - 25, rand() % 25 - 25, rand() % 25 - 25);
-					temp->Transform->Scale = Vector3f(150, 150, 150);
-
-					auto ptr = temp.get();
-					auto mesh = std::make_unique<Scene::CMeshRenderer>();
-
-					auto tempMat = std::make_unique<Graphics::Material>();
-					tempMat->TextureFilter = Graphics::ETextureFilter::LINEAR;
-
-					Graphics::STextureDesc texInfo;
-					texInfo.RegisterIndex = 0;
-					texInfo.UniformName = "uDay";
-					texInfo.FilePath = "Assets/Textures/earth_day.tga";
-					tempMat->AddTexture(texInfo);
-
-					texInfo.RegisterIndex = 1;
-					texInfo.UniformName = "uNight";
-					texInfo.FilePath = "Assets/Textures/earth_night.tga";
-					tempMat->AddTexture(texInfo);
-
-					texInfo.RegisterIndex = 2;
-					texInfo.UniformName = "uNormal";
-					texInfo.FilePath = "Assets/Textures/earth_normal.tga";
-					tempMat->AddTexture(texInfo);
-
-					texInfo.RegisterIndex = 3;
-					texInfo.UniformName = "uSpecular";
-					texInfo.FilePath = "Assets/Textures/earth_specular.tga";
-					tempMat->AddTexture(texInfo);
-
-					texInfo.RegisterIndex = 4;
-					texInfo.UniformName = "uClouds";
-					texInfo.FilePath = "Assets/Textures/earth_clouds.tga";
-					tempMat->AddTexture(texInfo);
-
-					tempMat->Shaders.VertexShaderPath = "Test.vs";
-					tempMat->Shaders.FragmentShaderPath = "Test.fs";
-					tempMat->Shaders.ShaderContainerName = "Earth";
-
-					mesh->Initialize(ptr, "Assets/Models/Koegel.obj", std::move(tempMat));
-					temp->AddComponent(std::move(mesh));
-					m_Scene->AddGameObject(std::move(temp));
-				}
-				
 				GetInputManager()->GetKeyboard()->Refresh();
 			}
 

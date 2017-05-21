@@ -32,8 +32,8 @@ namespace Graphics
 			glGenTextures(1, &TextureID);
 			glBindTexture(GL_TEXTURE_2D, TextureID);
 			// Set our texture parameters
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 			// Set texture filtering
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, ETextureFilterToGL(a_Desc));
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, ETextureFilterToGL(a_Desc));

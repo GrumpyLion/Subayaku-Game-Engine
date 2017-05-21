@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include "Graphics\Cache\SMeshDesc.h"
 #include "Graphics\Interface\IEntity.h"
 
@@ -23,11 +22,11 @@ namespace Graphics
 		{
 		private:
 			GLMesh* m_Mesh = nullptr;
+
 			std::unique_ptr<GLMaterial> m_Material = nullptr;
 
 			//Observable pointer
 			Scene::GameObject *m_Parent = nullptr;
-			bool m_IsPrimitive = false;
 
 		public:
 			~GLEntity()
