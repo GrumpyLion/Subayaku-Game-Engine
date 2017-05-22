@@ -54,8 +54,7 @@ namespace Scene
 		tempMat->Shaders.VertexShaderPath = "Terrain.vs";
 		tempMat->Shaders.FragmentShaderPath = "Terrain.fs";
 		tempMat->Shaders.ShaderContainerName = "Terrain";
-
-
+		
 		Graphics::SMeshDesc desc{};
 		Graphics::Primitives::GetPlaneTri(desc, 100, 0, 100);
 		desc.Mode = Graphics::EMeshPrimitive::TRIANGLES;

@@ -192,7 +192,7 @@ namespace Graphics
 		
 		void D3DRenderer::Render()
 		{
-			float color[4] = { 0.2f, 0.4f, 0.6f, 1.0f };
+			float color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 			m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, color);
 			m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 

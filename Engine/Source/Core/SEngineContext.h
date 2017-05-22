@@ -14,7 +14,7 @@ namespace Core
 	struct SEngineContext
 	{
 		RenderDevice RDevice = RenderDevice::OpenGL;
-		std::string PathToPak = "Assets.paklol";
+		std::string PathToPak = "Assets.pak";
 		LPCWSTR Title = L"Subayaku";
 
 		int AdjustedWidth, AdjustedHeight;

@@ -70,6 +70,8 @@ namespace Graphics
 		{
 			m_Renderer->GetDeviceContext()->VSSetSamplers(0, 1, &m_SampleState);
 			m_Renderer->GetDeviceContext()->PSSetSamplers(0, 1, &m_SampleState);
+
+			m_Renderer->GetDeviceContext()->VSSetShaderResources(RegisterIndex, 1, &m_Texure);
 			m_Renderer->GetDeviceContext()->PSSetShaderResources(RegisterIndex, 1, &m_Texure);
 		}
 
