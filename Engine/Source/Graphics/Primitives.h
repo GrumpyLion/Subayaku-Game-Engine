@@ -47,7 +47,7 @@ namespace Graphics
 
 
 		//Returns a triangle mesh with indices
-		static void GetPlaneTri(SMeshDesc &a_Desc, float a_XD, float a_Y, float a_ZD)
+		static void GetPlaneTri(SMeshDesc &a_Desc, int a_XD, float a_Y, int a_ZD)
 		{
 			int index = 0;
 			for (int x = -(int)a_XD / 2; x < (int)a_XD / 2; x++)

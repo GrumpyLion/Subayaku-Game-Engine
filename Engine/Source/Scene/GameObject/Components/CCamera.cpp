@@ -99,7 +99,7 @@ namespace Scene
 		temp *= Matrix4f::RotateX(Parent->Transform->Rotation.x * DEGTORAD);
 		temp *= Matrix4f::RotateY(Parent->Transform->Rotation.y * DEGTORAD);
 		temp *= Matrix4f::RotateZ(Parent->Transform->Rotation.z * DEGTORAD);
-		temp *= Matrix4f::Translate(Parent->Transform->Position * Vector3f(1, 1, 1));
+		temp *= Matrix4f::Translate(Parent->Transform->Position);
 		return temp;
 	}
 }
