@@ -18,6 +18,12 @@ namespace Scene
 		return true;
 	}
 
+	void GameObject::SetTransform(std::unique_ptr<Transformation> a_Transform)
+	{
+		m_Transform = std::move(a_Transform);
+		Transform = m_Transform.get();
+	}
+	
 	bool GameObject::AddComponent(std::unique_ptr<IComponent> a_ToAdd)
 	{
 		m_Components.push_back(std::move(a_ToAdd));

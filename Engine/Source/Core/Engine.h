@@ -30,12 +30,12 @@ namespace Core
 
 		long m_StartTime = 0;
 	public:
-		Engine();
-		~Engine();
+		__declspec(dllexport) Engine();
+		__declspec(dllexport) ~Engine();
 
-		bool Initialize(SEngineContext& a_Context);
-		void Run();
-		bool Shutdown();
+		__declspec(dllexport) bool Initialize(SEngineContext& a_Context);
+		__declspec(dllexport) void Run();
+		__declspec(dllexport) bool Shutdown();
 
 		//Returns the time since the start of the game in milliseconds
 		long GetTimeSinceStart();

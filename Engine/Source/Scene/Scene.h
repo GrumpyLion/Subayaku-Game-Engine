@@ -4,6 +4,13 @@
 #include <string>
 #include <vector>
 
+#include "GameObject\GameObject.h"
+#include "GameObject\Components\Transformation.h"
+#include "GameObject\Components\CMeshRenderer.h"
+#include "GameObject\Components\CCamera.h"
+#include "GameObject\Components\CSprite.h"
+#include "GameObject\Components\CScriptComponent.h"
+
 #include <memory>
 
 namespace Graphics
@@ -33,6 +40,9 @@ namespace Scene
 
 		bool Initialize();
 		void Update();
+
+		GameObject* InstantiateGameObject(std::string a_Name);
+		GameObject* InstantiateGameObject(std::string a_Name, std::unique_ptr<Transformation> a_Transform);
 
 		void AddRenderable(GameObject *a_Parent, CMeshRenderer *a_Renderable);
 		void RemoveRenderable(GameObject *a_Parent);

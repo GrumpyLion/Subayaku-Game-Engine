@@ -5,36 +5,30 @@
 #include "Graphics\Interface\IRenderer.h"
 #include "Graphics\Material.h"
 
-#include "GameObject\GameObject.h"
-#include "GameObject\Components\Transformation.h"
-#include "GameObject\Components\CMeshRenderer.h"
-#include "GameObject\Components\CCamera.h"
-#include "GameObject\Components\CSprite.h"
 #include "Graphics\Primitives.h"
 
 namespace Scene
 {
 	bool Scene::Initialize()
 	{
-		auto temp2 = std::make_unique<GameObject>();
-		temp2->Name = "Camera";
-		temp2->Transform = std::make_unique<Transformation>();
-		temp2->Transform->Position = Vector3f(0, 0, 0);
-		
-		auto ptr = temp2.get();
+		auto ptr = InstantiateGameObject("Camera");
+
 		auto camera = std::make_unique<CCamera>();
 		camera->Initialize(ptr, 70.0f, 1, 5000.0f);
 
-		temp2->AddComponent(std::move(camera));
-		AddGameObject(std::move(temp2));
+		ptr->AddComponent(std::move(camera));
 
-		auto temp = std::make_unique<GameObject>();
-		temp->Name = "Terrain";
-		temp->Transform = std::make_unique<Transformation>();
-		temp->Transform->Position = Vector3f(0, 0, 0);
-		temp->Transform->Scale = Vector3f(15, 15, 15);
+		auto script = std::make_unique<CScriptComponent>();
+		script->Initialize(ptr, "Assets/Scripts/Camera.lua");
 
-		ptr = temp.get();
+		ptr->AddComponent(std::move(script));
+
+		auto trans = std::make_unique<Transformation>();
+		trans->Position = Vector3f(0, 0, 0);
+		trans->Scale = Vector3f(15, 15, 15);
+
+		ptr = InstantiateGameObject("Water", std::move(trans));
+
 		auto mesh = std::make_unique<CMeshRenderer>();
 
 		auto tempMat = std::make_unique<Graphics::Material>();
@@ -62,8 +56,35 @@ namespace Scene
 		desc.FilePath = "Primitive";
 
 		mesh->Initialize(ptr, desc, std::move(tempMat));
-		temp->AddComponent(std::move(mesh));
-		AddGameObject(std::move(temp));
+		ptr->AddComponent(std::move(mesh));
+
+		trans = std::make_unique<Transformation>();
+		trans->Position = Vector3f(10, -10, 0);
+		trans->Scale = Vector3f(1, 1, 1);		
+
+		ptr = InstantiateGameObject("Terrain", std::move(trans));
+
+		mesh = std::make_unique<CMeshRenderer>();
+
+		tempMat = std::make_unique<Graphics::Material>();
+		tempMat->TextureFilter = Graphics::ETextureFilter::NEAREST;
+
+		tempMat->Shaders.VertexShaderPath = "Test.vs";
+		tempMat->Shaders.FragmentShaderPath = "Test.fs";
+		tempMat->Shaders.ShaderContainerName = "Test";
+
+		ZeroMemory(&desc, sizeof(Graphics::SMeshDesc));
+		desc.HasIndices = true;
+		desc.Mode = Graphics::EMeshPrimitive::TRIANGLES;
+		desc.FilePath = "Assets/Models/teapot.obj";
+
+		mesh->Initialize(ptr, desc, std::move(tempMat));
+		ptr->AddComponent(std::move(mesh));
+
+		script = std::make_unique<CScriptComponent>();
+		script->Initialize(ptr, "Assets/Scripts/Test.lua");
+
+		ptr->AddComponent(std::move(script));
 
 		return true;
 	}
@@ -160,6 +181,26 @@ namespace Scene
 		{
 			LogErr("RemoveGameObject() GameObject does not exist\n");
 		}
+	}
+
+	GameObject* Scene::InstantiateGameObject(std::string a_Name)
+	{
+		return InstantiateGameObject(a_Name, std::make_unique<Transformation>());
+	}
+
+	GameObject* Scene::InstantiateGameObject(std::string a_Name, std::unique_ptr<Transformation> a_Transform)
+	{
+		auto temp = std::make_unique<GameObject>();
+		temp->Name = a_Name;
+
+		auto ptr = temp.get();
+
+		if (!AddGameObject(std::move(temp)))
+			return nullptr;
+
+		ptr->SetTransform(std::move(a_Transform));
+
+		return ptr;
 	}
 
 	void Scene::ClearScene()

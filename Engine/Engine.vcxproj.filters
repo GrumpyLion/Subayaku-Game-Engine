@@ -222,6 +222,9 @@
     <ClInclude Include="Source\Graphics\Loaders\PNG.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\GameObject\Components\CScriptComponent.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Graphics\OpenGL\GLRenderer.cpp">
@@ -318,6 +321,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\DirectX\D3DShader.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\GameObject\Components\CScriptComponent.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

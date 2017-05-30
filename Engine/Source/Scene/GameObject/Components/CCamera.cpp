@@ -29,45 +29,8 @@ namespace Scene
 		Core::Engine::StaticClass()->GetRenderer()->SetCamera(this);
 		Core::Engine::StaticClass()->GetScene()->SetCamera(this);
 
-		if (Core::Engine::StaticClass()->GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_E))
-		{
-			m_Radius += 5;
-		}
-
-		if (Core::Engine::StaticClass()->GetInputManager()->GetKeyboard()->IsKeyDown(SUBA_KEY_Q))
-		{
-			m_Radius -= 5;
-		}
-
-		if (Core::Engine::StaticClass()->GetInputManager()->GetMouse()->LeftButton)
-		{
-			xSpeed += Core::Engine::StaticClass()->GetInputManager()->GetMouse()->xD * 0.025f;
-			ySpeed += Core::Engine::StaticClass()->GetInputManager()->GetMouse()->yD * 0.025f;
-		}
-
-		xSpeed *= 0.9f;
-		ySpeed *= 0.9f;
-
-		Parent->Transform->Rotation.y += xSpeed;
-		Parent->Transform->Rotation.x += ySpeed;
-
-		float xOffset = CalculateHorizontalDistance() * std::sin(Parent->Transform->Rotation.y * DEGTORAD);
-		float zOffset = CalculateHorizontalDistance() * std::cos(Parent->Transform->Rotation.y * DEGTORAD);
-
-		Parent->Transform->Position.x = xOffset;
-		Parent->Transform->Position.y = -CalculateVerticalDistance();
-		Parent->Transform->Position.z = -zOffset;
 	}
 
-	float CCamera::CalculateHorizontalDistance()
-	{
-		return -m_Radius * std::cos(Parent->Transform->Rotation.x * DEGTORAD);
-	}
-
-	float CCamera::CalculateVerticalDistance()
-	{
-		return -m_Radius * std::sin(Parent->Transform->Rotation.x * DEGTORAD);
-	}
 
 	Matrix4f CCamera::ToProjectionMatrixRH()
 	{

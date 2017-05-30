@@ -2,6 +2,7 @@
 
 #include "Graphics\Interface\IEntity.h"
 #include "D3DMaterial.h"
+#include <memory>
 
 namespace Graphics
 {
@@ -20,7 +21,7 @@ namespace Graphics
 			D3DRenderer *m_Renderer = nullptr;
 			Scene::GameObject *m_Parent = nullptr;
 
-			std::unique_ptr<D3DMaterial> m_Material = nullptr;
+			std::unique_ptr<D3DMaterial> m_Material;
 
 			bool HasIndices = true;
 		public:

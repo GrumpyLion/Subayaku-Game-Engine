@@ -52,7 +52,7 @@ namespace Core
 			ErrorBox(L"Scene Init Failure");
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -101,13 +101,13 @@ namespace Core
 				m_Scene->Update();
 			
 				//Remove later..
-				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_O))
+				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_F1))
 				{
 					m_Context.RDevice = RenderDevice::DirectX;
 					SwitchRenderer(m_Context);
 				}
 
-				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_P))
+				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_F2))
 				{
 					m_Context.RDevice = RenderDevice::OpenGL;
 					SwitchRenderer(m_Context);

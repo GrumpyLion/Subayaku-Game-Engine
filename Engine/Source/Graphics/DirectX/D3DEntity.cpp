@@ -9,7 +9,6 @@
 #include "D3DRenderer.h"
 #include "D3DMesh.h"
 
-
 namespace Graphics
 {
 	namespace DirectX
