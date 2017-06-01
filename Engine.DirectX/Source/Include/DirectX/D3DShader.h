@@ -25,7 +25,7 @@ namespace Graphics
 
 		public:
 			~D3DShader();
-			bool Initialize(SShaderDesc &a_Desc, IRenderer *a_Renderer) override;
+			bool Initialize(SShaderDesc &a_Desc, IRenderer *a_Renderer) final;
 			void Bind();
 			ID3D10Blob *GetShaderBuffer();
 		};

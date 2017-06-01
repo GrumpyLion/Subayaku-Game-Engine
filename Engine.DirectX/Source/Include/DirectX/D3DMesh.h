@@ -37,10 +37,10 @@ namespace Graphics
 		public:
 			~D3DMesh();
 
-			bool Initialize(SMeshDesc &a_Desc, IRenderer *a_Renderer) override;
-			void Bind() override;
-			void Unbind() override;
-			unsigned int GetCount() override;
+			bool Initialize(SMeshDesc &a_Desc, IRenderer *a_Renderer) final;
+			void Bind() final;
+			void Unbind() final;
+			unsigned int GetCount() final;
 		};
 	}
 }

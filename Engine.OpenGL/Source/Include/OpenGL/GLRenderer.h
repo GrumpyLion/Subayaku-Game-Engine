@@ -32,8 +32,8 @@ namespace Graphics
 
 			__declspec(dllexport) ~GLRenderer();
 
-			__declspec(dllexport) bool Initialize(SRendererDesc &a_Desc) override;
-			__declspec(dllexport) void Render() override;
+			__declspec(dllexport) bool Initialize(SRendererDesc &a_Desc) final;
+			__declspec(dllexport) void Render() final;
 
 		};
 	}

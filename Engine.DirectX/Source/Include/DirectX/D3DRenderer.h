@@ -40,8 +40,8 @@ namespace Graphics
 
 			__declspec(dllexport) ~D3DRenderer();
 
-			__declspec(dllexport) bool Initialize(SRendererDesc &a_Desc) override;
-			__declspec(dllexport) void Render() override;
+			__declspec(dllexport) bool Initialize(SRendererDesc &a_Desc) final;
+			__declspec(dllexport) void Render() final;
 
 			ID3D11Device* GetDevice();
 			ID3D11DeviceContext* GetDeviceContext();

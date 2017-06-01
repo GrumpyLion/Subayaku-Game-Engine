@@ -25,11 +25,11 @@ namespace Graphics
 		public:			
 			~D3DShaderContainer();
 
-			bool Initialize(SShaderContainerDesc &a_Desc, IRenderer *a_Renderer) override;
+			bool Initialize(SShaderContainerDesc &a_Desc, IRenderer *a_Renderer) final;
 
-			void BindProgram() override;
-			void UnbindProgram() override;
-			bool GetError() override;
+			void BindProgram() final;
+			void UnbindProgram() final;
+			bool GetError() final;
 			
 			bool SetInt(const char* a_UniformName, const int a_Value);
 			bool SetFloat(const char* a_UniformName, const float a_Value);

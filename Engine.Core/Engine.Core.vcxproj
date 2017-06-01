@@ -37,6 +37,7 @@
     <ClInclude Include="Source\Include\Graphics\Descriptions\STextureDesc.h" />
     <ClInclude Include="Source\Include\Graphics\Interfaces\IMesh.h" />
     <ClInclude Include="Source\Include\Graphics\Interfaces\IRenderer.h" />
+    <ClInclude Include="Source\Include\Graphics\Loaders\OBJ.h" />
     <ClInclude Include="Source\Include\Graphics\RenderFactory.h" />
     <ClInclude Include="Source\Include\Graphics\Interfaces\IShaderContainer.h" />
     <ClInclude Include="Source\Include\Graphics\Interfaces\ITexture.h" />

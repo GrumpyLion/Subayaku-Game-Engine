@@ -16,7 +16,7 @@ namespace Graphics
 			GLuint Width = 0;
 			GLuint Height = 0;
 
-			bool Initialize(STextureDesc &a_Desc, IRenderer *a_Renderer) override;
+			bool Initialize(STextureDesc &a_Desc, IRenderer *a_Renderer) final;
 
 			void Bind();
 			void Unbind();

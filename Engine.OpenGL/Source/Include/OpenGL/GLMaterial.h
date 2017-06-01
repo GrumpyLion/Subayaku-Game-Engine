@@ -26,8 +26,8 @@ namespace Graphics
 			std::unordered_map<std::string, GLTexture*> m_Textures;
 
 		public:
-			bool Initialize(Material *a_Material, IRenderer *a_Renderer) override;
-			void Bind() override;
+			bool Initialize(Material *a_Material, IRenderer *a_Renderer) final;
+			void Bind() final;
 
 			GLShaderContainer *GetContainer();
 		};

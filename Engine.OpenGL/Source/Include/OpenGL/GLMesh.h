@@ -22,10 +22,10 @@ namespace Graphics
 			EMeshPrimitive Mode;
 
 			~GLMesh();
-			bool Initialize(SMeshDesc &a_Desc, IRenderer *a_Renderer) override;
-			void Bind() override;
-			void Unbind() override;
-			GLuint GetCount() override;
+			bool Initialize(SMeshDesc &a_Desc, IRenderer *a_Renderer) final;
+			void Bind() final;
+			void Unbind() final;
+			GLuint GetCount() final;
 		};
 	}
 }

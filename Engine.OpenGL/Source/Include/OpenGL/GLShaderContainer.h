@@ -24,11 +24,11 @@ namespace Graphics
 		public:
 			~GLShaderContainer();
 
-			bool Initialize(SShaderContainerDesc &a_Desc, IRenderer *a_Renderer) override;
+			bool Initialize(SShaderContainerDesc &a_Desc, IRenderer *a_Renderer) final;
 
-			void BindProgram() override;
-			void UnbindProgram() override;
-			bool GetError() override;
+			void BindProgram() final;
+			void UnbindProgram() final;
+			bool GetError() final;
 
 			GLuint GetProgram();
 

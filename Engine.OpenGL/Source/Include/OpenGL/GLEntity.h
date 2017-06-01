@@ -29,8 +29,8 @@ namespace Graphics
 			~GLEntity()
 			{			}
 
-			__declspec(dllexport) bool Initialize(SEntityDesc &a_Desc, IRenderer *a_Renderer) override;
-			__declspec(dllexport) void Render() override;
+			__declspec(dllexport) bool Initialize(SEntityDesc &a_Desc, IRenderer *a_Renderer) final;
+			__declspec(dllexport) void Render() final;
 
 		};
 	}

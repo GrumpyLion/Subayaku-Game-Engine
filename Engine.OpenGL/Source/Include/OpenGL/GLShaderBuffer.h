@@ -17,7 +17,7 @@ namespace Graphics
 		public:
 			~GLShaderBuffer();
 
-			bool Initialize(SShaderBufferDesc &a_Desc, IRenderer *a_Renderer) override;
+			bool Initialize(SShaderBufferDesc &a_Desc, IRenderer *a_Renderer) final;
 			void Bind(void* a_BufferData);
 			void Unbind();
 		};

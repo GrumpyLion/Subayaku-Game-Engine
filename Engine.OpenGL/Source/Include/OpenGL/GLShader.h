@@ -18,7 +18,7 @@ namespace Graphics
 			EShaderType Type;
 			
 			~GLShader();
-			bool Initialize(SShaderDesc &a_Desc, IRenderer *a_Renderer) override;
+			bool Initialize(SShaderDesc &a_Desc, IRenderer *a_Renderer) final;
 			bool GetError();
 			GLuint GetProgram() const;
 		};

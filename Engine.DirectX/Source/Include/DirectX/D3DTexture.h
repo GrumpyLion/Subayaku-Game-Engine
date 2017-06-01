@@ -21,7 +21,7 @@ namespace Graphics
 
 		public:
 			~D3DTexture();
-			bool Initialize(STextureDesc &a_Desc, IRenderer *a_Renderer) override;
+			bool Initialize(STextureDesc &a_Desc, IRenderer *a_Renderer) final;
 
 			void Bind();
 			void Unbind();

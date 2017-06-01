@@ -19,7 +19,7 @@ namespace Graphics
 		public:
 			~D3DShaderBuffer();
 
-			bool Initialize(SShaderBufferDesc &a_Desc, IRenderer *a_Renderer) override;
+			bool Initialize(SShaderBufferDesc &a_Desc, IRenderer *a_Renderer) final;
 			void Bind(void* a_BufferData);
 		};
 	}
