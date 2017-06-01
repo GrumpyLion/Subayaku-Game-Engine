@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Graphics\Cache\SShaderContainerDesc.h"
-#include "Graphics\Interface\IShaderContainer.h"
+#include "Graphics\Descriptions\SShaderContainerDesc.h"
+#include "Graphics\Interfaces\IShaderContainer.h"
 #include "D3DShader.h"
 
 #include <memory>

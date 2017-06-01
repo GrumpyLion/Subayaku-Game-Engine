@@ -4,7 +4,7 @@
 #include "D3DShaderBuffer.h"
 #include "D3DTexture.h"
 
-#include "Graphics\Interface\IMaterial.h"
+#include "Graphics\Interfaces\IMaterial.h"
 #include "Graphics\Material.h"
 
 #include "Scene\GameObject\GameObject.h"

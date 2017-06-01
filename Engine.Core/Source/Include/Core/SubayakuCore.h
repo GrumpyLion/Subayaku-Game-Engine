@@ -5,13 +5,13 @@
 
 //Structs
 #include "SEngineContext.h"
-#include "Graphics\Interface\SRendererDesc.h"
+#include "Graphics\Descriptions\SRendererDesc.h"
 
 //Maths
 #include "Math\Math.h"
 
 //Renderers
-#include "Graphics\Interface\IRenderer.h"
+#include "Graphics\Interfaces\IRenderer.h"
 
 #include <GrumpyZip\ZipFile.h>
 

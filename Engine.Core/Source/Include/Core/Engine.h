@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SEngineContext.h"
-#include "Graphics\Interface\SRendererDesc.h"
+#include "Graphics\Descriptions\SRendererDesc.h"
 #include <GrumpyZip\ZipFile.h>
 
 #define ENGINE_ZIPFILE Core::Engine::StaticClass()->ZipFile

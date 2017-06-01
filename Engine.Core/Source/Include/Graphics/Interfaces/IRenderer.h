@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SRendererDesc.h"
-#include "Graphics\Cache\SEntityDesc.h"
+#include "Graphics\Descriptions\SRendererDesc.h"
+#include "Graphics\Descriptions\SEntityDesc.h"
 #include "Utilities\GraphicsCache.h"
 
 #include "Core\Engine.h"

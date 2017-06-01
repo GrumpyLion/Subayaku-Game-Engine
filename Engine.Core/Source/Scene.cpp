@@ -2,7 +2,7 @@
 #include "Utilities\Utilities.h"
 
 #include "Core\Engine.h"
-#include "Graphics\Interface\IRenderer.h"
+#include "Graphics\Interfaces\IRenderer.h"
 #include "Graphics\Material.h"
 
 #include "Graphics\Primitives.h"

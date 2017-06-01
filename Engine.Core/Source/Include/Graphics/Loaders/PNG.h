@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include "Core\Engine.h"
-#include "Graphics\Cache\STextureDesc.h"
+#include "Graphics\Descriptions\STextureDesc.h"
 
 //http://www.libpng.org/pub/png/spec/1.2/png-1.2.pdf
 //https://www.w3.org/TR/PNG/

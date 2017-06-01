@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics\Interface\IShaderBuffer.h"
+#include "Graphics\Interfaces\IShaderBuffer.h"
 #include <d3d11.h>
 
 namespace Graphics

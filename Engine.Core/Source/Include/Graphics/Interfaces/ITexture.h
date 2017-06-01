@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Graphics\Cache\STextureDesc.h"
-#include "IRenderer.h"
+#include "Graphics\Descriptions\STextureDesc.h"
+#include "Graphics\Interfaces\IRenderer.h"
 
 namespace Graphics
 {

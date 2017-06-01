@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Graphics\Cache\SShaderBufferDesc.h"
-#include "IRenderer.h"
+#include "Graphics\Descriptions\SShaderBufferDesc.h"
+#include "Graphics\Interfaces\IRenderer.h"
 
 namespace Graphics
 {

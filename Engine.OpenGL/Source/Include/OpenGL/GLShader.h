@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics\Interface\IShader.h"
+#include "Graphics\Interfaces\IShader.h"
 
 #include <GLEW\Include\glew.h>
 #include <string>

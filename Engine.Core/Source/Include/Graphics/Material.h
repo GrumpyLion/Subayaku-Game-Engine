@@ -3,8 +3,9 @@
 #include <string>
 #include <unordered_map>
 
-#include "Graphics\Cache\SShaderContainerDesc.h"
-#include "Graphics\Cache\STextureDesc.h"
+#include "Graphics\Descriptions\SShaderContainerDesc.h"
+#include "Graphics\Descriptions\STextureDesc.h"
+#include "Graphics\Enums\TextureEnums.h"
 
 #include "Scene\GameObject\Components\Transformation.h"
 

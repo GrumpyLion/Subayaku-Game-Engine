@@ -4,10 +4,10 @@
 #include <string>
 #include <GrumpyZip\ZipFile.h>
 
-#include "Graphics\Cache\STextureDesc.h"
-#include "Graphics\Cache\SMeshDesc.h"
-#include "Graphics\Cache\SShaderDesc.h"
-#include "Graphics\Cache\SShaderBufferDesc.h"
+#include "Graphics\Descriptions\STextureDesc.h"
+#include "Graphics\Descriptions\SMeshDesc.h"
+#include "Graphics\Descriptions\SShaderDesc.h"
+#include "Graphics\Descriptions\SShaderBufferDesc.h"
 
 #include "Graphics\RenderFactory.h"
 

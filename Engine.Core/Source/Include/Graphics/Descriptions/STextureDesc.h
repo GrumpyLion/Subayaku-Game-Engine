@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TextureEnums.h"
+#include "Graphics\Enums\TextureEnums.h"
 #include <string>
 #include <vector>
 

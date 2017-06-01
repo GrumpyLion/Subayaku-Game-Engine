@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Graphics\Cache\TextureEnums.h"
-#include "Graphics\Cache\STextureDesc.h"
-#include "Graphics\Cache\SMeshDesc.h"
+#include "Graphics\Enums\TextureEnums.h"
+#include "Graphics\Descriptions\STextureDesc.h"
+#include "Graphics\Descriptions\SMeshDesc.h"
 #include "Utilities\Utilities.h"
 #include <GLEW\Include\glew.h>
 

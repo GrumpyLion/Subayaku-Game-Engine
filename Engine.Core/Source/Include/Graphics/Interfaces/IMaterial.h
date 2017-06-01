@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IRenderer.h"
+#include "Graphics\Interfaces\IRenderer.h"
 #include "Graphics\Material.h"
 
 namespace Graphics

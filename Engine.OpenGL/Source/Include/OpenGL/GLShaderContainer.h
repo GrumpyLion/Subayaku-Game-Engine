@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLEW\Include\glew.h>
-#include "Graphics\Interface\IShaderContainer.h"
+#include "Graphics\Interfaces\IShaderContainer.h"
 #include "GLShader.h"
 
 namespace Graphics

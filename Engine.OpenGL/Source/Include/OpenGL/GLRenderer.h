@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics\Base\BaseRenderer.h"
+#include "Graphics\Bases\BaseRenderer.h"
 #include <GLEW\Include\glew.h>
 #include <gl/gl.h>
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Graphics\Cache\SMeshDesc.h"
-#include "IRenderer.h"
+#include "Graphics\Descriptions\SMeshDesc.h"
+#include "Graphics\Interfaces\IRenderer.h"
 
 namespace Graphics
 {

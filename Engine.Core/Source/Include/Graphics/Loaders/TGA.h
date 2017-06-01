@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string>
 
-#include "Graphics\Cache\STextureDesc.h"
+#include "Graphics\Descriptions\STextureDesc.h"
 #include "Core\Engine.h"
 
 //Used help from this site

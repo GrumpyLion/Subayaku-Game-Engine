@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include "GLShaderContainer.h"
-#include "Graphics\Interface\IMaterial.h"
+#include "Graphics\Interfaces\IMaterial.h"
 #include <memory>
 
 namespace Graphics

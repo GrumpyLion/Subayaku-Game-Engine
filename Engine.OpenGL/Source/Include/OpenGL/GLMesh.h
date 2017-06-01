@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLEW\Include\glew.h>
-#include "Graphics\Interface\IMesh.h"
+#include "Graphics\Interfaces\IMesh.h"
 
 namespace Graphics
 {

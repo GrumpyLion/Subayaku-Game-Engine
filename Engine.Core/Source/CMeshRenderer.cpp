@@ -4,14 +4,12 @@
 #include "Scene\Scene.h"
 #include "Graphics\Primitives.h"
 
-#include <memory>
-
 #include "OpenGL\GLMaterial.h"
 #include "DirectX\D3DMaterial.h"
 
 #include "Graphics\Loaders\AssimpLoader.h"
 
-#include "Graphics\Cache\SEntityDesc.h"
+#include "Graphics\Descriptions\SEntityDesc.h"
 
 namespace Scene
 {

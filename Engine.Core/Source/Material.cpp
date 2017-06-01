@@ -2,7 +2,7 @@
 #include "Utilities\Utilities.h"
 #include "Core\Engine.h"
 
-#include "Graphics\Interface\ITexture.h"
+#include "Graphics\Interfaces\ITexture.h"
 
 #include "DirectX\D3DTexture.h"
 #include "OpenGL\GLTexture.h"

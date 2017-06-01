@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Math\Math.h"
-#include "Graphics\Interface\IShaderBuffer.h"
+#include "Graphics\Interfaces\IShaderBuffer.h"
 #include <GLEW\Include\glew.h>
 
 namespace Graphics

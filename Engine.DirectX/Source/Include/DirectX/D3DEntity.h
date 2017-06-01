@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics\Interface\IEntity.h"
+#include "Graphics\Interfaces\IEntity.h"
 #include "D3DMaterial.h"
 #include <memory>
 

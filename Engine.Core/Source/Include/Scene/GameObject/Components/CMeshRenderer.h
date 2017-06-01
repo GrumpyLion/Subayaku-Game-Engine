@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Interface\IComponent.h"
-#include "Graphics\Cache\SMeshDesc.h"
+#include "Graphics\Descriptions\SMeshDesc.h"
 
 #include "Graphics\Material.h"
 #include <memory>

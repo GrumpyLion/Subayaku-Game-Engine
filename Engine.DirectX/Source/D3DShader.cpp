@@ -3,7 +3,7 @@
 
 #include "Math\Math.h"
 #include "D3DHelper.h"
-#include "Graphics\Cache\SShaderDesc.h"
+#include "Graphics\Descriptions\SShaderDesc.h"
 
 namespace Graphics
 {

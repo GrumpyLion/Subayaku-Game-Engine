@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics\Cache\SEntityDesc.h"
+#include "Graphics\Descriptions\SEntityDesc.h"
 #include "Graphics\Material.h"
 #include "Scene\GameObject\GameObject.h"
 

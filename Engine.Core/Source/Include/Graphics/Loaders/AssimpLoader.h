@@ -6,7 +6,7 @@
 
 #include "Core\Engine.h"
 
-#include "Graphics\Cache\SMeshDesc.h"
+#include "Graphics\Descriptions\SMeshDesc.h"
 
 inline bool LoadAssimpObj(Graphics::SMeshDesc &a_Desc)
 {

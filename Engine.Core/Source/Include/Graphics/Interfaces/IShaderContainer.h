@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Graphics\Cache\SShaderContainerDesc.h"
+#include "Graphics\Descriptions\SShaderContainerDesc.h"
+#include "Graphics\Interfaces\IRenderer.h"
 #include "Math\Math.h"
-#include "IRenderer.h"
 
 namespace Graphics
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLEW\Include\glew.h>
-#include "Graphics\Interface\ITexture.h"
+#include "Graphics\Interfaces\ITexture.h"
 
 namespace Graphics
 {

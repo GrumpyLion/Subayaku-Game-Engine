@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics\Interface\ITexture.h"
+#include "Graphics\Interfaces\ITexture.h"
 
 #include <d3d11.h>
 

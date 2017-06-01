@@ -2,7 +2,7 @@
 #include "Core\Engine.h"
 #include "Scene\Scene.h"
 
-#include "Graphics\Interface\IRenderer.h"
+#include "Graphics\Interfaces\IRenderer.h"
 #include "Input\InputManager.h"
 
 namespace Scene

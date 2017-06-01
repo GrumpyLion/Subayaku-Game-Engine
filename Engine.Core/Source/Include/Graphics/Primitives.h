@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Cache\SMeshDesc.h"
+#include "Graphics\Descriptions\SMeshDesc.h"
 
 namespace Graphics
 {

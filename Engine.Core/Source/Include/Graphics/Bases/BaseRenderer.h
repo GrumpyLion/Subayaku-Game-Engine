@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics\Interface\IRenderer.h"
+#include "Graphics\Interfaces\IRenderer.h"
 #include "Utilities\GraphicsCache.h"
 #include "Graphics\RenderFactory.h"
 

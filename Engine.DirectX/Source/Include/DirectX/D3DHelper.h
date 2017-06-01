@@ -2,9 +2,9 @@
 
 #include <Windows.h>
 #include <d3d11.h>
-#include "Graphics\Cache\TextureEnums.h"
-#include "Graphics\Cache\STextureDesc.h"
-#include "Graphics\Cache\SMeshDesc.h"
+#include "Graphics\Enums\TextureEnums.h"
+#include "Graphics\Descriptions\STextureDesc.h"
+#include "Graphics\Descriptions\SMeshDesc.h"
 
 namespace Graphics
 {

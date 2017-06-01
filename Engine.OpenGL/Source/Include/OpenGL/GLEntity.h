@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics\Interface\IEntity.h"
+#include "Graphics\Interfaces\IEntity.h"
 #include "GLMaterial.h"
 
 namespace Scene

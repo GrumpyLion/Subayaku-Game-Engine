@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "Core\Engine.h"
-#include "Graphics\Cache\STextureDesc.h"
+#include "Graphics\Descriptions\STextureDesc.h"
 
 namespace Graphics
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <d3d11.h>
-#include "Graphics\Interface\IMesh.h"
+#include "Graphics\Interfaces\IMesh.h"
 
 namespace Graphics
 {

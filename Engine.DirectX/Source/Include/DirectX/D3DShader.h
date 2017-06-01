@@ -3,7 +3,7 @@
 #include <d3d11.h>
 #include <D3Dcompiler.h>
 
-#include "Graphics\Interface\IShader.h"
+#include "Graphics\Interfaces\IShader.h"
 
 namespace Graphics
 {
