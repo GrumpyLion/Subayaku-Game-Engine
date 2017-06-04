@@ -1,6 +1,5 @@
-#include "GLTexture.h"
-#include "Core\Engine.h"
-#include "GLHelper.h"
+#include "OpenGL\GLTexture.h"
+#include "OpenGL\GLHelper.h"
 #include "Utilities\Utilities.h"
 
 namespace Graphics

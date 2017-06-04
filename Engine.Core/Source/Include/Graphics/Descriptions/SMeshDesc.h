@@ -1,8 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <string>
 #include "Math\Math.h"
-#include "Graphics\MeshInfo.h"
+#include "Graphics\Enums\MeshEnums.h"
 
 namespace Graphics
 {
@@ -19,6 +20,6 @@ namespace Graphics
 
 		bool ShouldCull = true;
 		bool HasIndices = true;
-		const char* FilePath;
+		std::string FilePath;
 	};
 }

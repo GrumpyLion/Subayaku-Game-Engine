@@ -1,14 +1,11 @@
 #pragma once
 
 #include "Graphics\Descriptions\SEntityDesc.h"
-#include "Graphics\Material.h"
-#include "Scene\GameObject\GameObject.h"
-
-#include "IRenderer.h"
-#include "IShaderBuffer.h"
 
 namespace Graphics
 {
+	class IRenderer;
+
 	class IEntity
 	{
 	public:

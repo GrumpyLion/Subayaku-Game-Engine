@@ -1,15 +1,10 @@
 #pragma once
 
+#include "DirectX\D3DEntity.h"
 #include "Graphics\Bases\BaseRenderer.h"
 
 #include <d3d11.h>
 
-#include "D3DEntity.h"
-#include "D3DTexture.h"
-#include "D3DMaterial.h"
-#include "D3DMesh.h"
-#include "D3DShader.h"
-#include "D3DShaderBuffer.h"
 #include "D3DShaderBufferContainer.h"
 
 #include <memory>
@@ -19,7 +14,7 @@ namespace Graphics
 	namespace DirectX
 	{
 
-		class D3DRenderer : public BaseRenderer<D3DEntity, D3DTexture, D3DMesh, D3DShader, D3DShaderBuffer>
+		class D3DRenderer : public BaseRenderer
 		{
 		private:
 			SRendererDesc m_Desc{};
@@ -39,6 +34,7 @@ namespace Graphics
 		public:
 
 			__declspec(dllexport) ~D3DRenderer();
+			__declspec(dllexport) D3DRenderer(Core::Engine *a_Engine);
 
 			__declspec(dllexport) bool Initialize(SRendererDesc &a_Desc) final;
 			__declspec(dllexport) void Render() final;

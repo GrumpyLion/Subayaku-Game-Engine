@@ -27,8 +27,6 @@ namespace Core
 	class Engine
 	{
 	private:
-		SEngineContext m_Context{};
-
 		static Engine* m_SharedInstance;
 		IWindow* m_Window = nullptr;
 		InputManager* m_InputManager = nullptr;
@@ -44,7 +42,7 @@ namespace Core
 
 		long m_StartTime = 0;
 	public:
-
+		SEngineContext m_Context{};
 		std::unique_ptr<GrumpyZip::ZipFile> ZipFile = nullptr;
 		long TimeSinceStart = 0;
 

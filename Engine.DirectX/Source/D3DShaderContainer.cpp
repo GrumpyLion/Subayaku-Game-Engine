@@ -1,6 +1,6 @@
-#include "D3DShaderContainer.h"
-#include "D3DHelper.h"
-#include "D3DRenderer.h"
+#include "DirectX\D3DShaderContainer.h"
+#include "DirectX\D3DHelper.h"
+#include "DirectX\D3DRenderer.h"
 
 namespace Graphics
 {

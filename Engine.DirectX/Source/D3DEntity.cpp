@@ -1,7 +1,7 @@
-#include "D3DEntity.h"
+#include "DirectX\D3DEntity.h"
 
-#include "D3DRenderer.h"
-#include "D3DMesh.h"
+#include "DirectX\D3DRenderer.h"
+#include "DirectX\D3DMesh.h"
 
 namespace Graphics
 {

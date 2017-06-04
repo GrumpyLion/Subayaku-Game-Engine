@@ -1,11 +1,30 @@
-#include "GLRenderer.h"
+#include "OpenGL\GLRenderer.h"
+
+#include "OpenGL\GLEntity.h"
+#include "OpenGL\GLTexture.h"
+#include "OpenGL\GLMesh.h"
+#include "OpenGL\GLShader.h"
+#include "OpenGL\GLShaderBuffer.h"
+
 
 namespace Graphics
 {
 	namespace OpenGL
 	{
+		GLRenderer::GLRenderer(Core::Engine *a_Engine)
+			: BaseRenderer(a_Engine)
+		{		}
+
 		bool GLRenderer::Initialize(SRendererDesc &a_Desc)
 		{
+			//Set Lambdas for the cache. It needs to know the types to create.
+			m_Cache->SetTextureCreator(std::function<std::unique_ptr<ITexture>()>([]() { return std::make_unique<GLTexture>(); }));
+			m_Cache->SetMeshCreator(std::function<std::unique_ptr<IMesh>()>([]() { return std::make_unique<GLMesh>(); }));
+			m_Cache->SetShaderCreator(std::function<std::unique_ptr<IShader>()>([]() { return std::make_unique<GLShader>(); }));
+			m_Cache->SetShaderBufferCreator(std::function<std::unique_ptr<IShaderBuffer>()>([]() { return std::make_unique<GLShaderBuffer>(); }));
+
+			m_CreateEntity = std::function<std::unique_ptr<IEntity>()>([]() { return std::make_unique<GLEntity>(); });
+
 			m_Desc = a_Desc;
 			m_HDC = GetDC(a_Desc.Handle);
 
@@ -49,22 +68,6 @@ namespace Graphics
 			glEnable(GL_BLEND); 
 			glDepthFunc(GL_LESS);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-			//if (Core::Engine::StaticClass()->GetScene() != nullptr)
-			//{
-			//	if (Core::Engine::StaticClass()->GetScene()->GetRenderables().size() > 0)
-			//	{
-			//		for (auto &temp : Core::Engine::StaticClass()->GetScene()->GetRenderables())
-			//		{
-			//			AddRenderable(temp.second->GetEntityDesc(), temp.second);
-			//		}
-			//	}
-			//}
-
-			//if (Core::Engine::StaticClass()->GetScene() != nullptr)
-			//{
-			//	SetCamera(Core::Engine::StaticClass()->GetScene()->GetCamera());
-			//}
 
 			m_Container = std::make_unique<GLShaderBufferContainer>();
 			m_Container->Initialize(this);

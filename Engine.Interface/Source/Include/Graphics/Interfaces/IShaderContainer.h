@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Graphics\Descriptions\SShaderContainerDesc.h"
-#include "Graphics\Interfaces\IRenderer.h"
 #include "Math\Math.h"
 
 namespace Graphics
 {
+	class IRenderer;
+
 	class IShaderContainer
 	{
 	public:

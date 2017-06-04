@@ -22,31 +22,21 @@
     <ClInclude Include="Source\Include\Core\Engine.h" />
     <ClInclude Include="Source\Include\Core\SEngineContext.h" />
     <ClInclude Include="Source\Include\Core\SubayakuCore.h" />
-    <ClInclude Include="Source\Include\Graphics\Bases\BaseRenderer.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\SEntityDesc.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\SShaderContainerDesc.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\SShaderDesc.h" />
-    <ClInclude Include="Source\Include\Graphics\GlobalIndices.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IEntity.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IMaterial.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IShader.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IShaderBuffer.h" />
+    <ClInclude Include="Source\Include\Graphics\Enums\GlobalIndices.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\SShaderBufferDesc.h" />
     <ClInclude Include="Source\Include\Graphics\Loaders\AssimpLoader.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\SMeshDesc.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\STextureDesc.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IMesh.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IRenderer.h" />
     <ClInclude Include="Source\Include\Graphics\Loaders\OBJ.h" />
-    <ClInclude Include="Source\Include\Graphics\RenderFactory.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IShaderContainer.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\ITexture.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\SRendererDesc.h" />
     <ClInclude Include="Source\Include\Graphics\Loaders\BMP.h" />
     <ClInclude Include="Source\Include\Graphics\Loaders\PNG.h" />
     <ClInclude Include="Source\Include\Graphics\Loaders\TGA.h" />
     <ClInclude Include="Source\Include\Graphics\Material.h" />
-    <ClInclude Include="Source\Include\Graphics\MeshInfo.h" />
+    <ClInclude Include="Source\Include\Graphics\Enums\MeshEnums.h" />
     <ClInclude Include="Source\Include\Graphics\Model.h" />
     <ClInclude Include="Source\Include\Graphics\Primitives.h" />
     <ClInclude Include="Source\Include\Graphics\Enums\TextureEnums.h" />
@@ -66,7 +56,6 @@
     <ClInclude Include="Source\Include\Scene\GameObject\Components\Transformation.h" />
     <ClInclude Include="Source\Include\Scene\GameObject\GameObject.h" />
     <ClInclude Include="Source\Include\Scene\Scene.h" />
-    <ClInclude Include="Source\Include\Utilities\GraphicsCache.h" />
     <ClInclude Include="Source\Include\Utilities\Utilities.h" />
     <ClInclude Include="Source\Include\Window\Window.h" />
     <ClInclude Include="Source\Include\Window\Interface\IWindow.h" />
@@ -178,12 +167,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\Include\;$(SolutionDir)Engine.DirectX\Source\Include\;$(SolutionDir)Engine.OpenGL\Source\Include\;$(SolutionDir)Dependencies\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\Include\;$(SolutionDir)Engine.DirectX\Source\Include\;$(SolutionDir)Engine.Interface\Source\Include\;$(SolutionDir)Engine.OpenGL\Source\Include\;$(SolutionDir)Dependencies\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>zlib.lib;assimp.lib;lua53.lib;Engine.OpenGL.lib;Engine.DirectX.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Lib\x64\;$(SolutionDir)Bin\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Bin\$(Platform)\$(Configuration)\;$(SolutionDir)Dependencies\Lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -221,7 +211,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\Include\;$(SolutionDir)Engine.DirectX\Source\Include\;$(SolutionDir)Engine.OpenGL\Source\Include\;$(SolutionDir)Dependencies\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\Include\;$(SolutionDir)Engine.DirectX\Source\Include\;$(SolutionDir)Engine.Interface\Source\Include\;$(SolutionDir)Engine.OpenGL\Source\Include\;$(SolutionDir)Dependencies\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -229,6 +220,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>zlib.lib;assimp.lib;lua53.lib;Engine.OpenGL.lib;Engine.DirectX.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Lib\x64\;$(SolutionDir)Bin\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <Lib>
       <AdditionalDependencies>zlib.lib;assimp.lib;lua53.lib;Engine.OpenGL.lib;Engine.DirectX.lib</AdditionalDependencies>

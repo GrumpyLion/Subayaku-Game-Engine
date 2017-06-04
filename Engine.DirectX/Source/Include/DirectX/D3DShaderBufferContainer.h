@@ -2,7 +2,7 @@
 
 #include "D3DShaderBuffer.h" 
 #include "Math\Math.h"
-#include "Graphics\GlobalIndices.h"
+#include "Graphics\Enums\GlobalIndices.h"
 #include <memory>
 
 namespace Graphics

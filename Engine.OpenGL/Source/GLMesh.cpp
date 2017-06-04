@@ -1,4 +1,4 @@
-#include "GLMesh.h"
+#include "OpenGL\GLMesh.h"
 #include "Math\Math.h"
 
 namespace Graphics

@@ -1,18 +1,30 @@
-#include "D3DRenderer.h"
+#include "DirectX\D3DRenderer.h"
+#include "DirectX\D3DHelper.h"
 
-#include "D3DHelper.h"
-#include "Utilities\Utilities.h"
-
-#include "Core\Engine.h"
-#include "Scene\Scene.h"
+#include "DirectX\D3DEntity.h"
+#include "DirectX\D3DTexture.h"
+#include "DirectX\D3DMesh.h"
+#include "DirectX\D3DShader.h"
+#include "DirectX\D3DShaderBuffer.h"
 
 namespace Graphics
 {
 	namespace DirectX
 	{
+		D3DRenderer::D3DRenderer(Core::Engine *a_Engine)
+			: BaseRenderer(a_Engine)
+		{		}
+
 		bool D3DRenderer::Initialize(SRendererDesc &a_Desc)
 		{
 			m_Desc = a_Desc;
+
+			m_Cache->SetTextureCreator(std::function<std::unique_ptr<ITexture>()>([]() { return std::make_unique<D3DTexture>(); }));
+			m_Cache->SetMeshCreator(std::function<std::unique_ptr<IMesh>()>([]() { return std::make_unique<D3DMesh>(); }));
+			m_Cache->SetShaderCreator(std::function<std::unique_ptr<IShader>()>([]() { return std::make_unique<D3DShader>(); }));
+			m_Cache->SetShaderBufferCreator(std::function<std::unique_ptr<IShaderBuffer>()>([]() { return std::make_unique<D3DShaderBuffer>(); }));
+
+			m_CreateEntity = std::function<std::unique_ptr<IEntity>()>([]() { return std::make_unique<D3DEntity>(); });
 
 			DXGI_SWAP_CHAIN_DESC swapChainDesc{};
 			D3D11_RASTERIZER_DESC rasterDesc{};
@@ -170,22 +182,6 @@ namespace Graphics
 
 			m_BufferContainer = std::make_unique<D3DShaderBufferContainer>();
 			m_BufferContainer->Initialize(this);
-
-			//if (Core::Engine::StaticClass()->GetScene() != nullptr)
-			//{
-			//	if (Core::Engine::StaticClass()->GetScene()->GetRenderables().size() > 0)
-			//	{
-			//		for (auto &temp : Core::Engine::StaticClass()->GetScene()->GetRenderables())
-			//		{
-			//			AddRenderable(temp.second);
-			//		}
-			//	}
-			//}
-
-			//if (Core::Engine::StaticClass()->GetScene() != nullptr)
-			//{
-			//	SetCamera(Core::Engine::StaticClass()->GetScene()->GetCamera());
-			//}
 
 			return true;
 		}

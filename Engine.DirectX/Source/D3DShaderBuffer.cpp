@@ -1,8 +1,6 @@
-#include "D3DShaderBuffer.h"
-#include "D3DHelper.h"
-#include "D3DRenderer.h"
-#include "Core\Engine.h"
-#include "Utilities\Utilities.h"
+#include "DirectX\D3DShaderBuffer.h"
+#include "DirectX\D3DHelper.h"
+#include "DirectX\D3DRenderer.h"
 
 namespace Graphics
 {

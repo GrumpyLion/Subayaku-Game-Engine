@@ -1,7 +1,7 @@
-#include "GLShader.h"
+#include "OpenGL\GLShader.h"
+#include "OpenGL\GLRenderer.h"
 
 #include "Utilities\Utilities.h"
-#include "GLRenderer.h"
 
 namespace Graphics
 {

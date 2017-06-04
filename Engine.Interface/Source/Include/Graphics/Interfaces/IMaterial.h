@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Graphics\Interfaces\IRenderer.h"
 #include "Graphics\Material.h"
 
 namespace Graphics
 {
+	class IRenderer;
+
 	class IMaterial
 	{
 	public:

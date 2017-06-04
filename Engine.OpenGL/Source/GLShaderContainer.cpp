@@ -1,6 +1,5 @@
-#include "GLShaderContainer.h"
-
-#include "GLRenderer.h"
+#include "OpenGL\GLShaderContainer.h"
+#include "OpenGL\GLRenderer.h"
 
 #include "Graphics\Material.h"
 #include "Utilities\Utilities.h"

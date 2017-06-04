@@ -5,11 +5,6 @@
 #include <gl/gl.h>
 
 #include "GLShaderBufferContainer.h"
-#include "GLEntity.h"
-#include "GLTexture.h"
-#include "GLShader.h"
-#include "GLShaderBuffer.h"
-#include "GLMesh.h"
 
 #include <unordered_map>
 #include <memory>
@@ -20,7 +15,7 @@ namespace Graphics
 	{
 		class GLEntity;
 
-		class GLRenderer : public BaseRenderer<GLEntity, GLTexture, GLMesh, GLShader, GLShaderBuffer>
+		class GLRenderer : public BaseRenderer
 		{
 		private:
 			HDC m_HDC{};
@@ -31,6 +26,7 @@ namespace Graphics
 		public:
 
 			__declspec(dllexport) ~GLRenderer();
+			__declspec(dllexport) GLRenderer(Core::Engine *a_Engine);
 
 			__declspec(dllexport) bool Initialize(SRendererDesc &a_Desc) final;
 			__declspec(dllexport) void Render() final;

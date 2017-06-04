@@ -1,9 +1,9 @@
-#include "GLEntity.h"
+#include "OpenGL\GLEntity.h"
 
-#include "GLShaderContainer.h"
-#include "GLHelper.h"
-#include "GLMesh.h"
-#include "GLRenderer.h"
+#include "OpenGL\GLShaderContainer.h"
+#include "OpenGL\GLHelper.h"
+#include "OpenGL\GLMesh.h"
+#include "OpenGL\GLRenderer.h"
 
 namespace Graphics
 {

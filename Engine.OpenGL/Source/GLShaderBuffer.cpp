@@ -1,4 +1,4 @@
-#include "GLShaderBuffer.h"
+#include "OpenGL\GLShaderBuffer.h"
 
 #include <memory>
 

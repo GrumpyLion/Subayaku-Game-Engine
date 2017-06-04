@@ -1,12 +1,9 @@
-#include "GLShaderBufferContainer.h"
+#include "OpenGL\GLShaderBufferContainer.h"
 
-#include "GLRenderer.h"
+#include "OpenGL\GLRenderer.h"
 
-#include "Graphics\GlobalIndices.h"
+#include "Graphics\Enums\GlobalIndices.h"
 #include "Utilities\Utilities.h"
-#include "Core\Engine.h"
-#include "Scene\GameObject\Components\Transformation.h"
-#include "Scene\GameObject\Components\CCamera.h"
 
 namespace Graphics
 {

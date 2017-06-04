@@ -1,8 +1,6 @@
-#include "D3DTexture.h"
-#include "D3DHelper.h"
-#include "D3DRenderer.h"
-
-#include "Core\Engine.h"
+#include "DirectX\D3DTexture.h"
+#include "DirectX\D3DHelper.h"
+#include "DirectX\D3DRenderer.h"
 
 namespace Graphics
 {

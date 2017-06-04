@@ -2,7 +2,6 @@
 
 #include "Graphics\Descriptions\SRendererDesc.h"
 #include "Graphics\Descriptions\SEntityDesc.h"
-#include "Utilities\GraphicsCache.h"
 
 #include "Core\Engine.h"
 #include "Scene\GameObject\GameObject.h"
@@ -23,8 +22,6 @@ namespace Graphics
 		virtual void RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer) = 0;
 		virtual void SetCamera(Scene::CCamera *a_Camera) = 0;
 		virtual Scene::CCamera *GetCamera() = 0;
-		virtual void SetEngine(Core::Engine *a_Engine) = 0;
 		virtual Core::Engine *GetEngine() = 0;
-
 	};
 }

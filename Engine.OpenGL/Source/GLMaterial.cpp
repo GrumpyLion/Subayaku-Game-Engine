@@ -1,8 +1,7 @@
-#include "GLMaterial.h"
-#include "GLHelper.h"
-#include "Graphics\Material.h"
-#include "GLRenderer.h"
-#include "GLTexture.h"
+#include "OpenGL\GLMaterial.h"
+#include "OpenGL\GLHelper.h"
+#include "OpenGL\GLRenderer.h"
+#include "OpenGL\GLTexture.h"
 
 namespace Graphics
 {

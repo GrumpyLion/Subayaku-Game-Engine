@@ -2,9 +2,9 @@
 #include <chrono>
 #include <thread>
 
+#include "DirectX\D3DRenderer.h"
 #include "OpenGL\GLRenderer.h"
 
-#include "DirectX\D3DRenderer.h"
 
 #include "Core\SubayakuCore.h"
 #include "Input\Keyboard.h"
@@ -173,11 +173,11 @@ namespace Core
 		switch (a_Context.RDevice)
 		{
 		case RenderDevice::OpenGL:
-			m_Renderer = new Graphics::OpenGL::GLRenderer();
+			m_Renderer = new Graphics::OpenGL::GLRenderer(this);
 			break;
 
 		case RenderDevice::DirectX:
-			m_Renderer = new Graphics::DirectX::D3DRenderer();
+			m_Renderer = new Graphics::DirectX::D3DRenderer(this);
 			break;
 		
 		default:
@@ -185,7 +185,6 @@ namespace Core
 			return false;
 		}
 
-		m_Renderer->SetEngine(this);
 		if (!m_Renderer->Initialize(rendererDesc))
 		{
 			ErrorBox(L"Renderer Init Failure");

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Graphics\Descriptions\STextureDesc.h"
-#include "Graphics\Interfaces\IRenderer.h"
 
 namespace Graphics
 {
+	class IRenderer;
+
 	class ITexture
 	{
 	public:

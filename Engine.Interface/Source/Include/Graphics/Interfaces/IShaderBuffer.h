@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Graphics\Descriptions\SShaderBufferDesc.h"
-#include "Graphics\Interfaces\IRenderer.h"
 
 namespace Graphics
 {
+	class IRenderer;
+
 	class IShaderBuffer
 	{
 	public:

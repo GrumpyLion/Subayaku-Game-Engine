@@ -1,10 +1,5 @@
-#include "D3DShaderBufferContainer.h"
-
-#include "D3DRenderer.h"
-#include "Utilities\Utilities.h"
-#include "Core\Engine.h"
-#include "Scene\GameObject\Components\CCamera.h"
-#include "Scene\GameObject\Components\Transformation.h"
+#include "DirectX\D3DShaderBufferContainer.h"
+#include "DirectX\D3DRenderer.h"
 
 namespace Graphics
 {

@@ -7,6 +7,8 @@
 #include "OpenGL\GLMaterial.h"
 #include "DirectX\D3DMaterial.h"
 
+#include "Graphics\Interfaces\IRenderer.h"
+
 #include "Graphics\Loaders\AssimpLoader.h"
 
 #include "Graphics\Descriptions\SEntityDesc.h"

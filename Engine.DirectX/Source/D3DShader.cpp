@@ -1,9 +1,6 @@
-#include "D3DShader.h"
-#include "D3DRenderer.h"
-
-#include "Math\Math.h"
-#include "D3DHelper.h"
-#include "Graphics\Descriptions\SShaderDesc.h"
+#include "DirectX\D3DShader.h"
+#include "DirectX\D3DRenderer.h"
+#include "DirectX\D3DHelper.h"
 
 namespace Graphics
 {
