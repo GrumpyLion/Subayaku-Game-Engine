@@ -24,7 +24,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine.DirectX", "Engine.Di
 		{54FB2B54-BE88-4379-A0C7-C14B23DB3290} = {54FB2B54-BE88-4379-A0C7-C14B23DB3290}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine.Interface", "Engine.Interface\Engine.Interface.vcxproj", "{54FB2B54-BE88-4379-A0C7-C14B23DB3290}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine.Utilities", "Engine.Utilities\Engine.Utilities.vcxproj", "{54FB2B54-BE88-4379-A0C7-C14B23DB3290}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
