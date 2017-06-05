@@ -5,7 +5,6 @@
 #include "DirectX\D3DRenderer.h"
 #include "OpenGL\GLRenderer.h"
 
-
 #include "Core\SubayakuCore.h"
 #include "Input\Keyboard.h"
 
@@ -29,7 +28,7 @@ namespace Core
 	}
 	
 	bool Engine::Initialize(SEngineContext& a_Context)
-	{		
+	{	
 		m_Context = a_Context;
 
 		m_Window = new Window();
@@ -93,6 +92,9 @@ namespace Core
 
 			while (lag >= timestep)
 			{
+				//Process an event
+				EventHandler::StaticClass()->Update();
+
 				GetInputManager()->GetKeyboard()->Update();
 				lag -= timestep;
 				updates++;
@@ -120,7 +122,6 @@ namespace Core
 
 				TimeSinceStart = (long)(std::chrono::duration_cast<std::chrono::milliseconds>
 					(std::chrono::system_clock::now().time_since_epoch()).count() - m_StartTime);
-
 
 				GetInputManager()->GetKeyboard()->Refresh();
 			}
@@ -157,6 +158,8 @@ namespace Core
 		SafeDelete(m_Window);
 
 		ZipFile.reset();
+
+		EventHandler::Release();
 		return true;
 	}
 	

@@ -27,6 +27,10 @@ namespace Graphics
 				return nullptr;
 			}
 
+			////Clear memory
+			//a_Desc.PixelData.resize(0);
+			//a_Desc.PixelData.clear();
+
 			m_Textures[a_Desc.FilePath] = std::move(texture);
 
 			return m_Textures[a_Desc.FilePath].get();
@@ -57,6 +61,25 @@ namespace Graphics
 				LogErr("Error while loading Mesh File [%s] in Cache\n", a_Desc.FilePath);
 				return nullptr;
 			}
+
+			//Clear memory
+			a_Desc.Bitangents.resize(0);
+			a_Desc.Bitangents.shrink_to_fit();
+
+			a_Desc.Tangents.resize(0);
+			a_Desc.Tangents.shrink_to_fit();
+			
+			a_Desc.Normals.resize(0);
+			a_Desc.Normals.shrink_to_fit();
+
+			a_Desc.TexCoords.resize(0);
+			a_Desc.TexCoords.shrink_to_fit();
+
+			a_Desc.Vertices.resize(0);
+			a_Desc.Vertices.shrink_to_fit();
+
+			a_Desc.Indices.resize(0);
+			a_Desc.Indices.shrink_to_fit();
 
 			m_Meshes[a_Desc.FilePath] = std::move(mesh);
 

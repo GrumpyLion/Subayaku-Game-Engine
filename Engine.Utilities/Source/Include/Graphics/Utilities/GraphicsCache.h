@@ -53,19 +53,19 @@ namespace Graphics
 
 		// Loads an Texture Object of the current renderer type.
 		// 
-		Graphics::ITexture* LoadTexture(Graphics::STextureDesc &a_Desc);
+		__declspec(dllexport) Graphics::ITexture* LoadTexture(Graphics::STextureDesc &a_Desc);
 
 		// Loads an Mesh Object of the current renderer type.
 		//
-		Graphics::IMesh* LoadMesh(Graphics::SMeshDesc &a_Desc);
+		__declspec(dllexport) Graphics::IMesh* LoadMesh(Graphics::SMeshDesc &a_Desc);
 
 		// Loads an Shader Object of the current renderer type.
 		//
-		Graphics::IShader* LoadShader(Graphics::SShaderDesc &a_Desc);
+		__declspec(dllexport) Graphics::IShader* LoadShader(Graphics::SShaderDesc &a_Desc);
 
 		// Loads an ShaderBuffer Object of the current renderer type.
 		//
-		Graphics::IShaderBuffer* LoadShaderBuffer(Graphics::SShaderBufferDesc &a_Desc);
+		__declspec(dllexport) Graphics::IShaderBuffer* LoadShaderBuffer(Graphics::SShaderBufferDesc &a_Desc);
 
 	};
 }

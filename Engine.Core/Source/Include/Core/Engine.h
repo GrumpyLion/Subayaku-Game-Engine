@@ -4,6 +4,8 @@
 #include "Graphics\Descriptions\SRendererDesc.h"
 #include <GrumpyZip\ZipFile.h>
 
+#include "Utilities\Event\EventHandler.h"
+
 #define ENGINE_ZIPFILE Core::Engine::StaticClass()->ZipFile
 #define ENGINE_CONTEXT Core::Engine::StaticClass()->GetContext()
 #define ENGINE_RENDERER Core::Engine::StaticClass()->GetRenderer()

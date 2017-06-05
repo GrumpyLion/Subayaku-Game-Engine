@@ -4,6 +4,7 @@
 
 #include "Graphics\Enums\GlobalIndices.h"
 #include "Utilities\Utilities.h"
+#include "Scene\GameObject\GameObject.h"
 
 namespace Graphics
 {

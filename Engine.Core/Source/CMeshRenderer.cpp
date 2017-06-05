@@ -1,38 +1,39 @@
 #include "Scene\GameObject\Components\CMeshRenderer.h"
 
-#include "Core\Engine.h"
 #include "Scene\Scene.h"
 #include "Graphics\Primitives.h"
 
-#include "OpenGL\GLMaterial.h"
-#include "DirectX\D3DMaterial.h"
-
-#include "Graphics\Interfaces\IRenderer.h"
-
 #include "Graphics\Loaders\AssimpLoader.h"
-
-#include "Graphics\Descriptions\SEntityDesc.h"
 
 namespace Scene
 {
 	CMeshRenderer::~CMeshRenderer()
 	{
-		Core::Engine::StaticClass()->GetScene()->RemoveRenderable(Parent);
+		Core::SEventDesc eventDesc{};
+
+		eventDesc.Event = Core::EEvents::SCENE_MESHCOMPONENT_REMOVED;
+		eventDesc.Description = m_Entity.get();
+		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
 	}
 
 	void CMeshRenderer::InitializeEntity()
 	{
-		Graphics::SEntityDesc entity{};
+		m_Entity = std::make_unique<Graphics::SEntityDesc>();
 	
 		//Load the mesh from cache..
 		if (m_Mesh.Vertices.size() == 0)
 			LoadAssimpObj(m_Mesh);
 
-		entity.Mesh = m_Mesh;
-		entity.Material = m_Material.get();
-		entity.Material->ParentTransform = Parent->Transform;
+		m_Entity->Mesh = m_Mesh;
+		m_Entity->MeshRenderer = this;
+		m_Entity->Material = m_Material.get();
+		m_Entity->Material->ParentTransform = Parent->Transform;
+		m_Entity->Parent = Parent;
 
-		Core::Engine::StaticClass()->GetRenderer()->AddRenderable(entity, this);
+		Core::SEventDesc eventDesc{};
+		eventDesc.Event = Core::EEvents::SCENE_MESHCOMPONENT_ADDED;
+		eventDesc.Description = m_Entity.get();
+		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
 	}
 
 	bool CMeshRenderer::Initialize(GameObject *a_Parent, const char* a_ModelLocation, std::unique_ptr<Graphics::Material> a_Material)
@@ -47,8 +48,6 @@ namespace Scene
 		m_Material = std::move(a_Material);
 		
 		InitializeEntity();
-
-		Core::Engine::StaticClass()->GetScene()->AddRenderable(Parent, this);
 		return true;
 	}
 
@@ -60,8 +59,6 @@ namespace Scene
 		m_Material = std::move(a_Material);
 		
 		InitializeEntity();
-
-		Core::Engine::StaticClass()->GetScene()->AddRenderable(Parent, this);
 		return true;
 	}
 

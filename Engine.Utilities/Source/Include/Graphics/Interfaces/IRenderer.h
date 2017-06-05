@@ -4,8 +4,7 @@
 #include "Graphics\Descriptions\SEntityDesc.h"
 
 #include "Core\Engine.h"
-#include "Scene\GameObject\GameObject.h"
-#include "Scene\GameObject\Components\CMeshRenderer.h"
+#include "Utilities\Event\EventHandler.h"
 #include "Scene\GameObject\Components\CCamera.h"
 
 namespace Graphics
@@ -18,10 +17,12 @@ namespace Graphics
 		virtual bool Initialize(SRendererDesc &a_Desc) = 0;
 		virtual void Render() = 0;		
 
-		virtual void AddRenderable(SEntityDesc &a_Desc, Scene::CMeshRenderer *a_MeshRenderer) = 0;
+		virtual void AddRenderable(SEntityDesc &a_Desc) = 0;
 		virtual void RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer) = 0;
-		virtual void SetCamera(Scene::CCamera *a_Camera) = 0;
+
 		virtual Scene::CCamera *GetCamera() = 0;
 		virtual Core::Engine *GetEngine() = 0;
+
+		virtual void EventListener(Core::SEventDesc &a_Desc) = 0;
 	};
 }

@@ -11,6 +11,8 @@
 #include "GameObject\Components\CSprite.h"
 #include "GameObject\Components\CScriptComponent.h"
 
+#include "Utilities\Event\EventHandler.h"
+
 #include <memory>
 
 namespace Graphics
@@ -35,8 +37,11 @@ namespace Scene
 		//A collection of all object that can be rendered. The Renderer will get this list and uses this.
 		std::unordered_map<GameObject*, CMeshRenderer*> m_Renderables;
 
+		Callback m_Callback = nullptr;
+
 	public:
 		~Scene();
+		Scene();
 
 		bool Initialize();
 		void Update();
@@ -52,6 +57,8 @@ namespace Scene
 
 		void ReloadForRendering();
 		void ClearScene();
+
+		void Listener(Core::SEventDesc &a_Desc);
 
 		void SetCamera(CCamera *a_Camera);
 		CCamera* GetCamera();

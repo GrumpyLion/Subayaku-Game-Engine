@@ -1,10 +1,9 @@
 #include "Scene\Scene.h"
 #include "Utilities\Utilities.h"
 
-#include "Core\Engine.h"
-#include "Graphics\Interfaces\IRenderer.h"
-#include "Graphics\Material.h"
+#include "Graphics\Descriptions\SEntityDesc.h"
 
+#include "Graphics\Material.h"
 #include "Graphics\Primitives.h"
 
 namespace Scene
@@ -95,9 +94,28 @@ namespace Scene
 		}
 	}
 
+	Scene::Scene()
+	{
+		m_Callback = std::bind(&Scene::Listener, this, std::placeholders::_1);
+
+		//Used for detection
+		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_MESHCOMPONENT_ADDED);
+		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_MESHCOMPONENT_REMOVED);
+
+		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_ADDED);
+		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
+	}
+
 	Scene::~Scene()
 	{
 		ClearScene();
+		
+		//Used for detection
+		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_MESHCOMPONENT_ADDED);
+		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_MESHCOMPONENT_REMOVED);
+
+		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_ADDED);
+		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
 	}
 
 	bool Scene::AddGameObject(std::unique_ptr<GameObject> a_ToAdd)
@@ -115,7 +133,7 @@ namespace Scene
 			return false;
 		}
 
-		LogErr("GameObject added %s\n", a_ToAdd->Name.c_str());
+		printf("GameObject added %s\n", a_ToAdd->Name.c_str());
 		m_GameObjects[a_ToAdd->Name] = std::move( a_ToAdd );
 		return true;
 	}
@@ -156,9 +174,7 @@ namespace Scene
 
 		if (m_Renderables.find(a_Parent) != m_Renderables.end())
 		{
-			CMeshRenderer *temp = m_Renderables.find(a_Parent)->second;			
-			//The Renderer need to notice the deletion			
-			Core::Engine::StaticClass()->GetRenderer()->RemoveRenderable(temp);
+			CMeshRenderer *temp = m_Renderables.find(a_Parent)->second;		
 			m_Renderables.erase(a_Parent);
 		}
 		else
@@ -209,12 +225,44 @@ namespace Scene
 				temp.second->InitializeEntity();
 			}
 		}
+
+		//Update Camera..
+		Core::SEventDesc eventDesc{};
+
+		eventDesc.Event = Core::EEvents::SCENE_CAMERACOMPONENT_ADDED;
+		eventDesc.Description = m_Camera;
+
+		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
 	}
 
 	void Scene::ClearScene()
 	{
 		m_GameObjects.clear();
 		m_Renderables.clear();
+	}
+
+	void Scene::Listener(Core::SEventDesc &a_Desc)
+	{
+		Graphics::SEntityDesc *entity = (Graphics::SEntityDesc*)a_Desc.Description;
+
+		switch (a_Desc.Event)
+		{
+		case Core::EEvents::SCENE_MESHCOMPONENT_ADDED:
+			AddRenderable(entity->Parent, entity->MeshRenderer);
+			break;
+
+		case Core::EEvents::SCENE_MESHCOMPONENT_REMOVED:
+			RemoveRenderable(entity->Parent);
+			break;
+
+		case Core::EEvents::SCENE_CAMERACOMPONENT_ADDED:
+			m_Camera = (CCamera*)a_Desc.Description;
+			break;
+
+		case Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED:
+			m_Camera = nullptr;
+			break;
+		}
 	}
 
 	void Scene::SetCamera(CCamera *a_Camera)

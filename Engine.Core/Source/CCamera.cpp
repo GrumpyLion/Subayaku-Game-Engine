@@ -1,15 +1,17 @@
 #include "Scene\GameObject\Components\CCamera.h"
-#include "Core\Engine.h"
-#include "Scene\Scene.h"
 
 #include "Graphics\Interfaces\IRenderer.h"
 #include "Input\InputManager.h"
+#include "Scene\GameObject\GameObject.h"
 
 namespace Scene
 {
 	CCamera::~CCamera()
 	{
-		Core::Engine::StaticClass()->GetRenderer()->SetCamera(nullptr);
+		Core::SEventDesc eventDesc{};
+
+		eventDesc.Event = Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED;
+		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
 	}
 
 	bool CCamera::Initialize(GameObject *a_Parent, float a_FOV, float a_Near, float a_Far)
@@ -21,14 +23,19 @@ namespace Scene
 		Far = a_Far;
 
 		CurrentCamera = true;
+
+		Core::SEventDesc eventDesc{};
+
+		eventDesc.Event = Core::EEvents::SCENE_CAMERACOMPONENT_ADDED;
+		eventDesc.Description = this;
+
+		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
+
 		return true;
 	}
 
 	void CCamera::Update()
 	{
-		Core::Engine::StaticClass()->GetRenderer()->SetCamera(this);
-		Core::Engine::StaticClass()->GetScene()->SetCamera(this);
-
 		float aspect = (float)Core::Engine::StaticClass()->GetContext().Width / (float)Core::Engine::StaticClass()->GetContext().Height;
 		ToProjectionMatrixRH = Matrix4f::PerspectiveRH(FOV,
 			aspect, Near, Far);

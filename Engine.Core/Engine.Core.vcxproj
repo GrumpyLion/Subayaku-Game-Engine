@@ -56,7 +56,6 @@
     <ClInclude Include="Source\Include\Scene\GameObject\Components\Transformation.h" />
     <ClInclude Include="Source\Include\Scene\GameObject\GameObject.h" />
     <ClInclude Include="Source\Include\Scene\Scene.h" />
-    <ClInclude Include="Source\Include\Utilities\Utilities.h" />
     <ClInclude Include="Source\Include\Window\Window.h" />
     <ClInclude Include="Source\Include\Window\Interface\IWindow.h" />
   </ItemGroup>
@@ -212,7 +211,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)Source\Include\;$(SolutionDir)Engine.DirectX\Source\Include\;$(SolutionDir)Engine.Utilities\Source\Include\;$(SolutionDir)Engine.OpenGL\Source\Include\;$(SolutionDir)Dependencies\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -220,7 +219,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>zlib.lib;assimp.lib;lua53.lib;Engine.OpenGL.lib;Engine.DirectX.lib;Engine.Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Lib\x64\;$(SolutionDir)Bin\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <Lib>
       <AdditionalDependencies>zlib.lib;assimp.lib;lua53.lib;Engine.OpenGL.lib;Engine.DirectX.lib</AdditionalDependencies>

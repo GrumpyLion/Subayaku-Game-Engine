@@ -2,6 +2,7 @@
 
 #include "Interface\IComponent.h"
 #include "Graphics\Descriptions\SMeshDesc.h"
+#include "Graphics\Descriptions\SEntityDesc.h"
 
 #include "Graphics\Material.h"
 #include <memory>
@@ -19,6 +20,7 @@ namespace Scene
 		Graphics::SMeshDesc m_Mesh{};
 
 		std::unique_ptr<Graphics::Material> m_Material = nullptr;
+		std::unique_ptr<Graphics::SEntityDesc> m_Entity;
 
 	public:
 		~CMeshRenderer();

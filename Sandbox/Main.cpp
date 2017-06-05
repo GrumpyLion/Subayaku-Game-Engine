@@ -2,7 +2,8 @@
 
 #include "Core\Engine.h"
 #include "Core\SEngineContext.h"
-#include "Utilities\Utilities.h"
+
+#include <vector>
 
 int main()
 {	
@@ -17,6 +18,5 @@ int main()
 	{
 		engine->Run();
 	}
-	
 	return 0;
 }

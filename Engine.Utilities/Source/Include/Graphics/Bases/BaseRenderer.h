@@ -23,30 +23,48 @@ namespace Graphics
 
 		//Lambda to create all entities
 		//
-		std::function<std::unique_ptr<IEntity>()> m_CreateEntity;
+		std::function<std::unique_ptr<IEntity>()> m_CreateEntity = nullptr;
+
+		//Lambda to EventHandler
+		//
+		std::function<void(Core::SEventDesc&)> m_EventListener = nullptr;
 
 	public:
 		virtual ~BaseRenderer() 
-		{		}
+		{
+			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_MESHCOMPONENT_ADDED);
+			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_CAMERACOMPONENT_ADDED);
+			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_MESHCOMPONENT_REMOVED);
+			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
+		}
 
 		BaseRenderer(Core::Engine *a_Engine)
 			: m_Engine(a_Engine), m_Cache(std::make_unique<GraphicsCache>(this))
-		{		}
+		{
+
+			m_EventListener = std::bind(&BaseRenderer::EventListener, this, std::placeholders::_1);
+
+			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_MESHCOMPONENT_ADDED);
+			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_CAMERACOMPONENT_ADDED);	
+			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_MESHCOMPONENT_REMOVED);
+			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
+
+		}
 
 		Core::Engine *GetEngine()	final				{			return m_Engine;			}
 
 		GraphicsCache* GetCache()						{			return m_Cache.get();		}
 
 		Scene::CCamera* GetCamera()	final				{			return m_Camera;			}
-		
-		void SetCamera(Scene::CCamera *a_Camera) final	{			m_Camera = a_Camera;		}
 
 		//Adds an renderer entity object that contains all information to render an certain object.
 		//
-		void AddRenderable(SEntityDesc &a_Desc, Scene::CMeshRenderer *a_MeshRenderer) final;
+		__declspec(dllexport) void AddRenderable(SEntityDesc &a_Desc) final;
 
 		//Removes an entity with the given meshrenderer
 		//
-		void RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer) final;
+		__declspec(dllexport) void RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer) final;
+
+		__declspec(dllexport) void EventListener(Core::SEventDesc &a_Desc) final;
 	};
 }

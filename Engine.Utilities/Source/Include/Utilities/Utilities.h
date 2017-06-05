@@ -7,6 +7,8 @@
 #include <memory>
 #include "Core\SEngineContext.h"
 
+#define DLLEXPORT __declspec(dllexport) 
+
 template<typename TO, typename FROM> 
 std::unique_ptr<TO> static_cast_uptr(std::unique_ptr<FROM>&& old)
 {
@@ -36,23 +38,23 @@ inline void ErrorBox(LPWSTR a_Text)
 	MessageBox(nullptr, a_Text, L"Error", MB_OK | MB_ICONERROR);
 }
 
-#define LogErrorFunction(format, ...) _Log(__FUNCTION__, format, __VA_ARGS__)
+#define LogErr(format, ...) NLogErr(__FUNCTION__, format, __VA_ARGS__)
+#define LogFunction (format, ...) _Log(__FUNCTION__, format, __VA_ARGS__)
 
 template<typename...Args>
-void _Log(const std::string& func, const std::string& format, Args&&...args)
+inline void _Log(const std::string& func, const std::string& format, Args&&...args)
 {
-	printf("Error in function %s ", func.c_str());
+	printf("%s ", func.c_str());
 	printf(format.c_str(), std::forward<Args>(args)...);
 	printf("\n");
 }
 
-inline void LogErr(std::string a_Format, ...)
+template<typename...Args>
+inline void NLogErr(const std::string& func, const std::string& format, Args&&...args)
 {
-	va_list v1;
-	va_start(v1, a_Format);
-	auto ret = vprintf(a_Format.c_str(), v1);
-	va_end(v1);
-	//printf("Error: %s\n", a_Format);
+	printf("Error in function: %s ", func.c_str());
+	printf(format.c_str(), std::forward<Args>(args)...);
+	printf("\n");
 }
 
 inline void LogWar(std::string a_Text)
