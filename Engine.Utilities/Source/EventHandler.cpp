@@ -92,14 +92,14 @@ namespace Core
 	{
 		if (m_Events.size() > 0)
 		{
-			size_t size = m_Events.size() - 1; //because of pop_back
-
-			for (auto temp : m_Subscribers[m_Events[size].Event])
+			for (auto tempEvent : m_Events)
 			{
-				temp(m_Events[size]);
+				for (auto temp : m_Subscribers[tempEvent.Event])
+				{
+					temp(tempEvent);
+				}
 			}
-
-			m_Events.pop_back();
+			m_Events.clear();
 		}
 	}
 }

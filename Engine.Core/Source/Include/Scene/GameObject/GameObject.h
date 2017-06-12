@@ -13,7 +13,7 @@ namespace Scene
 	{
 	private:
 		std::vector<std::unique_ptr<IComponent>> m_Components;
-		std::unique_ptr<Transformation> m_Transform;
+		Transformation m_Transform;
 
 	public:
 		//This represents the position, rotation and the scale
@@ -22,11 +22,12 @@ namespace Scene
 
 		~GameObject();
 		
-		void SetTransform(std::unique_ptr<Transformation> a_Transform);
+		void SetTransform(Transformation& a_Transform);
 		bool Initialize();
 		void Update();
 
 		bool AddComponent(std::unique_ptr<IComponent> a_ToAdd);
+		IComponent* AddNewComponent(ComponentType a_Type);
 		void RemoveComponentByType(ComponentType &a_Type);
 	};
 }

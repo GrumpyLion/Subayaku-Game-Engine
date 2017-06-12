@@ -25,7 +25,7 @@ namespace Graphics
 		//
 		std::function<std::unique_ptr<IEntity>()> m_CreateEntity = nullptr;
 
-		//Lambda to EventHandler
+		//Function* to EventHandler
 		//
 		std::function<void(Core::SEventDesc&)> m_EventListener = nullptr;
 
@@ -34,21 +34,28 @@ namespace Graphics
 		{
 			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_MESHCOMPONENT_ADDED);
 			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_CAMERACOMPONENT_ADDED);
+
 			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_MESHCOMPONENT_REMOVED);
 			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
+		
+			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_CLEAR);
 		}
 
 		BaseRenderer(Core::Engine *a_Engine)
 			: m_Engine(a_Engine), m_Cache(std::make_unique<GraphicsCache>(this))
 		{
-
-			m_EventListener = std::bind(&BaseRenderer::EventListener, this, std::placeholders::_1);
+			m_EventListener = [=](Core::SEventDesc& desc)
+			{
+				this->EventListener(desc);
+			};
 
 			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_MESHCOMPONENT_ADDED);
 			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_CAMERACOMPONENT_ADDED);	
+
 			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_MESHCOMPONENT_REMOVED);
 			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
 
+			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_CLEAR);
 		}
 
 		Core::Engine *GetEngine()	final				{			return m_Engine;			}

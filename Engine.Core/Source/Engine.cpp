@@ -92,9 +92,6 @@ namespace Core
 
 			while (lag >= timestep)
 			{
-				//Process an event
-				EventHandler::StaticClass()->Update();
-
 				GetInputManager()->GetKeyboard()->Update();
 				lag -= timestep;
 				updates++;
@@ -119,11 +116,23 @@ namespace Core
 					m_Context.RDevice = RenderDevice::OpenGL;
 					SwitchRenderer(m_Context);
 				}
+				
+				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_F5))
+				{
+					Core::SEventDesc desc{};
+					desc.Event = EEvents::SCENE_CLEAR;
 
+					Core::EventHandler::StaticClass()->ForceEvent(desc);
+					m_Scene->Initialize();
+				}
+				
 				TimeSinceStart = (long)(std::chrono::duration_cast<std::chrono::milliseconds>
 					(std::chrono::system_clock::now().time_since_epoch()).count() - m_StartTime);
 
 				GetInputManager()->GetKeyboard()->Refresh();
+
+				//Process an event
+				EventHandler::StaticClass()->Update();
 			}
 
 			auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - deltaTimer);

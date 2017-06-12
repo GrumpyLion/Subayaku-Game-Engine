@@ -47,7 +47,7 @@ namespace Scene
 		void Update();
 
 		GameObject* InstantiateGameObject(std::string a_Name);
-		GameObject* InstantiateGameObject(std::string a_Name, std::unique_ptr<Transformation> a_Transform);
+		GameObject* InstantiateGameObject(std::string a_Name, Transformation& a_Transform);
 
 		void AddRenderable(GameObject *a_Parent, CMeshRenderer *a_Renderable);
 		void RemoveRenderable(GameObject *a_Parent);

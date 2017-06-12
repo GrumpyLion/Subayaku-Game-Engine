@@ -47,7 +47,7 @@ namespace Scene
 		ToViewMatrixLH *= Matrix4f::RotateX(Parent->Transform->Rotation.x * DEGTORAD);
 		ToViewMatrixLH *= Matrix4f::RotateY(Parent->Transform->Rotation.y * DEGTORAD);
 		ToViewMatrixLH *= Matrix4f::RotateZ(Parent->Transform->Rotation.z * DEGTORAD);
-		ToViewMatrixLH *= Matrix4f::Translate(Parent->Transform->Position);
+		ToViewMatrixLH *= Matrix4f::Translate(Parent->Transform->Position * Vector3f(1, -1, 1));
 
 		ToViewMatrixRH = Matrix4f::Identity();
 		ToViewMatrixRH *= Matrix4f::Translate(Parent->Transform->Position);

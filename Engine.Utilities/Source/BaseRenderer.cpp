@@ -61,6 +61,10 @@ namespace Graphics
 		case Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED:
 			m_Camera = nullptr;
 			break;
+
+		case Core::EEvents::SCENE_CLEAR:
+			m_Entities.clear();
+			break;
 		}
 	}
 }

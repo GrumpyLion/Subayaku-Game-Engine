@@ -23,7 +23,7 @@ namespace Scene
 		texInfo.FilePath = a_TexturePath;
 		
 		//insert cache
-		m_Material->AddTexture(texInfo);
+		m_Material.AddTexture(texInfo);
 
 		//m_Material->Shaders.ShaderContainerName = "Sprite";
 		//m_Material->Shaders.FragmentShaderPath = "Sprite.fs";

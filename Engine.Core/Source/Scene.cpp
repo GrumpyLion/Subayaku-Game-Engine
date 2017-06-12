@@ -10,79 +10,15 @@ namespace Scene
 {
 	bool Scene::Initialize()
 	{
-		auto ptr = InstantiateGameObject("Camera");
 
-		auto camera = std::make_unique<CCamera>();
-		camera->Initialize(ptr, 70.0f, 1, 5000.0f);
-
-		ptr->AddComponent(std::move(camera));
+		//Maybe replace this ?
+		auto ptr = InstantiateGameObject("Scene");
 
 		auto script = std::make_unique<CScriptComponent>();
-		script->Initialize(ptr, "Assets/Scripts/Camera.lua");
-
-		ptr->AddComponent(std::move(script));
-
-		auto trans = std::make_unique<Transformation>();
-		trans->Position = Vector3f(0, 0, 0);
-		trans->Scale = Vector3f(15, 15, 15);
-
-		ptr = InstantiateGameObject("Water", std::move(trans));
-
-		auto mesh = std::make_unique<CMeshRenderer>();
-
-		auto tempMat = std::make_unique<Graphics::Material>();
-		tempMat->TextureFilter = Graphics::ETextureFilter::NEAREST;
-
-		Graphics::STextureDesc texInfo;
-		texInfo.RegisterIndex = 0;
-		texInfo.UniformName = "uNoise";
-		texInfo.FilePath = "Assets/Textures/Noise.tga";
-		tempMat->AddTexture(texInfo);
-
-		texInfo.RegisterIndex = 1;
-		texInfo.UniformName = "uColor";
-		texInfo.FilePath = "Assets/Textures/Colormap.tga";
-		tempMat->AddTexture(texInfo);
-
-		tempMat->AddShader("Terrain.vs");
-		tempMat->AddShader("Terrain.fs");
+		script->Initialize(ptr, "Assets/Scripts/Scene.lua");
 		
-		Graphics::SMeshDesc desc{};
-		Graphics::Primitives::GetPlaneTri(desc, 100, 0, 100);
-		desc.Mode = Graphics::EMeshPrimitive::TRIANGLES;
-		desc.HasIndices = true;
-		desc.FilePath = "Primitive";
-
-		mesh->Initialize(ptr, desc, std::move(tempMat));
-		ptr->AddComponent(std::move(mesh));
-
-		trans = std::make_unique<Transformation>();
-		trans->Position = Vector3f(10, -10, 0);
-		trans->Scale = Vector3f(1, 1, 1);		
-
-		ptr = InstantiateGameObject("Terrain", std::move(trans));
-
-		mesh = std::make_unique<CMeshRenderer>();
-
-		tempMat = std::make_unique<Graphics::Material>();
-		tempMat->TextureFilter = Graphics::ETextureFilter::NEAREST;
-
-		tempMat->AddShader("Test.vs");
-		tempMat->AddShader("Test.fs");
-		
-		ZeroMemory(&desc, sizeof(Graphics::SMeshDesc));
-		desc.HasIndices = true;
-		desc.Mode = Graphics::EMeshPrimitive::TRIANGLES;
-		desc.FilePath = "Assets/Models/teapot.obj";
-
-		mesh->Initialize(ptr, desc, std::move(tempMat));
-		ptr->AddComponent(std::move(mesh));
-
-		script = std::make_unique<CScriptComponent>();
-		script->Initialize(ptr, "Assets/Scripts/Test.lua");
-
 		ptr->AddComponent(std::move(script));
-
+		
 		return true;
 	}
 
@@ -96,7 +32,10 @@ namespace Scene
 
 	Scene::Scene()
 	{
-		m_Callback = std::bind(&Scene::Listener, this, std::placeholders::_1);
+		m_Callback = [=](Core::SEventDesc& desc)
+		{
+			this->Listener(desc);
+		};
 
 		//Used for detection
 		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_MESHCOMPONENT_ADDED);
@@ -104,6 +43,8 @@ namespace Scene
 
 		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_ADDED);
 		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
+
+		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_CLEAR);
 	}
 
 	Scene::~Scene()
@@ -116,6 +57,8 @@ namespace Scene
 
 		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_ADDED);
 		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
+	
+		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_CLEAR);
 	}
 
 	bool Scene::AddGameObject(std::unique_ptr<GameObject> a_ToAdd)
@@ -198,10 +141,10 @@ namespace Scene
 
 	GameObject* Scene::InstantiateGameObject(std::string a_Name)
 	{
-		return InstantiateGameObject(a_Name, std::make_unique<Transformation>());
+		return InstantiateGameObject(a_Name, Transformation());
 	}
 
-	GameObject* Scene::InstantiateGameObject(std::string a_Name, std::unique_ptr<Transformation> a_Transform)
+	GameObject* Scene::InstantiateGameObject(std::string a_Name, Transformation& a_Transform)
 	{
 		auto temp = std::make_unique<GameObject>();
 		temp->Name = a_Name;
@@ -261,6 +204,10 @@ namespace Scene
 
 		case Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED:
 			m_Camera = nullptr;
+			break;
+
+		case Core::EEvents::SCENE_CLEAR:
+			ClearScene();
 			break;
 		}
 	}

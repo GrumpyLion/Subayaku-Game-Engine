@@ -32,7 +32,7 @@ namespace Graphics
 		{
 			DynamicBuffer data{};
 
-			if (m_Renderer->GetCamera() != nullptr)
+			if (m_Renderer->GetCamera() != nullptr && m_Renderer->GetCamera()->Parent)
 			{
 				data.CameraPos = Vector4f(m_Renderer->GetCamera()->Parent->Transform->Position);
 				data.Projection = m_Renderer->GetCamera()->ToProjectionMatrixLH;

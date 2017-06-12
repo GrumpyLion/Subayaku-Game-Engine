@@ -25,8 +25,12 @@ namespace Graphics
 
 		SShaderDesc desc{};
 		desc.FilePath = a_FilePath;
-		desc.GLSLCode = reinterpret_cast<const char*>(GLSLtemp->Data.data());
-		desc.HLSLCode = reinterpret_cast<const char*>(HLSLtemp->Data.data());
+		
+		if(GLSLtemp != nullptr)
+			desc.GLSLCode = reinterpret_cast<const char*>(GLSLtemp->Data.data());
+
+		if (HLSLtemp != nullptr)
+			desc.HLSLCode = reinterpret_cast<const char*>(HLSLtemp->Data.data());
 
 		std::string extension = GetExtension(a_FilePath);
 		ToLowerCase(extension);
