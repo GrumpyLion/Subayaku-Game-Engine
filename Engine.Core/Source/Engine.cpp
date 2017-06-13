@@ -8,6 +8,8 @@
 #include "Core\SubayakuCore.h"
 #include "Input\Keyboard.h"
 
+#include "Utilities\FileSystem.h"
+
 using namespace std::chrono_literals;
 
 // we use a fixed timestep of 1 / (60 fps) = 16 milliseconds
@@ -39,10 +41,8 @@ namespace Core
 			return false;
 		}
 
-		ZipFile = std::make_unique<GrumpyZip::ZipFile>();
-
-		if (!ZipFile->LoadZipFile(a_Context.PathToPak))
-			return false;		
+		// Disable this for debug loading
+		//FileSystem::StaticClass()->InitializeZipFile("Assets.pak");
 
 		if (!SwitchRenderer(a_Context))
 			return false;
@@ -123,6 +123,7 @@ namespace Core
 					desc.Event = EEvents::SCENE_CLEAR;
 
 					Core::EventHandler::StaticClass()->ForceEvent(desc);
+					SwitchRenderer(m_Context);
 					m_Scene->Initialize();
 				}
 				
@@ -166,9 +167,8 @@ namespace Core
 
 		SafeDelete(m_Window);
 
-		ZipFile.reset();
-
-		EventHandler::Release();
+		EventHandler::StaticClass()->Release();
+		FileSystem::StaticClass()->Shutdown();
 		return true;
 	}
 	

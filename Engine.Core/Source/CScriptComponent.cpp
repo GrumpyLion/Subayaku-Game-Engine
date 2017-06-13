@@ -1,6 +1,7 @@
 #include "Scene\GameObject\Components\CScriptComponent.h"
 
 #include "Core\Engine.h"
+#include "Utilities\FileSystem.h"
 #include "Input\InputManager.h"
 
 //Type init
@@ -184,7 +185,7 @@ namespace Scene
 			"RightButton", &Core::Mouse::RightButton
 			);
 
-		m_Lua.script(std::string(reinterpret_cast<char*>(&Core::Engine::StaticClass()->ZipFile->GetFile(a_FilePath)->Data[0])));
+		m_Lua.script(std::string(reinterpret_cast<char*>(&Core::FileSystem::StaticClass()->GetFile(a_FilePath)->Data[0])));
 
 
 		//Set Variables

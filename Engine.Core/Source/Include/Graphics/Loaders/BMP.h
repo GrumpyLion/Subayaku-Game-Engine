@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <vector>
 
-#include "Core\Engine.h"
+#include "Utilities\FileSystem.h"
 #include "Graphics\Descriptions\STextureDesc.h"
 
 namespace Graphics
@@ -20,7 +20,7 @@ namespace Graphics
 
 		BMP(STextureDesc &a_TextureData)
 		{
-			auto temp = Core::Engine::StaticClass()->ZipFile->GetFile(a_TextureData.FilePath);
+			auto temp = Core::FileSystem::StaticClass()->GetFile(a_TextureData.FilePath);
 
 			if (temp == nullptr)
 				throw std::invalid_argument("Error: File Not Found.");

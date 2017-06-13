@@ -4,15 +4,15 @@
 #include <Assimp/scene.h>         
 #include <Assimp/postprocess.h>
 
-#include "Core\Engine.h"
-
 #include "Graphics\Descriptions\SMeshDesc.h"
+
+#include "Utilities\FileSystem.h"
 
 inline bool LoadAssimpObj(Graphics::SMeshDesc &a_Desc)
 {
 	Assimp::Importer importer;
 
-	auto temp = Core::Engine::StaticClass()->ZipFile->GetFile(a_Desc.FilePath);
+	auto temp = Core::FileSystem::StaticClass()->GetFile(a_Desc.FilePath);
 
 	if (temp == nullptr)
 		return false;

@@ -191,11 +191,13 @@ namespace Scene
 		switch (a_Desc.Event)
 		{
 		case Core::EEvents::SCENE_MESHCOMPONENT_ADDED:
-			AddRenderable(entity->Parent, entity->MeshRenderer);
+			if (entity != nullptr)
+				AddRenderable(entity->Parent, entity->MeshRenderer);
 			break;
 
 		case Core::EEvents::SCENE_MESHCOMPONENT_REMOVED:
-			RemoveRenderable(entity->Parent);
+			if(entity != nullptr)
+				RemoveRenderable(entity->Parent);
 			break;
 
 		case Core::EEvents::SCENE_CAMERACOMPONENT_ADDED:

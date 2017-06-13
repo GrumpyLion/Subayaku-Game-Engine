@@ -25,10 +25,10 @@ namespace Scene
 			LoadAssimpObj(m_Mesh);
 
 		m_Entity.Mesh = m_Mesh;
-		m_Entity.MeshRenderer = this;
 		m_Entity.Material = &m_Material;
 		m_Entity.Material->ParentTransform = Parent->Transform;
 		m_Entity.Parent = Parent;
+		m_Entity.MeshRenderer = this;
 
 		Core::SEventDesc eventDesc{};
 		eventDesc.Event = Core::EEvents::SCENE_MESHCOMPONENT_ADDED;
@@ -64,7 +64,6 @@ namespace Scene
 
 	void CMeshRenderer::Update()
 	{
-
 	}
 
 	void CMeshRenderer::SetMaterial(Graphics::Material &a_Material)	{		m_Material = a_Material;	}

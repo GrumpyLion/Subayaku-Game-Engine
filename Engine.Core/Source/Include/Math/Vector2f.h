@@ -18,97 +18,102 @@ struct Vector2f
 	Vector2f(const Vector2f &a_Vec)
 		: x(a_Vec.x), y(a_Vec.y) {}
 
-	void Set(const float &a_X, const float &a_Y)
+	inline void Set(const float &a_X, const float &a_Y)
 	{
 		x = a_X;
 		y = a_Y;
 	}
 
-	void Set(const Vector2f &a_Vec)
+	inline void Set(const Vector2f &a_Vec)
 	{
 		x = a_Vec.x;
 		y = a_Vec.y;
 	}
 
-	void Translate(const float &a_X, const float &a_Y)
+	inline void Translate(const float &a_X, const float &a_Y)
 	{
 		x += a_X;
 		y += a_Y;
 	}
 
-	void Translate(Vector2f a_Vec)
+	inline void Translate(Vector2f a_Vec)
 	{
 		x += a_Vec.x;
 		y += a_Vec.y;
 	}
 
-	void Scale(const float &a_X, const float &a_Y)
+	inline void Scale(const float &a_X, const float &a_Y)
 	{
 		x *= a_X;
 		y *= a_Y;
 	}
 
-	void Scale(const float &a_Amount)
+	inline void Scale(const float &a_Amount)
 	{
 		x *= a_Amount;
 		y *= a_Amount;
 	}
 
-	void Scale(const Vector2f &a_Vec)
+	inline void Scale(const Vector2f &a_Vec)
 	{
 		x *= a_Vec.x;
 		y *= a_Vec.y;
 	}
 
-	void Divide(const float &a_Amount)
+	inline void Divide(const float &a_Amount)
 	{
 		x /= a_Amount;
 		y /= a_Amount;
 	}
 
-	void Divide(const Vector2f &a_Vec)
+	inline void Divide(const Vector2f &a_Vec)
 	{
 		x /= a_Vec.x;
 		y /= a_Vec.y;
 	}
 
-	void Invert()
+	inline void Invert()
 	{
 		x *= -1;
 		y *= -1;
 	}
 
-	void Normalize()
+	inline void Normalize()
 	{
 		float len = Length();
 		x /= len;
 		y /= len;
 	}
 
-	float Dot(const Vector2f &a_Vec)
+	inline void Lerp(Vector2f a_To, float a_Amount)
+	{
+		*this += (a_To - *this) * a_Amount;
+	}
+
+	inline float Dot(const Vector2f &a_Vec)
 	{
 		return x * a_Vec.x + y * a_Vec.y;
 	}
 
-	float Length()
+	inline float Length()
 	{
 		return std::sqrt((x*x) + (y*y));
 	}
 
-	Vector2f &Vector2f::operator+=(const Vector2f &a_Vec)
+	inline Vector2f &Vector2f::operator+=(const Vector2f &a_Vec)
 	{
 		Translate(a_Vec);
 		return *this;
 	}
 
-	Vector2f &Vector2f::operator+(const Vector2f &a_Vec) const
+	inline Vector2f &Vector2f::operator+(const Vector2f &a_Vec) const
 	{
 		Vector2f result = *this;
 		result += a_Vec;
 		return result;
 	}
 
-	Vector2f &Vector2f::operator-=(const Vector2f &a_Vec)
+	inline Vector2f &Vector2f::operator-=(const Vector2f &a_Vec)
 	{
 		Vector2f temp = Vector2f(a_Vec);
 		temp.Invert();
@@ -116,46 +121,46 @@ struct Vector2f
 		return *this;
 	}
 
-	Vector2f &Vector2f::operator-(const Vector2f &a_Vec) const
+	inline Vector2f &Vector2f::operator-(const Vector2f &a_Vec) const
 	{
 		Vector2f result = *this;
 		result -= a_Vec;
 		return result;
 	}
 
-	Vector2f &Vector2f::operator/=(const Vector2f &a_Vec)
+	inline Vector2f &Vector2f::operator/=(const Vector2f &a_Vec)
 	{
 		Divide(a_Vec);
 		return *this;
 	}
 
-	Vector2f &Vector2f::operator/(const Vector2f &a_Vec) const
+	inline Vector2f &Vector2f::operator/(const Vector2f &a_Vec) const
 	{
 		Vector2f result = *this;
 		result /= a_Vec;
 		return result;
 	}
 
-	Vector2f &Vector2f::operator*=(const Vector2f &a_Vec)
+	inline Vector2f &Vector2f::operator*=(const Vector2f &a_Vec)
 	{
 		Scale(a_Vec);
 		return *this;
 	}
 
-	Vector2f &Vector2f::operator*(const Vector2f &a_Vec) const
+	inline Vector2f &Vector2f::operator*(const Vector2f &a_Vec) const
 	{
 		Vector2f result = *this;
 		result *= a_Vec;
 		return result;
 	}
 
-	Vector2f &Vector2f::operator*=(const float &a_Val)
+	inline Vector2f &Vector2f::operator*=(const float &a_Val)
 	{
 		Scale(a_Val);
 		return *this;
 	}
 
-	Vector2f &Vector2f::operator*(const float &a_Val) const
+	inline Vector2f &Vector2f::operator*(const float &a_Val) const
 	{
 		Vector2f result = *this;
 		result *= a_Val;

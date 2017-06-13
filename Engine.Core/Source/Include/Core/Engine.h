@@ -2,11 +2,9 @@
 
 #include "SEngineContext.h"
 #include "Graphics\Descriptions\SRendererDesc.h"
-#include <GrumpyZip\ZipFile.h>
 
 #include "Utilities\Event\EventHandler.h"
 
-#define ENGINE_ZIPFILE Core::Engine::StaticClass()->ZipFile
 #define ENGINE_CONTEXT Core::Engine::StaticClass()->GetContext()
 #define ENGINE_RENDERER Core::Engine::StaticClass()->GetRenderer()
 
@@ -45,7 +43,6 @@ namespace Core
 		long m_StartTime = 0;
 	public:
 		SEngineContext m_Context{};
-		std::unique_ptr<GrumpyZip::ZipFile> ZipFile = nullptr;
 		long TimeSinceStart = 0;
 
 		__declspec(dllexport) Engine();

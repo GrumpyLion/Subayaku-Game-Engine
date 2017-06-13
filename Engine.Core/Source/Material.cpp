@@ -1,6 +1,6 @@
 #include "Graphics\Material.h"
 #include "Utilities\Utilities.h"
-#include "Core\Engine.h"
+#include "Utilities\FileSystem.h"
 
 #include "Graphics\Interfaces\ITexture.h"
 
@@ -17,11 +17,11 @@ namespace Graphics
 	{
 		std::string GLSLpath = GetShaderLocation(Core::RenderDevice::OpenGL, a_FilePath);
 
-		auto GLSLtemp = ENGINE_ZIPFILE->GetFile(GLSLpath);
+		auto GLSLtemp = Core::FileSystem::StaticClass()->GetFile(GLSLpath);
 
 		std::string HLSLpath = GetShaderLocation(Core::RenderDevice::DirectX, a_FilePath);
 
-		auto HLSLtemp = ENGINE_ZIPFILE->GetFile(HLSLpath);
+		auto HLSLtemp = Core::FileSystem::StaticClass()->GetFile(HLSLpath);
 
 		SShaderDesc desc{};
 		desc.FilePath = a_FilePath;

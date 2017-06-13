@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdio.h>
-#include "Core\Engine.h"
+#include "Utilities\FileSystem.h"
 #include "Graphics\Descriptions\STextureDesc.h"
 
 //http://www.libpng.org/pub/png/spec/1.2/png-1.2.pdf
@@ -52,7 +52,7 @@ namespace Graphics
 	public:
 		PNG(STextureDesc &a_Desc)
 		{
-			auto temp = Core::Engine::StaticClass()->ZipFile->GetFile(a_Desc.FilePath);
+			auto temp = Core::FileSystem::StaticClass()->GetFile(a_Desc.FilePath);
 
 			std::uint8_t header[8] = { 0 };
 			std::uint8_t headerSignature[8] = { 137, 80, 78, 71, 13, 10, 26, 10 };

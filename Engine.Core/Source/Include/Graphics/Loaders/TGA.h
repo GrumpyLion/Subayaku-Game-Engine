@@ -5,7 +5,7 @@
 #include <string>
 
 #include "Graphics\Descriptions\STextureDesc.h"
-#include "Core\Engine.h"
+#include "Utilities\FileSystem.h"
 
 //Used help from this site
 //http://www.paulbourke.net/dataformats/tga/
@@ -38,7 +38,7 @@ namespace Graphics
 	public:
 		TGA(STextureDesc &a_Desc)
 		{
-			auto file = Core::Engine::StaticClass()->ZipFile->GetFile(a_Desc.FilePath);
+			auto file = Core::FileSystem::StaticClass()->GetFile(a_Desc.FilePath);
 			
 			//Check if the compiler added padding bytes
 			if (sizeof(TGAHeader) != 18)

@@ -22,82 +22,82 @@ struct Vector3f
 	Vector3f(const Vector3f &a_Vec)
 		: x(a_Vec.x), y(a_Vec.y), z(a_Vec.z) {}
 
-	void Print()
+	inline void Print()
 	{
 		printf("%f, %f, %f\n", x, y, z);
 	}
 
-	void Set(const float &a_X, const float &a_Y, const float &a_Z)
+	inline void Set(const float &a_X, const float &a_Y, const float &a_Z)
 	{
 		x = a_X;
 		y = a_Y;
 		z = a_Z;
 	}
 
-	void Set(const Vector3f &a_Vec)
+	inline void Set(const Vector3f &a_Vec)
 	{
 		x = a_Vec.x;
 		y = a_Vec.y;
 		z = a_Vec.z;
 	}
 
-	void Translate(const float &a_X, const float &a_Y, const float &a_Z)
+	inline void Translate(const float &a_X, const float &a_Y, const float &a_Z)
 	{
 		x += a_X;
 		y += a_Y;
 		z += a_Z;
 	}
 
-	void Translate(Vector3f a_Vec)
+	inline void Translate(Vector3f a_Vec)
 	{
 		x += a_Vec.x;
 		y += a_Vec.y;
 		z += a_Vec.z;
 	}
 
-	void Scale(const float &a_X, const float &a_Y, const float &a_Z)
+	inline void Scale(const float &a_X, const float &a_Y, const float &a_Z)
 	{
 		x *= a_X;
 		y *= a_Y;
 		z *= a_Z;
 	}
 
-	void Scale(const float &a_Amount)
+	inline void Scale(const float &a_Amount)
 	{
 		x *= a_Amount;
 		y *= a_Amount;
 		z *= a_Amount;
 	}
 
-	void Scale(const Vector3f &a_Vec)
+	inline void Scale(const Vector3f &a_Vec)
 	{
 		x *= a_Vec.x;
 		y *= a_Vec.y;
 		z *= a_Vec.z;
 	}
 
-	void Divide(const float &a_Amount)
+	inline void Divide(const float &a_Amount)
 	{
 		x /= a_Amount;
 		y /= a_Amount;
 		z /= a_Amount;
 	}
 
-	void Divide(const Vector3f &a_Vec)
+	inline void Divide(const Vector3f &a_Vec)
 	{
 		x /= a_Vec.x;
 		y /= a_Vec.y;
 		z /= a_Vec.z;
 	}
 
-	void Invert()
+	inline void Invert()
 	{
 		x *= -1;
 		y *= -1;
 		z *= -1;
 	}
 
-	void Normalize()
+	inline void Normalize()
 	{
 		float len = Length();
 		x /= len;
@@ -105,13 +105,18 @@ struct Vector3f
 		z /= len;
 	}
 
-	float Dot(const Vector3f &a_Vec)
+	inline void Lerp(Vector3f a_To, float a_Amount)
+	{
+		*this += (a_To - *this) * a_Amount;
+	}
+
+	inline float Dot(const Vector3f &a_Vec)
 	{	return x * a_Vec.x + y * a_Vec.y + z * a_Vec.z;	}
 
-	float Length()
+	inline float Length()
 	{	return std::sqrt((x*x) + (y*y) + (z*z));	}
 
-	static Vector3f Cross(const Vector3f a_Vec1, const Vector3f a_Vec2)
+	inline static Vector3f Cross(const Vector3f a_Vec1, const Vector3f a_Vec2)
 	{
 		Vector3f temp;
 		temp.x = a_Vec1.y * a_Vec2.z - a_Vec1.z * a_Vec2.y;
@@ -120,20 +125,20 @@ struct Vector3f
 		return temp;
 	}
 
-	Vector3f &Vector3f::operator+=(const Vector3f &a_Vec)
+	inline Vector3f &Vector3f::operator+=(const Vector3f &a_Vec)
 	{
 		Translate(a_Vec);
 		return *this;
 	}
 
-	Vector3f &Vector3f::operator+(const Vector3f &a_Vec) const
+	inline Vector3f &Vector3f::operator+(const Vector3f &a_Vec) const
 	{
 		Vector3f result = *this;
 		result += a_Vec;
 		return result;
 	}
 
-	Vector3f &Vector3f::operator-=(const Vector3f &a_Vec)
+	inline Vector3f &Vector3f::operator-=(const Vector3f &a_Vec)
 	{
 		Vector3f temp = Vector3f(a_Vec);
 		temp.Invert();
@@ -141,46 +146,46 @@ struct Vector3f
 		return *this;
 	}
 
-	Vector3f &Vector3f::operator-(const Vector3f &a_Vec) const
+	inline Vector3f &Vector3f::operator-(const Vector3f &a_Vec) const
 	{
 		Vector3f result = *this;
 		result -= a_Vec;
 		return result;
 	}
 
-	Vector3f &Vector3f::operator/=(const Vector3f &a_Vec)
+	inline Vector3f &Vector3f::operator/=(const Vector3f &a_Vec)
 	{
 		Divide(a_Vec);
 		return *this;
 	}
 
-	Vector3f &Vector3f::operator/(const Vector3f &a_Vec) const
+	inline Vector3f &Vector3f::operator/(const Vector3f &a_Vec) const
 	{
 		Vector3f result = *this;
 		result /= a_Vec;
 		return result;
 	}
 
-	Vector3f &Vector3f::operator*=(const Vector3f &a_Vec)
+	inline Vector3f &Vector3f::operator*=(const Vector3f &a_Vec)
 	{
 		Scale(a_Vec);
 		return *this;
 	}
 
-	Vector3f &Vector3f::operator*(const Vector3f &a_Vec) const
+	inline Vector3f &Vector3f::operator*(const Vector3f &a_Vec) const
 	{
 		Vector3f result = *this;
 		result *= a_Vec;
 		return result;
 	}
 
-	Vector3f &Vector3f::operator*=(const float &a_Val)
+	inline Vector3f &Vector3f::operator*=(const float &a_Val)
 	{
 		Scale(a_Val);
 		return *this;
 	}
 
-	Vector3f &Vector3f::operator*(const float &a_Val) const
+	inline Vector3f &Vector3f::operator*(const float &a_Val) const
 	{
 		Vector3f result = *this;
 		result *= a_Val;

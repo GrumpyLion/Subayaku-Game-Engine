@@ -22,7 +22,7 @@ struct Matrix4f
 		m44 = 1.0f;
 	}
 
-	void Print()
+	inline void Print()
 	{
 		printf("%f, %f, %f, %f,\n%f, %f, %f, %f,\n%f, %f, %f, %f,\n%f, %f, %f, %f\n",
 			m11, m12, m13, m14,
@@ -31,7 +31,7 @@ struct Matrix4f
 			m41, m42, m43, m44);
 	}
 
-	void SetData(float *a_Data)
+	inline void SetData(float *a_Data)
 	{
 		m11 = a_Data[0];
 		m12 = a_Data[1];
@@ -54,7 +54,7 @@ struct Matrix4f
 		m44 = a_Data[15];
 	}
 
-	void SetData(const Matrix4f a_Matrix)
+	inline void SetData(const Matrix4f a_Matrix)
 	{
 		m11 = a_Matrix.m11;
 		m12 = a_Matrix.m12;
@@ -78,7 +78,7 @@ struct Matrix4f
 	}
 
 	//Changes the Layout
-	void Transpose()
+	inline void Transpose()
 	{
 		float temp[16]
 		{
@@ -90,7 +90,7 @@ struct Matrix4f
 		SetData(temp);
 	}
 
-	static Matrix4f Identity()
+	inline static Matrix4f Identity()
 	{
 		Matrix4f temp = Matrix4f();
 		float mat[4 * 4]
@@ -104,12 +104,12 @@ struct Matrix4f
 		return temp;
 	}
 
-	static Matrix4f Translate(float a_X, float a_Y, float a_Z)
+	inline static Matrix4f Translate(float a_X, float a_Y, float a_Z)
 	{
 		return Translate(Vector3f(a_X, a_Y, a_Z));
 	}
 
-	static Matrix4f Translate(Vector3f a_Position)
+	inline static Matrix4f Translate(Vector3f a_Position)
 	{
 		float temp[16]
 		{
@@ -124,7 +124,7 @@ struct Matrix4f
 	}
 
 
-	static Matrix4f RotateX(float a_Amount)
+	inline static Matrix4f RotateX(float a_Amount)
 	{
 		float temp[16]
 		{
@@ -138,7 +138,7 @@ struct Matrix4f
 		return mat;
 	}
 
-	static Matrix4f RotateY(float a_Amount)
+	inline static Matrix4f RotateY(float a_Amount)
 	{
 		float temp[16]
 		{
@@ -152,7 +152,7 @@ struct Matrix4f
 		return mat;
 	}
 
-	static Matrix4f RotateZ(float a_Amount)
+	inline static Matrix4f RotateZ(float a_Amount)
 	{
 		float temp[16]
 		{
@@ -166,12 +166,12 @@ struct Matrix4f
 		return mat;
 	}
 
-	static Matrix4f Scale(float a_X, float a_Y, float a_Z)
+	inline static Matrix4f Scale(float a_X, float a_Y, float a_Z)
 	{
 		return Scale(Vector3f(a_X, a_Y, a_Z));
 	}
 
-	static Matrix4f Scale(Vector3f a_Scale)
+	inline static Matrix4f Scale(Vector3f a_Scale)
 	{
 		float temp[16]
 		{
@@ -185,7 +185,7 @@ struct Matrix4f
 		return mat;
 	}
 
-	static Matrix4f PerspectiveRH(float a_FOV, float a_Aspect, float a_Near, float a_Far)
+	inline static Matrix4f PerspectiveRH(float a_FOV, float a_Aspect, float a_Near, float a_Far)
 	{
 		float yScale = 1.0f / std::tan(DEGTORAD * a_FOV / 2.0f);
 		float xScale = yScale / a_Aspect;
@@ -204,7 +204,7 @@ struct Matrix4f
 		return mat;
 	}
 
-	static Matrix4f PerspectiveLH(float a_FOV, float a_Aspect, float a_Near, float a_Far)
+	inline static Matrix4f PerspectiveLH(float a_FOV, float a_Aspect, float a_Near, float a_Far)
 	{
 		float yScale = 1.0f / std::tan(DEGTORAD * a_FOV / 2.0f);
 		float xScale = yScale / a_Aspect;
@@ -223,7 +223,7 @@ struct Matrix4f
 		return mat;
 	}
 
-	static Matrix4f Orthograpic(float a_Left, float a_Right, float a_Top, float a_Bottom, float a_Near, float a_Far)
+	inline static Matrix4f Orthograpic(float a_Left, float a_Right, float a_Top, float a_Bottom, float a_Near, float a_Far)
 	{
 		float temp[4 * 4]
 		{
@@ -239,7 +239,7 @@ struct Matrix4f
 		return mat;
 	}
 
-	void Multiply(const Matrix4f &a_Matrix)
+	inline void Multiply(const Matrix4f &a_Matrix)
 	{
 		Matrix4f temp = Identity();
 		temp.m11 = m11 * a_Matrix.m11 + m21 * a_Matrix.m12 + m31 * a_Matrix.m13 + m41 * a_Matrix.m14;
@@ -265,13 +265,13 @@ struct Matrix4f
 		SetData(temp);
 	}
 
-	Matrix4f &Matrix4f::operator*=(const Matrix4f &a_MatrixLeft)
+	inline Matrix4f &Matrix4f::operator*=(const Matrix4f &a_MatrixLeft)
 	{
 		Multiply(a_MatrixLeft);
 		return *this;
 	}
 
-	Matrix4f &Matrix4f::operator* (Matrix4f &a_MatrixLeft) const
+	inline Matrix4f &Matrix4f::operator* (Matrix4f &a_MatrixLeft) const
 	{
 		Matrix4f mat = *this;
 		mat *= a_MatrixLeft;

@@ -60,9 +60,9 @@ namespace Graphics
 
 		Core::Engine *GetEngine()	final				{			return m_Engine;			}
 
-		GraphicsCache* GetCache()						{			return m_Cache.get();		}
+		GraphicsCache *GetCache()						{			return m_Cache.get();		}
 
-		Scene::CCamera* GetCamera()	final				{			return m_Camera;			}
+		Scene::CCamera *GetCamera()	final				{			return m_Camera;			}
 
 		//Adds an renderer entity object that contains all information to render an certain object.
 		//
