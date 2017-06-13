@@ -37,23 +37,20 @@ inline bool LoadAssimpObj(Graphics::SMeshDesc &a_Desc)
 		aiVector3D pos = mesh->mVertices[i];
 		a_Desc.Vertices.push_back(Vector3f(pos.x, pos.y, pos.z));
 
-		Vector3f nor;
-		nor.x = mesh->mNormals[i].x;
-		nor.y = mesh->mNormals[i].y;
-		nor.z = mesh->mNormals[i].z;
-		a_Desc.Normals.push_back(nor);
+		aiVector3D nor = mesh->mNormals[i];
+		a_Desc.Normals.push_back(Vector3f(nor.x, nor.y, nor.z));
 
-		Vector3f tan;
-		tan.x = mesh->mTangents[i].x;
-		tan.y = mesh->mTangents[i].y;
-		tan.z = mesh->mTangents[i].z;
-		a_Desc.Tangents.push_back(tan);
+		if (mesh->mTangents != nullptr)
+		{
+			aiVector3D tan = mesh->mTangents[i];
+			a_Desc.Tangents.push_back(Vector3f(tan.x, tan.y, tan.z));
+		}
 
-		Vector3f bi;
-		bi.x = mesh->mBitangents[i].x;
-		bi.y = mesh->mBitangents[i].y;
-		bi.z = mesh->mBitangents[i].z;
-		a_Desc.Bitangents.push_back(bi);
+		if (mesh->mBitangents != nullptr)
+		{
+			aiVector3D bi = mesh->mTangents[i];
+			a_Desc.Bitangents.push_back(Vector3f(bi.x, bi.y, bi.z));
+		}
 
 		if (mesh->mTextureCoords[0])
 		{

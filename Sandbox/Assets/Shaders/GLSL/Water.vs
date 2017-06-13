@@ -9,7 +9,6 @@ layout(location=4) in vec3 Bitangent;
 out flat vec3 oNormal;
 out vec3 oFragPos;
 out vec2 oTexCoord;
-out vec2 oTexCoordNoise;
 
 out flat vec3 oColor;
 
@@ -99,31 +98,37 @@ void main()
 {
 	vec4 Pos = uWMatrix * vec4(Position, 1.0);
 	
-	oTexCoord = Texcoord * vec2(3.5, 3.5) + uTime * vec2(0.0001, 0.0001);
-	oTexCoordNoise = Texcoord * vec2(0.5, 0.5);
+	oTexCoord = Texcoord;
+	vec2 waveCoords = Texcoord * vec2(3.5, 3.5) + uTime * vec2(0.0001, 0.0001);
 	
 	oFragPos = Position.xyz;
-	Pos.y += snoise(oTexCoord) * 2;
+	Pos.y += snoise(waveCoords) * 2;
 	
-	Pos.xz += vec2((snoise(oTexCoord)-0.5f) * 15 , (snoise(-oTexCoord)-0.5f) * 15);
+	Pos.xz += vec2((snoise(waveCoords)-0.5f) * 15 , (snoise(-waveCoords)-0.5f) * 15);
 	
 	gl_Position = uPMatrix * uVMatrix * Pos;
 		
-	float amount = texture(uNoise, oTexCoordNoise).x * 0.5f;
+	float amount = texture(uNoise, waveCoords).x * 0.5f;
 	
 	vec3 col = texture(uColor, vec2(1.0 / 5.0, 0)).xyz;
 	col = mix(col, texture(uColor, vec2(3.0 / 5.0, 0)).xyz, amount);
+	
+	float beachHeight = clamp(texture(uNoise, Texcoord * vec2(-1, 1)).r, 0.0, 1.0);
+	
+	if(beachHeight > 0.75 ||beachHeight < 0.7) beachHeight = 0;
+	
+	//col = mix(col, vec3(1,1,1), beachHeight);
+	
 	float r = rand(vec2(Position.x, Position.z)) * 0.25 + 0.7;
 	col *= vec3(r, r, r);
-	
 	oColor = col;
 	
 	vec3 normal = vec3(0.0);
 	
-	float heightL = snoise(vec2(oTexCoord.x-1, oTexCoord.y));
-	float heightR = snoise(vec2(oTexCoord.x+1, oTexCoord.y));
-	float heightD = snoise(vec2(oTexCoord.x , oTexCoord.y-1));
-	float heightU = snoise(vec2(oTexCoord.x , oTexCoord.y+1));
+	float heightL = snoise(vec2(waveCoords.x-1, waveCoords.y));
+	float heightR = snoise(vec2(waveCoords.x+1, waveCoords.y));
+	float heightD = snoise(vec2(waveCoords.x , waveCoords.y-1));
+	float heightU = snoise(vec2(waveCoords.x , waveCoords.y+1));
 	
 	normal = vec3(heightL - heightR, 2, heightD - heightU);
 	normal = normalize(normal);

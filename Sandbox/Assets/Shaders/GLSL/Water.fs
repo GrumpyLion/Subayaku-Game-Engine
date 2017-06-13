@@ -9,6 +9,7 @@ in vec2 oTexCoord;
 in flat vec3 oColor;
 
 uniform sampler2D uColor;
+uniform sampler2D uNoise;
 
 layout (std140, binding = 1) uniform GlobalDynamicBuffer
 { 
@@ -37,5 +38,6 @@ void main()
 	Color += d * 0.25;
 	Color += spec * 0.4;
 	Color = mix(Color, vec4(1,1,1,1), clamp(dist * 0.5f, 0.0, 1.0));
+	//Color = texture(uNoise, oTexCoord * vec2(-1, 1)).rgba;
 	//Color = vec4(vec3(spec), 1.0);
 }

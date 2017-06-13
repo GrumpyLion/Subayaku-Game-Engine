@@ -63,23 +63,23 @@ namespace Graphics
 			}
 
 			//Clear memory
-			a_Desc.Bitangents.resize(0);
-			a_Desc.Bitangents.shrink_to_fit();
+			//a_Desc.Bitangents.resize(0);
+			//a_Desc.Bitangents.shrink_to_fit();
 
-			a_Desc.Tangents.resize(0);
-			a_Desc.Tangents.shrink_to_fit();
-			
-			a_Desc.Normals.resize(0);
-			a_Desc.Normals.shrink_to_fit();
+			//a_Desc.Tangents.resize(0);
+			//a_Desc.Tangents.shrink_to_fit();
+			//
+			//a_Desc.Normals.resize(0);
+			//a_Desc.Normals.shrink_to_fit();
 
-			a_Desc.TexCoords.resize(0);
-			a_Desc.TexCoords.shrink_to_fit();
+			//a_Desc.TexCoords.resize(0);
+			//a_Desc.TexCoords.shrink_to_fit();
 
-			a_Desc.Vertices.resize(0);
-			a_Desc.Vertices.shrink_to_fit();
+			//a_Desc.Vertices.resize(0);
+			//a_Desc.Vertices.shrink_to_fit();
 
-			a_Desc.Indices.resize(0);
-			a_Desc.Indices.shrink_to_fit();
+			//a_Desc.Indices.resize(0);
+			//a_Desc.Indices.shrink_to_fit();
 
 			m_Meshes[a_Desc.FilePath] = std::move(mesh);
 

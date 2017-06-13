@@ -37,8 +37,8 @@ namespace Graphics
 			m_Container->BindProgram();
 
 			Matrix4f temp = Matrix4f::Identity();
-			temp *= Matrix4f::Scale(m_ParentTransform->Scale);
 			temp *= Matrix4f::Translate(m_ParentTransform->Position);
+			temp *= Matrix4f::Scale(m_ParentTransform->Scale);
 			temp *= Matrix4f::RotateX(m_ParentTransform->Rotation.x * DEGTORAD);
 			temp *= Matrix4f::RotateY(m_ParentTransform->Rotation.y * DEGTORAD);
 			temp *= Matrix4f::RotateZ(m_ParentTransform->Rotation.z * DEGTORAD);

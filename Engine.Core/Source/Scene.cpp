@@ -186,17 +186,17 @@ namespace Scene
 
 	void Scene::Listener(Core::SEventDesc &a_Desc)
 	{
-		Graphics::SEntityDesc *entity = (Graphics::SEntityDesc*)a_Desc.Description;
+		Graphics::SEntityDesc *entity = static_cast<Graphics::SEntityDesc*>(a_Desc.Description);
 
 		switch (a_Desc.Event)
 		{
 		case Core::EEvents::SCENE_MESHCOMPONENT_ADDED:
-			if (entity != nullptr)
+			if (entity != nullptr && m_Renderables.size() > 0)
 				AddRenderable(entity->Parent, entity->MeshRenderer);
 			break;
 
 		case Core::EEvents::SCENE_MESHCOMPONENT_REMOVED:
-			if(entity != nullptr)
+			if(entity != nullptr && m_Renderables.size() > 0)
 				RemoveRenderable(entity->Parent);
 			break;
 

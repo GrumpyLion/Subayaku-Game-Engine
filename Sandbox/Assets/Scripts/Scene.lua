@@ -11,14 +11,21 @@ function Init()
 	camera:Initialize(gameObject, 80.0, 1, 5000.0)
 	
 	-- Test Mesh (Rotation Teapot)
-	local mesh = gameObject:AddMeshRenderer()
-	local material = mesh:SetNewMaterial()
 	
-	material:AddShader("Small.vs")
-	material:AddShader("Small.fs")
+	for i=0, 100, 1 do
+		trans.Scale = Vector3f.new(0.25, 0.25, 0.25);
+		trans.Position = Vector3f.new(math.random(-500, 500), 35, math.random(-500, 500))
+		
+		gameObject = Scene:InstantiateGameObject(tostring(i), trans)
+		local mesh = gameObject:AddMeshRenderer()
+		local material = mesh:SetNewMaterial()
+		
+		material:AddShader("Small.vs")
+		material:AddShader("Small.fs")
+		
+		mesh:Initialize(gameObject, "Assets/Models/Tree.obj", material)
+	end 
 	
-	mesh:Initialize(gameObject, "Assets/Models/teapot.obj", material)
-
 	-- Terrain	
 	local texDesc = TextureDesc.new()
 	local meshDesc = MeshDesc.new()

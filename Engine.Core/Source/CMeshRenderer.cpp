@@ -13,16 +13,15 @@ namespace Scene
 
 		eventDesc.Event = Core::EEvents::SCENE_MESHCOMPONENT_REMOVED;
 		eventDesc.Description = &m_Entity;
-		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
+		Core::EventHandler::StaticClass()->ForceEvent(eventDesc);
 	}
 
 	void CMeshRenderer::InitializeEntity()
-	{
-		m_Entity = Graphics::SEntityDesc{};
-	
+	{	
 		//Load the mesh from cache..
-		if (m_Mesh.Vertices.size() == 0)
-			LoadAssimpObj(m_Mesh);
+		if (&m_Mesh != nullptr && m_Mesh.Vertices.size() == 0)
+			if (!LoadAssimpObj(m_Mesh))
+				return;
 
 		m_Entity.Mesh = m_Mesh;
 		m_Entity.Material = &m_Material;

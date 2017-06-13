@@ -38,7 +38,7 @@ void main()
 	oTexCoord = Texcoord;
 	
 	oFragPos = Position.xyz;
-	Pos.y += texture(uNoise, oTexCoord).y * clamp(uTime.x * 0.0001, 0.0, 1.0) * 50 - 25;	
+	Pos.y += texture(uNoise, oTexCoord).y * clamp(uTime.x * 0.0005, 0.0, 1.0) * 50 - 25;	
 	
 	gl_Position = uPMatrix * uVMatrix * Pos;
 		
