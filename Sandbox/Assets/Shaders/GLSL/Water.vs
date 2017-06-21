@@ -5,6 +5,7 @@ layout(location=1) in vec3 Normal;
 layout(location=2) in vec2 Texcoord;
 layout(location=3) in vec3 Tangent;
 layout(location=4) in vec3 Bitangent;
+layout(location=5) in mat4 WMatrix;
 
 out flat vec3 oNormal;
 out vec3 oFragPos;
@@ -20,7 +21,6 @@ layout (std140, binding = 1) uniform GlobalDynamicBuffer
   vec2 uTime;
 };
 
-uniform mat4 uWMatrix = mat4(1.0);
 uniform sampler2D uNoise;
 uniform sampler2D uColor;
 
@@ -96,7 +96,7 @@ float snoise(vec2 v) {
 
 void main()
 {
-	vec4 Pos = uWMatrix * vec4(Position, 1.0);
+	vec4 Pos = WMatrix * vec4(Position, 1.0);
 	
 	oTexCoord = Texcoord;
 	vec2 waveCoords = Texcoord * vec2(3.5, 3.5) + uTime * vec2(0.0001, 0.0001);

@@ -6,7 +6,6 @@
 #include "OpenGL\GLShader.h"
 #include "OpenGL\GLShaderBuffer.h"
 
-
 namespace Graphics
 {
 	namespace OpenGL

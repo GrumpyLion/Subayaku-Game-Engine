@@ -15,7 +15,7 @@ namespace Graphics
 
 		//Container for all entities
 		//
-		std::unordered_map<Scene::CMeshRenderer*, std::unique_ptr<IEntity>> m_Entities;
+		std::unordered_map<SEntityDesc, std::unique_ptr<IEntity>> m_Entities;
 
 		//This will cache all objects so we only need to create and load them once. Will be destroyed if the renderer changes..
 		//
@@ -64,13 +64,13 @@ namespace Graphics
 
 		Scene::CCamera *GetCamera()	final				{			return m_Camera;			}
 
-		//Adds an renderer entity object that contains all information to render an certain object.
+		//Adds an renderer entity object that contains all information to render a certain object.
 		//
 		__declspec(dllexport) void AddRenderable(SEntityDesc &a_Desc) final;
 
 		//Removes an entity with the given meshrenderer
 		//
-		__declspec(dllexport) void RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer) final;
+		__declspec(dllexport) void RemoveRenderable(SEntityDesc &a_Desc) final;
 
 		__declspec(dllexport) void EventListener(Core::SEventDesc &a_Desc) final;
 	};

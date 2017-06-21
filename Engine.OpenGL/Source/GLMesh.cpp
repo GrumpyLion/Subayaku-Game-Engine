@@ -1,6 +1,9 @@
 #include "OpenGL\GLMesh.h"
 #include "Math\Math.h"
 
+#include "Scene\GameObject\Components\CMeshRenderer.h"
+#include "Scene\GameObject\GameObject.h"
+
 namespace Graphics
 {
 	namespace OpenGL
@@ -8,7 +11,8 @@ namespace Graphics
 		GLMesh::~GLMesh()
 		{
 			glDeleteBuffers(numVBOs, m_VBOs);
-			glDeleteVertexArrays(1, &m_VAO);			
+			glDeleteVertexArrays(1, &m_VAO);
+			glDeleteBuffers(1, &m_TBO);
 		}
 
 		bool GLMesh::Initialize(SMeshDesc &a_Desc, IRenderer *a_Renderer)
@@ -104,14 +108,83 @@ namespace Graphics
 			return true;
 		}
 		
-		GLuint GLMesh::GetCount()
+		void GLMesh::AddInstance(Scene::CMeshRenderer *a_Transform)
 		{
-			return m_Count;
+			//if the tbo is not initialized or the maximum size is nearly reached resize the TBO buffer
+			//
+			if (m_TBO == 0 || m_Transforms.size() == m_OldSize - 1)
+			{
+				m_OldSize += 250;
+
+				glBindVertexArray(m_VAO);
+
+				if (m_TBO == 0)
+				{
+					glGenBuffers(1, &m_TBO);
+				
+					glBindBuffer(GL_ARRAY_BUFFER, m_TBO);
+					glBufferData(GL_ARRAY_BUFFER, m_OldSize * sizeof(Matrix4f), nullptr, GL_STATIC_DRAW);
+
+					glEnableVertexAttribArray(5);
+					glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4f), (GLvoid*)0);
+					glEnableVertexAttribArray(6);
+					glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4f), (GLvoid*)(sizeof(Vector4f)));
+					glEnableVertexAttribArray(7);
+					glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4f), (GLvoid*)(2 * sizeof(Vector4f)));
+					glEnableVertexAttribArray(8);
+					glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4f), (GLvoid*)(3 * sizeof(Vector4f)));
+
+					glVertexAttribDivisor(5, 1);
+					glVertexAttribDivisor(6, 1);
+					glVertexAttribDivisor(7, 1);
+					glVertexAttribDivisor(8, 1);
+				}
+				else
+				{
+					glBindBuffer(GL_ARRAY_BUFFER, m_TBO);
+					glBufferData(GL_ARRAY_BUFFER, m_OldSize * sizeof(Matrix4f), nullptr, GL_STATIC_DRAW);
+				}
+
+				glBindVertexArray(0);
+
+				m_Transforms.reserve(m_OldSize);
+			}
+			
+			m_Transforms.insert(a_Transform);
 		}
 
-		void GLMesh::Bind()
+		void GLMesh::RemoveInstance(Scene::CMeshRenderer *a_Transform)
 		{
+			m_Transforms.erase(a_Transform);
+		}
+
+		GLuint GLMesh::GetCount()		{			return m_Count;		}
+
+		size_t GLMesh::GetInstanceCount()		{			return m_Transforms.size();		}
+
+		void GLMesh::Bind()
+		{			
+			// OPTIMIZE
+			//
+			glBindBuffer(GL_ARRAY_BUFFER, m_TBO);
+
+			std::vector<Matrix4f> matrices;
+			matrices.reserve(m_Transforms.size());
+
+			for (auto &temp : m_Transforms)
+			{
+				matrices.push_back(temp->Parent->Transform->ToWorldMatrix());
+			}
+
+			GLvoid* p = glMapBufferRange(GL_ARRAY_BUFFER, 0, matrices.size() * sizeof(Matrix4f), GL_MAP_UNSYNCHRONIZED_BIT | GL_MAP_WRITE_BIT);
+			memcpy(p, matrices.data(), matrices.size() * sizeof(Matrix4f));
+				
+			glUnmapBuffer(GL_ARRAY_BUFFER);			
+
+			//
+
 			glBindVertexArray(m_VAO);
+
 			if (!ShouldCull)
 				glDisable(GL_CULL_FACE);
 		}

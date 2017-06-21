@@ -7,36 +7,46 @@ namespace Graphics
 		if (a_Desc.MeshRenderer == nullptr)
 			return;
 
-		if (m_Entities.find(a_Desc.MeshRenderer) != m_Entities.end())
+		//Entity is already added with this materials
+		if (m_Entities.find(a_Desc) != m_Entities.end())
 		{
-			LogErr("CMeshrenderer is already added\n");
+			m_Entities.find(a_Desc)->second->AddInstance(a_Desc.MeshRenderer);
 			return;
 		}
-
+		//nothing found
 		std::unique_ptr<IEntity> temp = m_CreateEntity();
 
 		if (!temp->Initialize(a_Desc, this))
 		{
-			LogErr("Error while trying to add a new Renderable\n");
+			LogErr("Error while trying to add a new Renderable");
 			return;
 		}
 
-		m_Entities.insert({ a_Desc.MeshRenderer, std::move(temp) });
+		m_Entities.insert({ a_Desc, std::move(temp) });
 	}
 
-	void BaseRenderer::RemoveRenderable(Scene::CMeshRenderer *a_MeshRenderer)
+	void BaseRenderer::RemoveRenderable(SEntityDesc &a_Desc)
 	{
-		if (a_MeshRenderer == nullptr)
+		if (a_Desc.MeshRenderer == nullptr)
 			return;
 
-		if (m_Entities.find(a_MeshRenderer) == m_Entities.end())
+		if (m_Entities.find(a_Desc) == m_Entities.end())
 		{
-			LogErr("CMeshrenderer was not found\n");
+			LogErr("Entity was not found");
 			return;
 		}
 		else
 		{
-			m_Entities.erase(a_MeshRenderer);
+			auto temp = m_Entities.find(a_Desc);
+
+			if (temp->second->GetInstanceCount() > 1)
+			{
+				temp->second->RemoveInstance(a_Desc.MeshRenderer);
+			}
+			else
+			{
+				m_Entities.erase(a_Desc);
+			}
 		}
 	}
 
@@ -55,7 +65,7 @@ namespace Graphics
 			break;
 
 		case Core::EEvents::SCENE_MESHCOMPONENT_REMOVED:
-			RemoveRenderable(desc->MeshRenderer);
+			RemoveRenderable(*desc);
 			break;
 
 		case Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED:

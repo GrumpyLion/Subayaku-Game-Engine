@@ -3,6 +3,9 @@
 #include "DirectX\D3DRenderer.h"
 #include "DirectX\D3DMesh.h"
 
+#include "Scene\GameObject\GameObject.h"
+#include "Scene\GameObject\Components\CMeshRenderer.h"
+
 namespace Graphics
 {
 	namespace DirectX
@@ -27,6 +30,16 @@ namespace Graphics
 				return false;
 
 			return true;
+		}
+
+		void D3DEntity::AddInstance(Scene::CMeshRenderer *a_MeshRenderer)
+		{
+
+		}
+
+		void D3DEntity::RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer)
+		{
+
 		}
 
 		void D3DEntity::Render()

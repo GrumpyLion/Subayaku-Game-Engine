@@ -1,3 +1,5 @@
+index = 0
+
 function Init()
 
 	-- Camera Object
@@ -12,11 +14,11 @@ function Init()
 	
 	-- Test Mesh (Rotation Teapot)
 	
-	for i=0, 100, 1 do
+	for index=0, 1, 1 do
 		trans.Scale = Vector3f.new(0.25, 0.25, 0.25);
 		trans.Position = Vector3f.new(math.random(-500, 500), 35, math.random(-500, 500))
 		
-		gameObject = Scene:InstantiateGameObject(tostring(i), trans)
+		gameObject = Scene:InstantiateGameObject(tostring(index), trans)
 		local mesh = gameObject:AddMeshRenderer()
 		local material = mesh:SetNewMaterial()
 		

@@ -116,7 +116,7 @@ namespace Core
 					m_Context.RDevice = RenderDevice::OpenGL;
 					SwitchRenderer(m_Context);
 				}
-				
+
 				if (GetInputManager()->GetKeyboard()->IsKeyJustDown(SUBA_KEY_F5))
 				{
 					Core::SEventDesc desc{};

@@ -191,4 +191,11 @@ struct Vector3f
 		result *= a_Val;
 		return result;
 	}
+
+	inline bool operator==(const Vector3f& a_Other) const
+	{
+		return (x == a_Other.x &&
+				y == a_Other.y &&
+				z == a_Other.z);
+	}
 };

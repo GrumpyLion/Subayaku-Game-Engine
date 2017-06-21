@@ -166,4 +166,10 @@ struct Vector2f
 		result *= a_Val;
 		return result;
 	}
+
+	inline bool operator==(const Vector2f& a_Other) const
+	{
+		return (x == a_Other.x &&
+			y == a_Other.y);
+	}
 };

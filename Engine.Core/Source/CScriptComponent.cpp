@@ -65,7 +65,8 @@ namespace Scene
 		m_Lua.new_usertype<Scene>(
 			"Scene",
 			
-			"InstantiateGameObject", overload
+			"InstantiateGameObject", overload,
+			"RemoveGameObject", &Scene::RemoveGameObject
 			);
 
 		m_Lua.new_usertype<Transformation>(

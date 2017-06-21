@@ -2,10 +2,13 @@
 
 #include "Graphics\Interfaces\IEntity.h"
 #include "GLMaterial.h"
+#include "GLMesh.h"
+#include <vector>
 
 namespace Scene
 {
 	class GameObject;
+	class CMeshRenderer;
 }
 
 namespace Graphics
@@ -14,11 +17,11 @@ namespace Graphics
 
 	namespace OpenGL
 	{
-		class GLMesh;
 		class GLRenderer;
 
 		class GLEntity : public IEntity
 		{
+
 		private:
 			GLMesh* m_Mesh = nullptr;
 			GLRenderer *m_Renderer = nullptr;
@@ -31,7 +34,10 @@ namespace Graphics
 
 			__declspec(dllexport) bool Initialize(SEntityDesc &a_Desc, IRenderer *a_Renderer) final;
 			__declspec(dllexport) void Render() final;
-
+			__declspec(dllexport) void AddInstance(Scene::CMeshRenderer *a_MeshRenderer) final;
+			__declspec(dllexport) void RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer) final;
+			__declspec(dllexport) size_t GetInstanceCount() final { return m_Mesh->GetInstanceCount(); }
+ 
 		};
 	}
 }

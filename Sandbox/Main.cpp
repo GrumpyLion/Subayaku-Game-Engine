@@ -3,11 +3,10 @@
 #include "Core\Engine.h"
 #include "Core\SEngineContext.h"
 
-#include <vector>
-
 int main()
 {	
 	auto engine = std::make_unique<Core::Engine>();
+
 	Core::SEngineContext context{};
 	context.RDevice = Core::RenderDevice::OpenGL;
 	context.Width = 1360;
@@ -18,5 +17,6 @@ int main()
 	{
 		engine->Run();
 	}
+
 	return 0;
 }

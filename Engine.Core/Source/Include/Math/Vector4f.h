@@ -208,4 +208,12 @@ struct Vector4f
 		result *= a_Val;
 		return result;
 	}
+	
+	inline bool operator==(const Vector4f& a_Other) const
+	{
+		return (x == a_Other.x &&
+			y == a_Other.y &&
+			z == a_Other.z &&
+			w == a_Other.w);
+	}
 };
