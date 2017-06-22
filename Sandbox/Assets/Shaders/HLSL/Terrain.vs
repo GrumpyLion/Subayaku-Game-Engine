@@ -10,11 +10,6 @@ cbuffer DynamicBuffer : register(b1)
 	float3 uCameraPosition;
 };
 
-cbuffer ObjectBuffer : register(b5)
-{
-	float4x4 uWMatrix;
-};
-
 struct VertexInput
 {
 	float3 Position : POSITION;
@@ -22,6 +17,7 @@ struct VertexInput
 	float2 Texcoord : TEXCOORD;
 	float3 Tangent : TANGENT;
 	float3 Bitangent : BITANGENT;
+	float4x4 WMatrix : WMATRIX;
 };
 
 struct PixelInputType
@@ -115,8 +111,8 @@ PixelInputType VS_Main(VertexInput input)
 	output.Texcoord = input.Texcoord * float2(3.5, 3.5) + float2(uTimeSinceStart, uTimeSinceStart) * float2(0.00001, 0.0001);
 	output.Texcoord *= float2(1, -1);
 	
-    output.Position = mul(output.Position, uWMatrix);
-	output.Position.y += snoise(output.Texcoord) * 10; 
+    output.Position = mul(output.Position, input.WMatrix);
+	//output.Position.y += snoise(output.Texcoord) * 10; 
 	
     output.Position = mul(output.Position, uVMatrix);
 	output.Position = mul(output.Position, uPMatrix);

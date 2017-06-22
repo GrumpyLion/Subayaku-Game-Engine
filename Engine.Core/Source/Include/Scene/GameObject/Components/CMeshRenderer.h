@@ -33,7 +33,5 @@ namespace Scene
 	
 		void SetMaterial(Graphics::Material &a_Material);
 		Graphics::Material& GetMaterial();
-
-		//Graphics::SEntityDesc &GetEntityDesc();
 	};
 }

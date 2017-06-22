@@ -14,7 +14,7 @@ namespace Graphics
 		std::string FilePath = "";
 		
 		int RegisterIndex = 0;
-		const char* UniformName = "";
+		std::string UniformName = "";
 
 		std::vector<unsigned char> PixelData;
 

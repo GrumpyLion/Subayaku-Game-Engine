@@ -56,16 +56,16 @@ namespace Graphics
 			if (m_Mesh->HasIndices)
 			{
 				if (m_Mesh->GetInstanceCount() == 1)
-					glDrawElements(EMeshPrimitiveToGL(m_Mesh->Mode), m_Mesh->GetCount(), GL_UNSIGNED_INT, nullptr);
+					glDrawElements(EMeshPrimitiveToGL(m_Mesh->Mode), m_Mesh->GetVertexCount(), GL_UNSIGNED_INT, nullptr);
 				else
-					glDrawElementsInstanced(EMeshPrimitiveToGL(m_Mesh->Mode), m_Mesh->GetCount(), GL_UNSIGNED_INT, nullptr, (GLsizei)m_Mesh->GetInstanceCount());
+					glDrawElementsInstanced(EMeshPrimitiveToGL(m_Mesh->Mode), m_Mesh->GetVertexCount(), GL_UNSIGNED_INT, nullptr, (GLsizei)m_Mesh->GetFrustumInstanceCount());
 			}
 			else
 			{
 				if (m_Mesh->GetInstanceCount() == 1)
-					glDrawArrays(EMeshPrimitiveToGL(m_Mesh->Mode), 0, m_Mesh->GetCount());
+					glDrawArrays(EMeshPrimitiveToGL(m_Mesh->Mode), 0, m_Mesh->GetVertexCount());
 				else
-					glDrawArraysInstanced(EMeshPrimitiveToGL(m_Mesh->Mode), 0, m_Mesh->GetCount(), (GLsizei)m_Mesh->GetInstanceCount());
+					glDrawArraysInstanced(EMeshPrimitiveToGL(m_Mesh->Mode), 0, m_Mesh->GetVertexCount(), (GLsizei)m_Mesh->GetFrustumInstanceCount());
 			}
 			
 			m_Mesh->Unbind();

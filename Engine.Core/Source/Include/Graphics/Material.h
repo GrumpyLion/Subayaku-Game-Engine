@@ -26,8 +26,13 @@ namespace Graphics
 		void AddTexture(STextureDesc &a_TextureInfo);
 		void RemoveTexture(std::string a_FileName);
 
+		// ERROR ON CLOSE !!
+		//
 		bool operator==(const Material& a_Other) const
 		{
+			if (this == nullptr)
+				return false;
+
 			// If the size is not the same well then bye :D
 			if (Textures.size() > 0 && Textures.size() != a_Other.Textures.size())
 				return false;

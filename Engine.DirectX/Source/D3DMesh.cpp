@@ -14,7 +14,7 @@ namespace Graphics
 			SafeRelease(m_UVBuffer);
 			SafeRelease(m_IndexBuffer);
 			SafeRelease(m_NormalBuffer);
-
+			SafeRelease(m_WorldMatrixBuffer);
 			SafeRelease(m_Layout);
 		}
 
@@ -103,7 +103,7 @@ namespace Graphics
 				indexBufferDesc.ByteWidth = (unsigned int)(sizeof(unsigned long) * a_Desc.Indices.size());
 				indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
-				m_Count = (unsigned int)a_Desc.Indices.size();
+				m_VertexCount = (unsigned int)a_Desc.Indices.size();
 
 				indexData.pSysMem = a_Desc.Indices.data();
 
@@ -111,9 +111,60 @@ namespace Graphics
 					return false;
 			}
 			else
-				m_Count = (unsigned int)a_Desc.Vertices.size();
+				m_VertexCount = (unsigned int)a_Desc.Vertices.size();
 
 			return true;
+		}
+
+		void D3DMesh::AddInstance(Scene::CMeshRenderer *a_MeshRenderer)
+		{
+			// Create the buffer if not already done. Also make it 250 objects big 
+			//
+			if (m_WorldMatrixBuffer == nullptr)
+			{
+				m_InstanceCount = 250;
+				m_Transforms.reserve(250);
+
+				D3D11_BUFFER_DESC wmb{};
+				wmb.Usage = D3D11_USAGE_DYNAMIC;
+				wmb.ByteWidth = sizeof(Matrix4f) * m_InstanceCount;
+				wmb.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+				wmb.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+				if (Failed(m_Renderer->GetDevice()->CreateBuffer(&wmb, nullptr, &m_WorldMatrixBuffer)))
+					return;
+
+				m_Transforms.insert(a_MeshRenderer);
+			}
+			else
+			{
+				// We're almost out of space ! Reallocate
+				//
+				if (m_Transforms.size() == m_InstanceCount - 1)
+				{
+					SafeRelease(m_WorldMatrixBuffer);
+
+					m_InstanceCount += 250;
+					m_Transforms.reserve(250);
+
+					D3D11_BUFFER_DESC wmb{};
+					wmb.Usage = D3D11_USAGE_DYNAMIC;
+					wmb.ByteWidth = sizeof(Matrix4f) * m_InstanceCount;
+					wmb.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+					wmb.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+					if (Failed(m_Renderer->GetDevice()->CreateBuffer(&wmb, nullptr, &m_WorldMatrixBuffer)))
+						return;
+
+				}
+
+				m_Transforms.insert(a_MeshRenderer);
+			}
+		}
+
+		void D3DMesh::RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer)
+		{
+			m_Transforms.erase(a_MeshRenderer);
 		}
 
 		void D3DMesh::Bind()
@@ -121,10 +172,50 @@ namespace Graphics
 			unsigned int stride = 0;
 			unsigned int offset = 0;
 
-			//Set vertex buffer stride and offset
+			// Set vertex buffer stride and offset
+			//
 			stride = sizeof(Vector3f);
 			offset = 0;
+			
+			// Update Matrices
+			//
 
+			std::vector<Matrix4f> matrices;
+			matrices.reserve(m_Transforms.size());
+
+			m_FrustumInstanceCount = 0;
+			for (auto &temp : m_Transforms)
+			{
+				// Add Frustum culling
+				//
+				matrices.push_back(temp->Parent->Transform->ToWorldMatrix());
+				m_FrustumInstanceCount++;
+			}
+
+			D3D11_MAPPED_SUBRESOURCE mappedRessource{};
+			void *dataPtr = nullptr;
+			
+			if (Failed(m_Renderer->GetDeviceContext()->Map(m_WorldMatrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedRessource)))
+			{
+				LogErr("World Matrix Map error");
+				return;
+			}
+
+			dataPtr = mappedRessource.pData;
+			
+			memcpy(dataPtr, matrices.data(), m_FrustumInstanceCount * sizeof(Matrix4f));
+
+			m_Renderer->GetDeviceContext()->Unmap(m_WorldMatrixBuffer, 0);
+
+			// Need another stride
+			//
+			stride = sizeof(Matrix4f);
+			m_Renderer->GetDeviceContext()->IASetVertexBuffers(Data::WMATRIX, 1, &m_WorldMatrixBuffer, &stride, &offset);
+
+			// All have the size of Vector3
+			//
+			stride = sizeof(Vector3f);
+			
 			m_Renderer->GetDeviceContext()->IASetVertexBuffers(Data::POSITION, 1, &m_VertexBuffer, &stride, &offset);
 			m_Renderer->GetDeviceContext()->IASetVertexBuffers(Data::NORMAL, 1, &m_NormalBuffer, &stride, &offset);
 			m_Renderer->GetDeviceContext()->IASetVertexBuffers(Data::TANGENT, 1, &m_TangentBuffer, &stride, &offset);
@@ -140,11 +231,6 @@ namespace Graphics
 		void D3DMesh::Unbind()
 		{
 
-		}
-
-		unsigned int D3DMesh::GetCount()
-		{
-			return m_Count;
 		}
 	}
 }

@@ -20,6 +20,7 @@ namespace Scene
 	{	
 		//Load the mesh from cache..
 		if (&m_Mesh != nullptr && m_Mesh.Vertices.size() == 0)
+			//TODO Cache, this takes to much memory !
 			if (!LoadAssimpObj(m_Mesh))
 				return;
 

@@ -27,14 +27,8 @@ namespace Graphics
 			Scene::Transformation *m_ParentTransform = nullptr;
 
 			D3DRenderer *m_Renderer = nullptr;
-			D3DShaderBuffer* m_ObjectBuffer = nullptr;
 
 			std::unordered_map<std::string, D3DTexture*> m_Textures;
-
-			struct ObjectBuffer
-			{
-				Matrix4f World;
-			};
 
 		public:
 			bool Initialize(Material *a_Material, IRenderer *a_Renderer) final;

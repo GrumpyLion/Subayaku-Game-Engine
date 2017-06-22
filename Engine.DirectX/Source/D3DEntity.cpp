@@ -17,6 +17,8 @@ namespace Graphics
 			if (CheckIfPointerIsInvalid(m_Renderer))
 				return false;
 
+			// Add the Material
+			//
 			m_Material = std::make_unique<D3DMaterial>();
 
 			if (!m_Material->Initialize(a_Desc.Material, a_Renderer))
@@ -29,17 +31,27 @@ namespace Graphics
 			if (CheckIfPointerIsInvalid(m_Renderer))
 				return false;
 
+			// Add the first instance
+			//
+			AddInstance(a_Desc.MeshRenderer);
+
 			return true;
 		}
 
 		void D3DEntity::AddInstance(Scene::CMeshRenderer *a_MeshRenderer)
 		{
+			if (a_MeshRenderer == nullptr)
+				return;
 
+			m_Mesh->AddInstance(a_MeshRenderer);
 		}
 
 		void D3DEntity::RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer)
 		{
+			if (a_MeshRenderer == nullptr)
+				return;
 
+			m_Mesh->RemoveInstance(a_MeshRenderer);
 		}
 
 		void D3DEntity::Render()
@@ -49,9 +61,21 @@ namespace Graphics
 			m_Material->Bind();
 
 			if (HasIndices)
-				m_Renderer->GetDeviceContext()->DrawIndexed(m_Mesh->GetCount(), 0, 0);
+			{
+				// If the instance count is bigger than 1 then use instanced rendering
+				//
+				if (m_Mesh->GetFrustumInstanceCount() == 1)
+					m_Renderer->GetDeviceContext()->DrawIndexed(m_Mesh->GetVertexCount(), 0, 0);
+				else
+					m_Renderer->GetDeviceContext()->DrawIndexedInstanced(m_Mesh->GetVertexCount(), m_Mesh->GetFrustumInstanceCount(), 0, 0, 0);
+			}
 			else
-				m_Renderer->GetDeviceContext()->Draw(m_Mesh->GetCount(), 0);
+			{
+				if (m_Mesh->GetFrustumInstanceCount() == 1)
+					m_Renderer->GetDeviceContext()->Draw(m_Mesh->GetVertexCount(), 0);
+				else
+					m_Renderer->GetDeviceContext()->DrawInstanced(m_Mesh->GetVertexCount(), m_Mesh->GetFrustumInstanceCount(), 0, 0);
+			}
 		}
 	}
 }

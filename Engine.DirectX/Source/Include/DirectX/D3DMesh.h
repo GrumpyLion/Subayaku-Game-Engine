@@ -2,6 +2,7 @@
 
 #include <d3d11.h>
 #include "Graphics\Interfaces\IMesh.h"
+#include <unordered_set>
 
 namespace Graphics
 {
@@ -18,12 +19,18 @@ namespace Graphics
 			ID3D11Buffer
 				*m_VertexBuffer = nullptr, *m_NormalBuffer = nullptr,
 				*m_UVBuffer = nullptr, *m_IndexBuffer = nullptr,
-				*m_TangentBuffer = nullptr, *m_BitangentBuffer = nullptr;
+				*m_TangentBuffer = nullptr, *m_BitangentBuffer = nullptr,
+				*m_WorldMatrixBuffer = nullptr;
 
 			ID3D11InputLayout *m_Layout = nullptr;
 
+			std::unordered_set<Scene::CMeshRenderer*> m_Transforms;
+
 			D3DRenderer *m_Renderer = nullptr;
-			unsigned int m_Count = 0;
+
+			unsigned int m_VertexCount = 0;
+			unsigned int m_InstanceCount = 0;
+			unsigned int m_FrustumInstanceCount = 0;
 
 			enum Data 
 			{
@@ -31,16 +38,24 @@ namespace Graphics
 				NORMAL,
 				TEXCOORD,
 				TANGENT,
-				BITANGENT
+				BITANGENT,
+				WMATRIX
 			};
 
 		public:
 			~D3DMesh();
 
 			bool Initialize(SMeshDesc &a_Desc, IRenderer *a_Renderer) final;
+			
 			void Bind() final;
 			void Unbind() final;
-			unsigned int GetCount() final;
+
+			void AddInstance(Scene::CMeshRenderer *a_MeshRenderer);
+			void RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer);
+
+			unsigned int GetVertexCount() final { return m_VertexCount;  };
+			unsigned int GetInstanceCount() final { return m_InstanceCount; };
+			unsigned int GetFrustumInstanceCount() final { return m_FrustumInstanceCount; };
 		};
 	}
 }

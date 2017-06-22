@@ -25,7 +25,7 @@ namespace Graphics
 			if (m_FragmentShader == nullptr)
 				return false;
 			
-			D3D11_INPUT_ELEMENT_DESC polygonLayout[5];
+			D3D11_INPUT_ELEMENT_DESC polygonLayout[9];
 			unsigned int numElements;
 
 			polygonLayout[0].SemanticName = "POSITION";
@@ -67,6 +67,42 @@ namespace Graphics
 			polygonLayout[4].AlignedByteOffset = 0;
 			polygonLayout[4].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			polygonLayout[4].InstanceDataStepRate = 0;
+
+
+			// Matrix in buffer for instanced rendering ..
+			// Divided in float4's
+
+			polygonLayout[5].SemanticName = "WMATRIX";
+			polygonLayout[5].SemanticIndex = 0;
+			polygonLayout[5].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			polygonLayout[5].InputSlot = 5;
+			polygonLayout[5].AlignedByteOffset = 0;
+			polygonLayout[5].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
+			polygonLayout[5].InstanceDataStepRate = 1;
+
+			polygonLayout[6].SemanticName = "WMATRIX";
+			polygonLayout[6].SemanticIndex = 1;
+			polygonLayout[6].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			polygonLayout[6].InputSlot = 5;
+			polygonLayout[6].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+			polygonLayout[6].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
+			polygonLayout[6].InstanceDataStepRate = 1;
+
+			polygonLayout[7].SemanticName = "WMATRIX";
+			polygonLayout[7].SemanticIndex = 2;
+			polygonLayout[7].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			polygonLayout[7].InputSlot = 5;
+			polygonLayout[7].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+			polygonLayout[7].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
+			polygonLayout[7].InstanceDataStepRate = 1;
+
+			polygonLayout[8].SemanticName = "WMATRIX";
+			polygonLayout[8].SemanticIndex = 3;
+			polygonLayout[8].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			polygonLayout[8].InputSlot = 5;
+			polygonLayout[8].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+			polygonLayout[8].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
+			polygonLayout[8].InstanceDataStepRate = 1;
 
 			numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);			
 

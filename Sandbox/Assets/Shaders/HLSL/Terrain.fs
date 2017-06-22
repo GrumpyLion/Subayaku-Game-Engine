@@ -42,5 +42,5 @@ float4 PS_Main(PixelInputType input):SV_TARGET
 	
 	finalColor = lerp(finalColor, float4(1,1,1,1), clamp(dist * 0.5f, 0.0, 1.0));
 	
-	return float4(finalColor, 1);
+	return float4(0,0,0, 1);
 }
