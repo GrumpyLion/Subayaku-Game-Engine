@@ -3,8 +3,6 @@
 #include "Scene\Scene.h"
 #include "Graphics\Primitives.h"
 
-#include "Graphics\Loaders\AssimpLoader.h"
-
 namespace Scene
 {
 	CMeshRenderer::~CMeshRenderer()
@@ -18,12 +16,6 @@ namespace Scene
 
 	void CMeshRenderer::InitializeEntity()
 	{	
-		//Load the mesh from cache..
-		if (&m_Mesh != nullptr && m_Mesh.Vertices.size() == 0)
-			//TODO Cache, this takes to much memory !
-			if (!LoadAssimpObj(m_Mesh))
-				return;
-
 		m_Entity.Mesh = m_Mesh;
 		m_Entity.Material = &m_Material;
 		m_Entity.Material->ParentTransform = Parent->Transform;
@@ -42,6 +34,7 @@ namespace Scene
 		
 		m_Mesh.FilePath = a_ModelLocation;
 		m_Mesh.HasIndices = true;
+		m_Mesh.NeedsToBeLoaded = true;
 		m_Mesh.ShouldCull = false;
 		m_Mesh.Mode = Graphics::EMeshPrimitive::TRIANGLES;
 

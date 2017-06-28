@@ -17,7 +17,11 @@ inline bool LoadAssimpObj(Graphics::SMeshDesc &a_Desc)
 	if (temp == nullptr)
 		return false;
 
-	const aiScene* scene = importer.ReadFileFromMemory(&temp->Data[0], temp->FileSize, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals  | aiProcess_CalcTangentSpace);
+	const aiScene* scene = importer.ReadFileFromMemory(&temp->Data[0], temp->FileSize, 
+		aiProcess_Triangulate | aiProcess_FlipUVs | 
+		aiProcess_GenNormals  | aiProcess_CalcTangentSpace | 
+		aiProcess_OptimizeGraph | aiProcess_OptimizeMeshes);
+
 	if (!scene) {
 		fprintf(stderr, importer.GetErrorString());
 		getchar();

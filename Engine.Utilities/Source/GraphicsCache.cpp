@@ -1,4 +1,5 @@
 #include "Graphics\Utilities\GraphicsCache.h"
+#include "Graphics\Loaders\AssimpLoader.h"
 
 namespace Graphics
 {
@@ -28,8 +29,7 @@ namespace Graphics
 			}
 
 			////Clear memory
-			//a_Desc.PixelData.resize(0);
-			//a_Desc.PixelData.clear();
+			std::vector<unsigned char>().swap(a_Desc.PixelData);
 
 			m_Textures[a_Desc.FilePath] = std::move(texture);
 
@@ -56,11 +56,25 @@ namespace Graphics
 
 			auto mesh = m_CreateMesh();
 
+			//Load the mesh from cache..
+			if (a_Desc.Vertices.size() == 0 && a_Desc.NeedsToBeLoaded)
+				//TODO Cache, this takes to much memory !
+				if (!LoadAssimpObj(a_Desc))
+					return false;
+
 			if (!mesh->Initialize(a_Desc, m_Renderer))
 			{
 				LogErr("Error while loading Mesh File [%s] in Cache\n", a_Desc.FilePath);
 				return nullptr;
 			}
+
+			std::vector<Vector3f>().swap(a_Desc.Vertices);
+			std::vector<Vector3f>().swap(a_Desc.Normals);
+			std::vector<Vector3f>().swap(a_Desc.Bitangents);
+			std::vector<Vector3f>().swap(a_Desc.Tangents);
+
+			std::vector<Vector2f>().swap(a_Desc.TexCoords);
+			std::vector<unsigned int>().swap(a_Desc.Indices);
 
 			m_Meshes[a_Desc.FilePath] = std::move(mesh);
 

@@ -20,6 +20,7 @@ namespace Graphics
 
 		bool ShouldCull = true;
 		bool HasIndices = true;
+		bool NeedsToBeLoaded = false;
 		std::string FilePath;
 
 		bool operator==(const SMeshDesc& a_Other) const

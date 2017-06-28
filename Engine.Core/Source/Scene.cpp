@@ -9,8 +9,7 @@
 namespace Scene
 {
 	bool Scene::Initialize()
-	{
-
+	{	
 		//Maybe replace this ?
 		auto ptr = InstantiateGameObject("Scene");
 
