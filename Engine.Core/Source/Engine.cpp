@@ -208,23 +208,4 @@ namespace Core
 
 		return true;
 	}
-
-	IWindow *Engine::GetWindow()
-	{	return m_Window;	}
-
-	Graphics::IRenderer *Engine::GetRenderer()
-	{	return m_Renderer;	}
-
-	InputManager *Engine::GetInputManager()
-	{	return m_InputManager;	}
-
-	Scene::Scene *Engine::GetScene()
-	{	return m_Scene;		}
-
-	SEngineContext &Engine::GetContext()
-	{	return m_Context;	}
-
-	Engine* Engine::StaticClass()
-	{	return m_SharedInstance;	}
-
 }

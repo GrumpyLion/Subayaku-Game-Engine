@@ -10,8 +10,6 @@ namespace Graphics
 		{
 			m_Renderer = static_cast<D3DRenderer*>(a_Renderer);
 
-			m_ParentTransform = a_Material->ParentTransform;
-
 			m_Container = std::make_unique<D3DShaderContainer>();
 
 			if (!m_Container->Initialize(a_Material->Shaders, a_Renderer))

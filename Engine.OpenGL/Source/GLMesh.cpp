@@ -105,7 +105,7 @@ namespace Graphics
 			return true;
 		}
 		
-		void GLMesh::AddInstance(Scene::CMeshRenderer *a_Transform)
+		void GLMesh::AddInstance(Matrix4f *a_Transform)
 		{
 			// If the tbo is not initialized or the maximum size is nearly reached resize the TBO buffer
 			//
@@ -154,7 +154,7 @@ namespace Graphics
 			m_Transforms.insert(a_Transform);
 		}
 
-		void GLMesh::RemoveInstance(Scene::CMeshRenderer *a_Transform)
+		void GLMesh::RemoveInstance(Matrix4f *a_Transform)
 		{
 			m_Transforms.erase(a_Transform);
 		}
@@ -173,14 +173,14 @@ namespace Graphics
 			{
 				// Add Frustum culling
 				//
-				matrices.push_back(temp->Parent->Transform->ToWorldMatrix());
+				matrices.push_back(*temp);
 				m_FrustumInstanceCount++;
 			}
 
 			GLvoid* p = glMapBufferRange(GL_ARRAY_BUFFER, 0, matrices.size() * sizeof(Matrix4f), GL_MAP_UNSYNCHRONIZED_BIT | GL_MAP_WRITE_BIT);
 			memcpy(p, matrices.data(), matrices.size() * sizeof(Matrix4f));
 				
-			glUnmapBuffer(GL_ARRAY_BUFFER);			
+			glUnmapBuffer(GL_ARRAY_BUFFER);	
 
 			//
 

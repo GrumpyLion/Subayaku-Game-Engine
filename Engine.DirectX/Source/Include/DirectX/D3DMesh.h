@@ -24,7 +24,7 @@ namespace Graphics
 
 			ID3D11InputLayout *m_Layout = nullptr;
 
-			std::unordered_set<Scene::CMeshRenderer*> m_Transforms;
+			std::unordered_set<Matrix4f*> m_Transforms;
 
 			D3DRenderer *m_Renderer = nullptr;
 
@@ -50,8 +50,8 @@ namespace Graphics
 			void Bind() final;
 			void Unbind() final;
 
-			void AddInstance(Scene::CMeshRenderer *a_MeshRenderer);
-			void RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer);
+			void AddInstance(Matrix4f *a_MeshRenderer) final;
+			void RemoveInstance(Matrix4f *a_MeshRenderer) final;
 
 			unsigned int GetVertexCount() final { return m_VertexCount;  };
 			unsigned int GetInstanceCount() final { return m_InstanceCount; };

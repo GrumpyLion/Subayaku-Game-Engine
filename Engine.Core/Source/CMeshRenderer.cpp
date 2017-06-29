@@ -7,19 +7,31 @@ namespace Scene
 {
 	CMeshRenderer::~CMeshRenderer()
 	{
-		Core::SEventDesc eventDesc{};
+		// Safety first
+		//
+		if (!m_Removed)
+			Remove();
+	}
 
+	void CMeshRenderer::Remove()
+	{
+		Core::SEventDesc eventDesc{};
 		eventDesc.Event = Core::EEvents::SCENE_MESHCOMPONENT_REMOVED;
+
+		// Send an event to everything. The renderer will get this event and will delete the entity
+		//
 		eventDesc.Description = &m_Entity;
 		Core::EventHandler::StaticClass()->ForceEvent(eventDesc);
+		
+		m_Removed = true;
 	}
 
 	void CMeshRenderer::InitializeEntity()
 	{	
 		m_Entity.Mesh = m_Mesh;
 		m_Entity.Material = &m_Material;
-		m_Entity.Material->ParentTransform = Parent->Transform;
 		m_Entity.Parent = Parent;
+		m_Entity.Transform = Parent->ModelTransform.get();
 		m_Entity.MeshRenderer = this;
 
 		Core::SEventDesc eventDesc{};
@@ -32,6 +44,7 @@ namespace Scene
 	{
 		IComponent::Initialize(a_Parent);
 		
+		// The model should have this attributes
 		m_Mesh.FilePath = a_ModelLocation;
 		m_Mesh.HasIndices = true;
 		m_Mesh.NeedsToBeLoaded = true;
@@ -55,11 +68,5 @@ namespace Scene
 		return true;
 	}
 
-	void CMeshRenderer::Update()
-	{
-	}
-
-	void CMeshRenderer::SetMaterial(Graphics::Material &a_Material)	{		m_Material = a_Material;	}
-
-	Graphics::Material& CMeshRenderer::GetMaterial()	{		return m_Material;		}
+	void CMeshRenderer::Update() {		}
 }

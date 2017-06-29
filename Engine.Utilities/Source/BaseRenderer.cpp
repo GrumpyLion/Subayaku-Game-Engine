@@ -10,7 +10,7 @@ namespace Graphics
 		//Entity is already added with this materials
 		if (m_Entities.find(a_Desc) != m_Entities.end())
 		{
-			m_Entities.find(a_Desc)->second->AddInstance(a_Desc.MeshRenderer);
+			m_Entities.find(a_Desc)->second->AddInstance(a_Desc.Transform);
 			return;
 		}
 		//nothing found
@@ -41,7 +41,7 @@ namespace Graphics
 
 			if (temp->second->GetInstanceCount() > 1)
 			{
-				temp->second->RemoveInstance(a_Desc.MeshRenderer);
+				temp->second->RemoveInstance(a_Desc.Transform);
 			}
 			else
 			{
@@ -70,10 +70,6 @@ namespace Graphics
 
 		case Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED:
 			m_Camera = nullptr;
-			break;
-
-		case Core::EEvents::SCENE_CLEAR:
-			m_Entities.clear();
 			break;
 		}
 	}

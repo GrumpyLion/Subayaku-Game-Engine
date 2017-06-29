@@ -34,8 +34,8 @@ namespace Graphics
 
 			__declspec(dllexport) bool Initialize(SEntityDesc &a_Desc, IRenderer *a_Renderer) final;
 			__declspec(dllexport) void Render() final;
-			__declspec(dllexport) void AddInstance(Scene::CMeshRenderer *a_MeshRenderer) final;
-			__declspec(dllexport) void RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer) final;
+			__declspec(dllexport) void AddInstance(Matrix4f *a_MeshRenderer) final;
+			__declspec(dllexport) void RemoveInstance(Matrix4f *a_MeshRenderer) final;
 			__declspec(dllexport) size_t GetInstanceCount() final { return m_Mesh->GetInstanceCount(); }
  
 		};

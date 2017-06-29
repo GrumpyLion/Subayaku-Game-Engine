@@ -33,25 +33,25 @@ namespace Graphics
 
 			// Add the first instance
 			//
-			AddInstance(a_Desc.MeshRenderer);
+			AddInstance(a_Desc.Transform);
 
 			return true;
 		}
 
-		void D3DEntity::AddInstance(Scene::CMeshRenderer *a_MeshRenderer)
+		void D3DEntity::AddInstance(Matrix4f *a_Transform)
 		{
-			if (a_MeshRenderer == nullptr)
+			if (a_Transform == nullptr)
 				return;
 
-			m_Mesh->AddInstance(a_MeshRenderer);
+			m_Mesh->AddInstance(a_Transform);
 		}
 
-		void D3DEntity::RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer)
+		void D3DEntity::RemoveInstance(Matrix4f *a_Transform)
 		{
-			if (a_MeshRenderer == nullptr)
+			if (a_Transform == nullptr)
 				return;
 
-			m_Mesh->RemoveInstance(a_MeshRenderer);
+			m_Mesh->RemoveInstance(a_Transform);
 		}
 
 		void D3DEntity::Render()

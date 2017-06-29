@@ -16,8 +16,6 @@ namespace Graphics
 	class Material
 	{		
 	public:
-		Scene::Transformation *ParentTransform = nullptr;
-
 		std::unordered_map<std::string, STextureDesc> Textures;
 		Graphics::SShaderContainerDesc Shaders{};
 		ETextureFilter TextureFilter = ETextureFilter::NEAREST;

@@ -18,6 +18,7 @@ namespace Graphics
 		
 		Scene::CMeshRenderer *MeshRenderer = nullptr;
 		Scene::GameObject *Parent = nullptr;
+		Matrix4f *Transform = nullptr;
 
 		bool operator==(const SEntityDesc& a_Other) const
 		{

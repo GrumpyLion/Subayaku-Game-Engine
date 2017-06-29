@@ -18,7 +18,7 @@ namespace Graphics
 			GLuint m_VBOs[numVBOs];
 			GLuint m_TBO = 0;
 
-			std::unordered_set<Scene::CMeshRenderer*> m_Transforms;
+			std::unordered_set<Matrix4f*> m_Transforms;
 
 			unsigned int m_VertexCount = 0;
 			unsigned int m_InstanceCount = 0;
@@ -33,8 +33,8 @@ namespace Graphics
 
 			bool Initialize(SMeshDesc &a_Desc, IRenderer *a_Renderer) final;
 
-			void AddInstance(Scene::CMeshRenderer *a_MeshRenderer) final;
-			void RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer) final;
+			void AddInstance(Matrix4f *a_MeshRenderer) final;
+			void RemoveInstance(Matrix4f *a_MeshRenderer) final;
 
 			void Bind() final;
 			void Unbind() final;

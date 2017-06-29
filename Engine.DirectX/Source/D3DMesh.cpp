@@ -116,7 +116,7 @@ namespace Graphics
 			return true;
 		}
 
-		void D3DMesh::AddInstance(Scene::CMeshRenderer *a_MeshRenderer)
+		void D3DMesh::AddInstance(Matrix4f *a_Transform)
 		{
 			// Create the buffer if not already done. Also make it 250 objects big 
 			//
@@ -134,7 +134,7 @@ namespace Graphics
 				if (Failed(m_Renderer->GetDevice()->CreateBuffer(&wmb, nullptr, &m_WorldMatrixBuffer)))
 					return;
 
-				m_Transforms.insert(a_MeshRenderer);
+				m_Transforms.insert(a_Transform);
 			}
 			else
 			{
@@ -158,13 +158,13 @@ namespace Graphics
 
 				}
 
-				m_Transforms.insert(a_MeshRenderer);
+				m_Transforms.insert(a_Transform);
 			}
 		}
 
-		void D3DMesh::RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer)
+		void D3DMesh::RemoveInstance(Matrix4f *a_Transform)
 		{
-			m_Transforms.erase(a_MeshRenderer);
+			m_Transforms.erase(a_Transform);
 		}
 
 		void D3DMesh::Bind()
@@ -188,7 +188,7 @@ namespace Graphics
 			{
 				// Add Frustum culling
 				//
-				matrices.push_back(temp->Parent->Transform->ToWorldMatrix());
+				matrices.push_back(*temp);
 				m_FrustumInstanceCount++;
 			}
 

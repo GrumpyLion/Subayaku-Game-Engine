@@ -18,6 +18,8 @@ namespace Scene
 	public:
 		//This represents the position, rotation and the scale
 		Transformation* Transform = nullptr;
+		std::unique_ptr<Matrix4f> ModelTransform;
+		bool IsTicking = true;
 		std::string Name = "Unnamed";
 
 		~GameObject();

@@ -18,6 +18,10 @@ namespace Scene
 	bool GameObject::Initialize()
 	{
 		m_Components.clear();
+		
+		ModelTransform = std::make_unique<Matrix4f>();
+
+		ModelTransform->SetData(m_Transform.ToWorldMatrix());
 		return true;
 	}
 
@@ -79,6 +83,7 @@ namespace Scene
 
 	void GameObject::Update()
 	{
+		ModelTransform->SetData(m_Transform.ToWorldMatrix());
 		for (auto &temp : m_Components)
 			temp->Update();
 	}

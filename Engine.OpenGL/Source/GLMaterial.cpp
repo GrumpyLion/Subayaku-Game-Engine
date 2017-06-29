@@ -12,10 +12,6 @@ namespace Graphics
 			m_Renderer = static_cast<GLRenderer*>(a_Renderer);
 
 			m_Container = std::make_unique<GLShaderContainer>();
-			m_ParentTransform = a_Material->ParentTransform;
-
-			if (m_ParentTransform == nullptr)
-				return false;
 
 			if (!m_Container->Initialize(a_Material->Shaders, a_Renderer))
 				return false;

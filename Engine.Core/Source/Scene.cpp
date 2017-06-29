@@ -11,7 +11,7 @@ namespace Scene
 	bool Scene::Initialize()
 	{	
 		//Maybe replace this ?
-		auto ptr = InstantiateGameObject("Scene");
+		auto ptr = InstantiateGameObject("Scene", true);
 
 		auto script = std::make_unique<CScriptComponent>();
 		script->Initialize(ptr, "Assets/Scripts/Scene.lua");
@@ -23,7 +23,7 @@ namespace Scene
 
 	void Scene::Update()
 	{
-		for (auto &temp : m_GameObjects)
+		for (auto &temp : m_TickableGameObjects)
 		{
 			temp.second->Update();
 		}
@@ -73,6 +73,11 @@ namespace Scene
 			LogErr("GameObject [%s] is already added\n", a_ToAdd->Name.c_str());
 			a_ToAdd = nullptr;
 			return false;
+		}
+
+		if (a_ToAdd->IsTicking)
+		{
+			m_TickableGameObjects[a_ToAdd->Name] = a_ToAdd.get();
 		}
 
 		printf("GameObject added %s\n", a_ToAdd->Name.c_str());
@@ -130,6 +135,7 @@ namespace Scene
 	{
 		if (m_GameObjects.find(a_Name) != m_GameObjects.end())
 		{
+			m_TickableGameObjects.erase(a_Name);
 			m_GameObjects.erase(a_Name);
 		}
 		else
@@ -138,22 +144,25 @@ namespace Scene
 		}
 	}
 
-	GameObject* Scene::InstantiateGameObject(std::string a_Name)
+	GameObject* Scene::InstantiateGameObject(std::string a_Name, bool a_IsTicking)
 	{
-		return InstantiateGameObject(a_Name, Transformation());
+		return InstantiateGameObject(a_Name, Transformation(), a_IsTicking);
 	}
 
-	GameObject* Scene::InstantiateGameObject(std::string a_Name, Transformation& a_Transform)
+	GameObject* Scene::InstantiateGameObject(std::string a_Name, Transformation& a_Transform, bool a_IsTicking)
 	{
 		auto temp = std::make_unique<GameObject>();
 		temp->Name = a_Name;
+		temp->IsTicking = a_IsTicking;
 
 		auto ptr = temp.get();
 
+		temp->SetTransform(std::move(a_Transform));
+		
+		temp->Initialize();
+		
 		if (!AddGameObject(std::move(temp)))
 			return nullptr;
-
-		ptr->SetTransform(std::move(a_Transform));
 
 		return ptr;
 	}
@@ -179,8 +188,13 @@ namespace Scene
 
 	void Scene::ClearScene()
 	{
-		m_GameObjects.clear();
+		m_Clearing = true;
+		for (auto temp : m_Renderables)
+			temp.second->Remove();
+
 		m_Renderables.clear();
+		m_GameObjects.clear();
+		m_Clearing = false;
 	}
 
 	void Scene::Listener(Core::SEventDesc &a_Desc)
@@ -194,7 +208,7 @@ namespace Scene
 			break;
 
 		case Core::EEvents::SCENE_MESHCOMPONENT_REMOVED:
-			if(entity != nullptr && m_Renderables.size() > 0)
+			if(entity != nullptr && m_Renderables.size() > 0 && !m_Clearing)
 				RemoveRenderable(entity->Parent);
 			break;
 

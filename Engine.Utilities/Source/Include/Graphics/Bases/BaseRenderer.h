@@ -37,8 +37,6 @@ namespace Graphics
 
 			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_MESHCOMPONENT_REMOVED);
 			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
-		
-			Core::EventHandler::StaticClass()->Unsubscribe(m_EventListener, Core::EEvents::SCENE_CLEAR);
 		}
 
 		BaseRenderer(Core::Engine *a_Engine)
@@ -54,8 +52,6 @@ namespace Graphics
 
 			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_MESHCOMPONENT_REMOVED);
 			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
-
-			Core::EventHandler::StaticClass()->Subscribe(m_EventListener, Core::EEvents::SCENE_CLEAR);
 		}
 
 		Core::Engine *GetEngine()	final				{			return m_Engine;			}

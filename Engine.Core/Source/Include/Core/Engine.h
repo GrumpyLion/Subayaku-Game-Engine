@@ -52,13 +52,12 @@ namespace Core
 		__declspec(dllexport) void Run();
 		__declspec(dllexport) bool Shutdown();
 
-		Graphics::IRenderer *GetRenderer();
-		SEngineContext &GetContext();
-
-		IWindow *GetWindow();
-		InputManager *GetInputManager();
-		Scene::Scene *GetScene();
-		static Engine* StaticClass();
+		Graphics::IRenderer *GetRenderer()	{	return m_Renderer;		 };
+		SEngineContext &GetContext()		{	return m_Context;		 };
+		IWindow *GetWindow()				{	return m_Window;		 };
+		InputManager *GetInputManager()		{	return m_InputManager;	 };
+		Scene::Scene *GetScene()			{	return m_Scene;			 };
+		static Engine* StaticClass()		{	return m_SharedInstance; };
 
 	};
 }

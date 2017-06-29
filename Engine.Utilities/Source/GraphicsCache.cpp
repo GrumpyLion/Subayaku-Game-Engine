@@ -29,7 +29,7 @@ namespace Graphics
 			}
 
 			////Clear memory
-			std::vector<unsigned char>().swap(a_Desc.PixelData);
+			//std::vector<unsigned char>().swap(a_Desc.PixelData);
 
 			m_Textures[a_Desc.FilePath] = std::move(texture);
 

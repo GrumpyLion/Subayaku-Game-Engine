@@ -30,11 +30,12 @@ namespace Scene
 	{
 	private:
 		CCamera *m_Camera = nullptr;
-
-		//The Name of the GameObject will be the key
+		bool m_Clearing = false;
+		// The Name of the GameObject will be the key
 		std::unordered_map<std::string, std::unique_ptr<GameObject>> m_GameObjects;
+		std::unordered_map<std::string, GameObject*> m_TickableGameObjects;
 
-		//A collection of all object that can be rendered. The Renderer will get this list and uses this.
+		// A collection of all object that can be rendered. The Renderer will get this list and uses this.
 		std::unordered_map<GameObject*, CMeshRenderer*> m_Renderables;
 
 		Callback m_Callback = nullptr;
@@ -46,8 +47,11 @@ namespace Scene
 		bool Initialize();
 		void Update();
 
-		GameObject* InstantiateGameObject(std::string a_Name);
-		GameObject* InstantiateGameObject(std::string a_Name, Transformation& a_Transform);
+		GameObject* InstantiateGameObject(std::string a_Name, bool a_IsTicking);
+
+		// Instantiates an GameObject and returns an observable pointer
+		//
+		GameObject* InstantiateGameObject(std::string a_Name, Transformation& a_Transform, bool a_IsTicking);
 
 		void AddRenderable(GameObject *a_Parent, CMeshRenderer *a_Renderable);
 		void RemoveRenderable(GameObject *a_Parent);

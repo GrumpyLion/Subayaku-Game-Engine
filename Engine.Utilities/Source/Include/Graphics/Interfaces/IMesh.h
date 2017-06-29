@@ -22,8 +22,8 @@ namespace Graphics
 
 		// Methods for instanced rendering
 		//
-		virtual void AddInstance(Scene::CMeshRenderer *a_MeshRenderer) = 0;
-		virtual void RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer) = 0;
+		virtual void AddInstance(Matrix4f *a_MeshRenderer) = 0;
+		virtual void RemoveInstance(Matrix4f *a_MeshRenderer) = 0;
 
 		virtual unsigned int GetVertexCount() = 0;
 		virtual unsigned int GetInstanceCount() = 0;

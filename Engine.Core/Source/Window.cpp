@@ -33,7 +33,7 @@ namespace Core
 			return false;
 		}
 
-		m_Style = WS_POPUP;
+		m_Style = WS_OVERLAPPEDWINDOW;
 
 		//This is needed to resize the window. Without this the client size would't be correct
 		RECT rect

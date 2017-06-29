@@ -29,7 +29,7 @@ namespace Scene
 		IComponent::Initialize(a_Parent);
 
 		m_Lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math,
-			sol::lib::table, sol::lib::string, sol::lib::bit32);
+			sol::lib::table, sol::lib::string, sol::lib::bit32, sol::lib::io);
 
 		//Type declaration
 
@@ -58,8 +58,8 @@ namespace Scene
 			);
 
 		auto overload = sol::overload(
-			sol::resolve<GameObject*(std::string)>(&Scene::InstantiateGameObject),
-			sol::resolve<GameObject*(std::string, Transformation&)>(&Scene::InstantiateGameObject)
+			sol::resolve<GameObject*(std::string, bool)>(&Scene::InstantiateGameObject),
+			sol::resolve<GameObject*(std::string, Transformation&, bool)>(&Scene::InstantiateGameObject)
 		);
 
 		m_Lua.new_usertype<Scene>(
@@ -117,7 +117,6 @@ namespace Scene
 		m_Lua.new_usertype<Graphics::Material>(
 			"Material",
 
-			"ParentTransform", &Graphics::Material::ParentTransform,
 			"AddShader", &Graphics::Material::AddShader,
 			"AddTexture", &Graphics::Material::AddTexture,
 			"TextureFilter", &Graphics::Material::TextureFilter
@@ -156,6 +155,7 @@ namespace Scene
 
 			//Variables
 			"Name", &GameObject::Name,
+			"IsTicking", &GameObject::IsTicking,
 			"Transform", &GameObject::Transform,
 
 			//New Components

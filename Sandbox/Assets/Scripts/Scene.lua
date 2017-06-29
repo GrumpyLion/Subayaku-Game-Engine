@@ -1,10 +1,9 @@
 index = 0
 
 function Init()
-
 	-- Camera Object
 	local trans = Transform.new();
-	local gameObject = Scene:InstantiateGameObject("Camera", trans)
+	local gameObject = Scene:InstantiateGameObject("Camera", trans, true)
 	
 	local script = gameObject:AddScriptComponent()
 	script:Initialize(gameObject, "Assets/Scripts/Camera.lua")
@@ -14,11 +13,11 @@ function Init()
 	
 	-- Test Mesh (Rotation Teapot)
 	
-	for index=0, 500, 1 do
-		trans.Scale = Vector3f.new(0.25, 0.25, 0.25);
-		trans.Position = Vector3f.new(math.random(-500, 500), 35, math.random(-500, 500))
+	for index=0, 1000, 1 do
+		trans.Scale = Vector3f.new(0.15, 0.15, 0.15);
+		trans.Position = Vector3f.new(math.random(-750, 750), 35, math.random(-750, 750))
 		
-		gameObject = Scene:InstantiateGameObject(tostring(index), trans)
+		gameObject = Scene:InstantiateGameObject(tostring(index), trans, false)
 		local mesh = gameObject:AddMeshRenderer()
 		local material = mesh:SetNewMaterial()
 		
@@ -35,7 +34,7 @@ function Init()
 	trans = Transform.new()
 	trans.Scale = Vector3f.new(15, 15, 15)
 	
-	gameObject = Scene:InstantiateGameObject("Terrain", trans)
+	gameObject = Scene:InstantiateGameObject("Terrain", trans, false)
 	mesh = gameObject:AddMeshRenderer()
 	material = mesh:SetNewMaterial()
 	
@@ -66,7 +65,7 @@ function Init()
 	trans = Transform.new()
 	trans.Scale = Vector3f.new(15, 15, 15)
 	
-	gameObject = Scene:InstantiateGameObject("Water", trans)
+	gameObject = Scene:InstantiateGameObject("Water", trans, false)
 	mesh = gameObject:AddMeshRenderer()
 	material = mesh:SetNewMaterial()
 	

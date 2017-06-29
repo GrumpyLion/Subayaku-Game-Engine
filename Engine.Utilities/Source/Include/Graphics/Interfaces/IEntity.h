@@ -21,8 +21,8 @@ namespace Graphics
 
 		virtual void Render() = 0;
 
-		virtual void AddInstance(Scene::CMeshRenderer *a_MeshRenderer) = 0;
-		virtual void RemoveInstance(Scene::CMeshRenderer *a_MeshRenderer) = 0;
+		virtual void AddInstance(Matrix4f *a_MeshRenderer) = 0;
+		virtual void RemoveInstance(Matrix4f *a_MeshRenderer) = 0;
 
 		virtual size_t GetInstanceCount() = 0;
 
