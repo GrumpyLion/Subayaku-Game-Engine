@@ -2,6 +2,7 @@
 
 #include "Graphics\Bases\BaseRenderer.h"
 #include <GLEW\Include\glew.h>
+#include <GLEW\Include\wglew.h>
 #include <gl/gl.h>
 
 #include "GLShaderBufferContainer.h"

@@ -45,15 +45,42 @@ namespace Graphics
 			if (SetPixelFormat(m_HDC, format, &pfd) == FALSE)
 				return false;
 
-			m_Context = wglCreateContext(m_HDC);
-			if (CheckIfPointerIsInvalid(m_Context))
+			// Temp Context for OpenGL 4.0 init
+			//
+			HGLRC temp = wglCreateContext(m_HDC);
+
+			if (!temp)
 				return false;
 
-			if (wglMakeCurrent(m_HDC, m_Context) == FALSE)
+			if (!wglMakeCurrent(m_HDC, temp))
 				return false;
-			
+
+			// Init
+			//
 			GLenum glewinit = glewInit();
-			if (glewinit != GLEW_OK) 
+			if (glewinit != GLEW_OK)
+			{
+				printf("%s\n", glewGetErrorString(glewinit));
+				return false;
+			}
+
+			const int attribs[] =
+			{
+				WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
+				WGL_CONTEXT_MINOR_VERSION_ARB, 3,
+				WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+				0
+			};
+
+			// Delete the temp context
+			//
+			wglMakeCurrent(nullptr, nullptr);
+			wglDeleteContext(temp);
+
+			// Create the real one
+			m_Context = wglCreateContextAttribsARB(m_HDC, 0, attribs);
+
+			if (!wglMakeCurrent(m_HDC, m_Context))
 				return false;
 			
 			printf("Initializing OpenGL Renderer..\n");
@@ -79,7 +106,7 @@ namespace Graphics
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glClearColor(1, 1, 1, 1);
 
-			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			m_Container->Bind();
 
 			for (auto &temp : m_Entities)
