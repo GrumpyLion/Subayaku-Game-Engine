@@ -20,6 +20,8 @@
 
 #include "Math\Math.h"
 
+#include "Graphics\Image.h"
+
 #include <memory>
 
 namespace Scene
@@ -184,6 +186,12 @@ namespace Scene
 			"yD", &Core::Mouse::yD,
 			"LeftButton", &Core::Mouse::LeftButton,
 			"RightButton", &Core::Mouse::RightButton
+			);
+
+		m_Lua.new_usertype<Graphics::Image>(
+			"Image", 
+			sol::constructors<sol::types<std::string>>(),
+			"GetPixelAt", &Graphics::Image::GetPixelAt
 			);
 
 		m_Lua.script(std::string(reinterpret_cast<char*>(&Core::FileSystem::StaticClass()->GetFile(a_FilePath)->Data[0])));

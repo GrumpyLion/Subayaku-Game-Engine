@@ -40,6 +40,9 @@ namespace Graphics
 		{
 			auto file = Core::FileSystem::StaticClass()->GetFile(a_Desc.FilePath);
 			
+			if (file == nullptr)
+				return;
+
 			//Check if the compiler added padding bytes
 			if (sizeof(TGAHeader) != 18)
 			{
@@ -49,8 +52,6 @@ namespace Graphics
 
 			//Load the header
 			TGAHeader *header = (TGAHeader*)&file->Data[0];
-
-
 
 			std::vector<std::uint8_t> resultingData;
 			

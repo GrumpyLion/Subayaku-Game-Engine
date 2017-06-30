@@ -34,7 +34,7 @@ void main()
 {
 	vec4 Pos = WMatrix * vec4(Position, 1.0);
 	
-	oTexCoord = Texcoord;
+	oTexCoord = Texcoord - vec2(0, 1);
 	
 	oFragPos = Position.xyz;
 	Pos.y += texture(uNoise, oTexCoord).y * clamp(uTime.x * 0.0005, 0.0, 1.0) * 50 - 25;	

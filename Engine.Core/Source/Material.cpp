@@ -4,13 +4,6 @@
 
 #include "Graphics\Interfaces\ITexture.h"
 
-#include "DirectX\D3DTexture.h"
-#include "OpenGL\GLTexture.h"
-
-#include "Graphics\Loaders\BMP.h"
-#include "Graphics\Loaders\TGA.h"
-#include "Graphics\Loaders\PNG.h"
-
 namespace Graphics
 {
 	void Material::AddShader(std::string a_FilePath)
@@ -57,23 +50,6 @@ namespace Graphics
 		else
 		{
 			a_TextureInfo.Filter = TextureFilter;
-			
-			//Find the correct file ending
-			std::string extension = GetExtension(a_TextureInfo.FilePath);
-			ToLowerCase(extension);
-
-			if (extension == "tga")
-			{
-				TGA tga = TGA(a_TextureInfo);
-			}
-			else if (extension == "bmp")
-			{
-				BMP tga = BMP(a_TextureInfo);
-			}
-			else if (extension == "png")
-			{
-				PNG tga = PNG(a_TextureInfo);
-			}
 
 			Textures.insert({ a_TextureInfo.FilePath, a_TextureInfo });
 		}

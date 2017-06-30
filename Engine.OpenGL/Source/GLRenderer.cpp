@@ -97,7 +97,7 @@ namespace Graphics
 
 			m_Container = std::make_unique<GLShaderBufferContainer>();
 			m_Container->Initialize(this);
-
+			
 			return true;
 		}
 
@@ -106,7 +106,7 @@ namespace Graphics
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glClearColor(1, 1, 1, 1);
 
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			m_Container->Bind();
 
 			for (auto &temp : m_Entities)

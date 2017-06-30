@@ -27,6 +27,7 @@
     <ClInclude Include="Source\Include\Graphics\Descriptions\SShaderDesc.h" />
     <ClInclude Include="Source\Include\Graphics\Enums\GlobalIndices.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\SShaderBufferDesc.h" />
+    <ClInclude Include="Source\Include\Graphics\Image.h" />
     <ClInclude Include="Source\Include\Graphics\Loaders\AssimpLoader.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\SMeshDesc.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\STextureDesc.h" />
@@ -61,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine.cpp" />
+    <ClCompile Include="Source\Image.cpp" />
     <ClCompile Include="Source\Material.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\Keyboard.cpp" />

@@ -1,6 +1,11 @@
 #include "Graphics\Utilities\GraphicsCache.h"
 #include "Graphics\Loaders\AssimpLoader.h"
 
+
+#include "Graphics\Loaders\BMP.h"
+#include "Graphics\Loaders\TGA.h"
+#include "Graphics\Loaders\PNG.h"
+
 namespace Graphics
 {
 	Graphics::ITexture* GraphicsCache::LoadTexture(Graphics::STextureDesc &a_Desc)
@@ -21,6 +26,23 @@ namespace Graphics
 				return nullptr;
 
 			auto texture = m_CreateTexture();
+
+			//Find the correct file ending
+			std::string extension = GetExtension(a_Desc.FilePath);
+			ToLowerCase(extension);
+
+			if (extension == "tga")
+			{
+				TGA tga = TGA(a_Desc);
+			}
+			else if (extension == "bmp")
+			{
+				BMP tga = BMP(a_Desc);
+			}
+			else if (extension == "png")
+			{
+				PNG tga = PNG(a_Desc);
+			}
 
 			if (!texture->Initialize(a_Desc, m_Renderer))
 			{

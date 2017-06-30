@@ -13,23 +13,100 @@ function Init()
 	
 	-- Test Mesh (Rotation Teapot)
 	
-	for index=0, 1000, 1 do
-		trans.Scale = Vector3f.new(0.15, 0.15, 0.15);
-		trans.Position = Vector3f.new(math.random(-750, 750), 35, math.random(-750, 750))
+	image = Image.new("Assets/Textures/TreeMap.tga");	
+	noiseImage = Image.new("Assets/Textures/Noise.tga");	
+	
+	-- Bank
+	
+	trans.Position = Vector3f.new(0, 15.5, 0)
+	trans.Scale = Vector3f.new(0.1, 0.1, 0.1);
+	
+	gameObject = Scene:InstantiateGameObject("Seating", trans, false)
+	local mesh = gameObject:AddMeshRenderer()
+	local material = mesh:SetNewMaterial()
+	
+	material:AddShader("Small.vs")
+	material:AddShader("Small.fs")
+	
+	texDesc = TextureDesc.new()
+	texDesc.RegisterIndex = 0
+	texDesc.UniformName = "uTexture"
+	texDesc.FilePath = "Assets/Textures/Diffuse.tga"
+	material:AddTexture(texDesc)
+	
+	mesh:Initialize(gameObject, "Assets/Models/Seating.obj", material)
+	
+	-- Boat
+	
+	trans.Position = Vector3f.new(850, 1, 0)
+	trans.Rotation = Vector3f.new(0, 30, 0)
+	trans.Scale = Vector3f.new(0.1, 0.1, 0.1);
+	
+	gameObject = Scene:InstantiateGameObject("Boat", trans, false)
+	local mesh = gameObject:AddMeshRenderer()
+	local material = mesh:SetNewMaterial()
+	
+	material:AddShader("Small.vs")
+	material:AddShader("Small.fs")
+	
+	texDesc = TextureDesc.new()
+	texDesc.RegisterIndex = 0
+	texDesc.UniformName = "uTexture"
+	texDesc.FilePath = "Assets/Textures/Diffuse.tga"
+	material:AddTexture(texDesc)
+	
+	mesh:Initialize(gameObject, "Assets/Models/Boat.obj", material)
+	
+	trans.Position = Vector3f.new(790, 0, 0)
+	trans.Scale = Vector3f.new(0.15, 0.15, 0.15);
+	trans.Rotation = Vector3f.new(0, 0, 0)
+	
+	gameObject = Scene:InstantiateGameObject("Plank", trans, false)
+	local mesh = gameObject:AddMeshRenderer()
+	local material = mesh:SetNewMaterial()
+	
+	material:AddShader("Small.vs")
+	material:AddShader("Small.fs")
+	
+	texDesc = TextureDesc.new()
+	texDesc.RegisterIndex = 0
+	texDesc.UniformName = "uTexture"
+	texDesc.FilePath = "Assets/Textures/Diffuse.tga"
+	material:AddTexture(texDesc)
+	
+	mesh:Initialize(gameObject, "Assets/Models/Plank.obj", material)
+	
+	trans.Rotation = Vector3f.new(0, 0, 0)
+	for index=0, 1500, 1 do
+		trans.Scale = Vector3f.new(0.25, 0.25, 0.25);
+		trans.Position = Vector3f.new(math.random(0, 2000), 35, math.random(0, 2000))
 		
-		gameObject = Scene:InstantiateGameObject(tostring(index), trans, false)
-		local mesh = gameObject:AddMeshRenderer()
-		local material = mesh:SetNewMaterial()
-		
-		material:AddShader("Small.vs")
-		material:AddShader("Small.fs")
-		
-		mesh:Initialize(gameObject, "Assets/Models/tree.obj", material)
+		if image:GetPixelAt(trans.Position.x, trans.Position.z).x > 250 then
+			
+			trans.Position.y = (noiseImage:GetPixelAt(trans.Position.x, trans.Position.z).x /255) * 50 - 26
+			trans.Position.x = trans.Position.x - 1024
+			trans.Position.z = trans.Position.z - 1024
+			
+			gameObject = Scene:InstantiateGameObject(tostring(index), trans, false)
+			local mesh = gameObject:AddMeshRenderer()
+			local material = mesh:SetNewMaterial()
+			
+			material:AddShader("Small.vs")
+			material:AddShader("Small.fs")
+			
+			texDesc.RegisterIndex = 0
+			texDesc.UniformName = "uTexture"
+			texDesc.FilePath = "Assets/Textures/Diffuse.tga"
+			material:AddTexture(texDesc)
+			
+			mesh:Initialize(gameObject, "Assets/Models/Tree.obj", material)
+			
+		end
 	end 
 	
 	-- Terrain	
-	local texDesc = TextureDesc.new()
-	local meshDesc = MeshDesc.new()
+	texDesc = TextureDesc.new()
+	meshDesc = MeshDesc.new()
 	
 	trans = Transform.new()
 	trans.Scale = Vector3f.new(15, 15, 15)
