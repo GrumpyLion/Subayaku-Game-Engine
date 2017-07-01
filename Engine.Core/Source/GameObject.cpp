@@ -4,6 +4,7 @@
 #include "Scene\GameObject\Components\Transformation.h"
 #include "Scene\GameObject\Components\CCamera.h"
 #include "Scene\GameObject\Components\CMeshRenderer.h"
+#include "Scene\GameObject\Components\CLight.h"
 #include "Scene\GameObject\Components\CScriptComponent.h"
 
 #include <memory>
@@ -64,6 +65,15 @@ namespace Scene
 				AddComponent(std::move(temp));
 				return ptr;
 			}
+
+		case ComponentType::Light:
+			{
+				auto temp = std::make_unique<CLight>(this);
+				auto ptr = temp.get();
+				AddComponent(std::move(temp));
+				return ptr;
+			}
+
 		}
 
 		return nullptr;

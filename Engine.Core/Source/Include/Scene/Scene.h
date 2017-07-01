@@ -25,11 +25,14 @@ namespace Scene
 	class GameObject;
 	class CCamera;
 	class CMeshRenderer;
+	class CLight;
 
 	class Scene
 	{
 	private:
 		CCamera *m_Camera = nullptr;
+		CLight *m_DirectionalLight = nullptr;
+
 		bool m_Clearing = false;
 		// The Name of the GameObject will be the key
 		std::unordered_map<std::string, std::unique_ptr<GameObject>> m_GameObjects;

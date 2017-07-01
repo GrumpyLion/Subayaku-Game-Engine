@@ -29,6 +29,12 @@ namespace Graphics
 
 				Vector4f CameraPos;
 				Vector2f Time;
+				
+				Vector2f Padding01;
+
+				//Directional Light -- 
+				Vector4f LightDirection;
+				Vector4f LightColor;
 			};
 
 		public:

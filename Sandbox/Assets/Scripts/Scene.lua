@@ -13,8 +13,6 @@ function Init()
 	camera = gameObject:AddCameraComponent();
 	camera:Initialize(80.0, 1, 5000.0)
 	
-	-- Test Mesh (Rotation Teapot)
-	
 	image = Image.new("Assets/Textures/TreeMap.tga");	
 	noiseImage = Image.new("Assets/Textures/Noise.tga");	
 	
@@ -86,7 +84,7 @@ function Init()
 	mesh:Initialize("Assets/Models/Plank.obj", material)
 	
 	trans.Rotation = Vector3f.new(0, 0, 0)
-	for index=0, 1500, 1 do
+	for index=0, 2500, 1 do
 		trans.Scale = Vector3f.new(0.25, 0.25, 0.25);
 		trans.Position = Vector3f.new(math.random(0, 2000), 35, math.random(0, 2000))
 		

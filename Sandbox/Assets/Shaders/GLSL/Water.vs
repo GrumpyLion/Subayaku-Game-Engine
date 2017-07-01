@@ -9,6 +9,7 @@ layout(location=5) in mat4 WMatrix;
 
 out flat vec3 oNormal;
 out vec3 oFragPos;
+out vec3 oDistancePos;
 out vec2 oTexCoord;
 
 out flat vec3 oColor;
@@ -19,6 +20,10 @@ layout (std140, binding = 1) uniform GlobalDynamicBuffer
   mat4 uVMatrix;
   vec4 uCameraPos;
   vec2 uTime;
+  
+  //Directional Light
+  vec4 uLightDirection;
+  vec4 uLightColor;
 };
 
 uniform sampler2D uNoise;
@@ -101,10 +106,11 @@ void main()
 	oTexCoord = Texcoord;
 	vec2 waveCoords = Texcoord * vec2(3.5, 3.5) + uTime * vec2(0.0001, 0.0001);
 	
-	oFragPos = Position.xyz;
+	oDistancePos = Position.xyz;
+	oFragPos = Pos.xyz;
+
 	Pos.y += snoise(waveCoords) * 2;
-	
-	Pos.xz += vec2((snoise(waveCoords)-0.5f) * 15 , (snoise(-waveCoords)-0.5f) * 15);
+	Pos.xz += vec2((snoise(waveCoords)-0.5f) * 15 , (snoise(-waveCoords)-0.5f) * 15);	
 	
 	gl_Position = uPMatrix * uVMatrix * Pos;
 		
@@ -123,8 +129,8 @@ void main()
 	col *= vec3(r, r, r);
 	oColor = col;
 	
-	vec3 normal = vec3(0.0);
-	
+	vec3 normal = vec3(0.0, 1.0 ,0.0);
+
 	float heightL = snoise(vec2(waveCoords.x-1, waveCoords.y));
 	float heightR = snoise(vec2(waveCoords.x+1, waveCoords.y));
 	float heightD = snoise(vec2(waveCoords.x , waveCoords.y-1));
@@ -132,6 +138,7 @@ void main()
 	
 	normal = vec3(heightL - heightR, 2, heightD - heightU);
 	normal = normalize(normal);
+	
 	
 	oNormal = normal;
 }

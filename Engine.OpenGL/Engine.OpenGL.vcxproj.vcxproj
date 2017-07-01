@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GLEntity.cpp" />
+    <ClCompile Include="Source\GLFramebuffer.cpp" />
+    <ClCompile Include="Source\GLGBuffer.cpp" />
     <ClCompile Include="Source\GLMaterial.cpp" />
     <ClCompile Include="Source\GLMesh.cpp" />
     <ClCompile Include="Source\GLRenderer.cpp" />
@@ -30,7 +32,9 @@
     <ClCompile Include="Source\GLTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Include\OpenGL\GLGBuffer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLEntity.h" />
+    <ClInclude Include="Source\Include\OpenGL\GLFramebuffer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLHelper.h" />
     <ClInclude Include="Source\Include\OpenGL\GLMaterial.h" />
     <ClInclude Include="Source\Include\OpenGL\GLMesh.h" />

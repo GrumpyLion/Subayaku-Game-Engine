@@ -6,6 +6,8 @@
 #include <gl/gl.h>
 
 #include "GLShaderBufferContainer.h"
+#include "GLGBuffer.h"
+#include "GLShaderContainer.h"
 
 #include <unordered_map>
 #include <memory>
@@ -20,10 +22,20 @@ namespace Graphics
 		{
 		private:
 			HDC m_HDC{};
-			SRendererDesc m_Desc{};
 			HGLRC m_Context{};
 
 			std::unique_ptr<GLShaderBufferContainer> m_Container;
+			std::unique_ptr<GLGbuffer> m_GLGbuffer;
+
+			std::unique_ptr<GLShaderContainer> m_FinalShader;
+			GLTexture* m_Vignette = nullptr;
+
+			GLuint m_QuadVAO = 0;
+			GLuint m_QuadVBO = 0;
+
+			void RenderQuad();
+			void Resize() final;
+
 		public:
 
 			__declspec(dllexport) ~GLRenderer();

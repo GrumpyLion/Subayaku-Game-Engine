@@ -71,6 +71,23 @@ namespace Graphics
 		case Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED:
 			m_Camera = nullptr;
 			break;
+
+		case Core::EEvents::SCENE_LIGHT_ADDED:
+			m_DirectionalLight = static_cast<Scene::CLight*>(a_Desc.Description);
+			break;
+
+		case Core::EEvents::SCENE_LIGHT_REMOVED:
+			m_DirectionalLight = nullptr;
+			break;
+
+		case Core::EEvents::WINDOW_RESIZE:
+			Core::SEngineContext temp = *static_cast<Core::SEngineContext*>(a_Desc.Description);
+
+			m_Desc.Width = temp.Width;
+			m_Desc.Height = temp.Height;
+
+			Resize();
+			break;
 		}
 	}
 }

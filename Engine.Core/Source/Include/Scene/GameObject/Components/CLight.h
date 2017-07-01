@@ -5,17 +5,26 @@
 
 namespace Scene
 {
+	enum ELightType
+	{
+		Directional,
+		Point
+	};
+
 	class CLight : public IComponent
 	{
 	private:
-		// If the w component is 1.0 it's a position if 0.0 it's a direction
-		//
-		Vector4f Position;
-
-		Vector4f Color;
 
 	public:
-		CLight();
+		ELightType Type;
+		Vector4f Color;
+		
+		CLight(GameObject *a_Parent)
+			: IComponent(a_Parent)
+		{	}
 
+		bool Initialize(Vector4f &a_Color, ELightType a_Type);
+
+		void Update() final {	}
 	};
 }

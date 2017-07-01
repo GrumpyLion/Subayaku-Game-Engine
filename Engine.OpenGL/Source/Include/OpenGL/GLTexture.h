@@ -18,6 +18,8 @@ namespace Graphics
 
 			bool Initialize(STextureDesc &a_Desc, IRenderer *a_Renderer) final;
 
+			bool InitializeFramebufferTexture(STextureDesc &a_Desc, GLenum a_Format, GLenum a_Type, GLenum a_Attachement);
+
 			void Bind();
 			void Unbind();
 

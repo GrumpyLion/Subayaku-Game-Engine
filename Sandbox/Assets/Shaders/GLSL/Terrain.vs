@@ -10,6 +10,7 @@ layout(location=5) in mat4 WMatrix;
 out flat vec3 oNormal;
 out vec3 oFragPos;
 out vec2 oTexCoord;
+out vec3 oDistancePos;
 
 out flat vec3 oColor;
 
@@ -19,6 +20,10 @@ layout (std140, binding = 1) uniform GlobalDynamicBuffer
   mat4 uVMatrix;
   vec4 uCameraPos;
   vec2 uTime;
+  
+  //Directional Light
+  vec4 uLightDirection;
+  vec4 uLightColor;
 };
 
 // Textures
@@ -36,7 +41,8 @@ void main()
 	
 	oTexCoord = Texcoord - vec2(0, 1);
 	
-	oFragPos = Position.xyz;
+	oFragPos = Pos.xyz;
+	oDistancePos = Position.xyz;
 	Pos.y += texture(uNoise, oTexCoord).y * clamp(uTime.x * 0.0005, 0.0, 1.0) * 50 - 25;	
 	
 	gl_Position = uPMatrix * uVMatrix * Pos;
@@ -58,7 +64,7 @@ void main()
 	float heightD = texture(uNoise, vec2(oTexCoord.x , oTexCoord.y-1)).y;
 	float heightU = texture(uNoise, vec2(oTexCoord.x , oTexCoord.y+1)).y;
 	
-	normal = vec3(heightL - heightR, 2, heightD - heightU);
+	normal = vec3(heightL - heightR, 1, heightD - heightU);
 	normal = normalize(normal);
 	
 	oNormal = normal;

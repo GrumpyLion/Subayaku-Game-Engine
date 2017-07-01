@@ -26,13 +26,7 @@ layout (std140, binding = 1) uniform GlobalDynamicBuffer
 };
 
 void main()
-{	
-	vec4 Pos = WMatrix * vec4(Position, 1.0);
-	
-	oFragPos = Pos.xyz;
-	
-	gl_Position = uPMatrix * uVMatrix * Pos;
-	
-	oNormal = Normal;
-	oTexcoord = Texcoord - vec2(0, 1);
+{		
+	gl_Position = vec4(Position, 1.0);
+	oTexcoord = Texcoord;
 }

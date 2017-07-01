@@ -39,6 +39,18 @@ namespace Graphics
 				data.View = m_Renderer->GetCamera()->ToViewMatrixLH;
 			}
 
+			//Direcitonal light stuff
+			if (m_Renderer->GetDirectionalLight() != nullptr)
+			{
+				data.LightDirection = m_Renderer->GetDirectionalLight()->Parent->Transform->Position;
+				data.LightColor = m_Renderer->GetDirectionalLight()->Color;
+			}
+			else
+			{
+				data.LightDirection = Vector4f(0, 0, 0, 0);
+				data.LightColor = Vector4f(0, 0, 0, 0);
+			}
+
 			data.Time = Vector2f((float)m_Renderer->GetEngine()->TimeSinceStart);
 
 			m_DynamicGlobalBuffer->Bind(&data);

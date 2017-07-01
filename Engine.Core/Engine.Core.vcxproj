@@ -62,6 +62,7 @@
     <ClInclude Include="Source\Include\Window\Interface\IWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\CLight.cpp" />
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\Image.cpp" />
     <ClCompile Include="Source\Material.cpp" />

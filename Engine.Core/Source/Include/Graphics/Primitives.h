@@ -12,16 +12,16 @@ namespace Graphics
 			Vector3f tempVec3;
 			Vector2f tempVec2;
 
-			tempVec3.Set(0.5f, 0.5f, 0.0f);
+			tempVec3.Set(1.0f, 1.0f, 0.0f);
 			a_Desc.Vertices.push_back(tempVec3);
 
-			tempVec3.Set(0.5f, -0.5f, 0.0f);
+			tempVec3.Set(1.0f, -1.0f, 0.0f);
 			a_Desc.Vertices.push_back(tempVec3);
 
-			tempVec3.Set(-0.5f, -0.5f, 0.0f);
+			tempVec3.Set(-1.0f, -1.0f, 0.0f);
 			a_Desc.Vertices.push_back(tempVec3);
 
-			tempVec3.Set(-0.5f, 0.5f, 0.0f);
+			tempVec3.Set(-1.0f, 1.0f, 0.0f);
 			a_Desc.Vertices.push_back(tempVec3);
 			
 			tempVec2.Set(1.0f, 1.0f);

@@ -17,7 +17,6 @@ namespace Graphics
 		class D3DRenderer : public BaseRenderer
 		{
 		private:
-			SRendererDesc m_Desc{};
 			std::unique_ptr<D3DShaderBufferContainer> m_BufferContainer = nullptr;
 
 			ID3D11Device* m_Device = nullptr;
@@ -31,6 +30,8 @@ namespace Graphics
 			ID3D11DepthStencilView *m_DepthStencilView = nullptr;
 			ID3D11Texture2D *m_StencilBuffer = nullptr;
 			
+			void Resize() final;
+
 		public:
 
 			__declspec(dllexport) ~D3DRenderer();

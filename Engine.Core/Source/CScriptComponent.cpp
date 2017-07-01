@@ -8,6 +8,7 @@
 #include "Scene\Scene.h"
 #include "Scene\GameObject\Components\Transformation.h"
 #include "Scene\GameObject\Components\CMeshRenderer.h"
+#include "Scene\GameObject\Components\CLight.h"
 #include "Scene\GameObject\GameObject.h"
 
 #include "Input\Mouse.h"
@@ -174,19 +175,24 @@ namespace Scene
 
 			//New Components
 			"AddScriptComponent", [](GameObject* a_GameObject)
-			{
-				return static_cast<CScriptComponent*>(a_GameObject->AddNewComponent(ComponentType::Script));
-			},
+				{
+					return static_cast<CScriptComponent*>(a_GameObject->AddNewComponent(ComponentType::Script));
+				},
 
 			"AddMeshRenderer", [](GameObject* a_GameObject)
-			{
-				return static_cast<CMeshRenderer*>(a_GameObject->AddNewComponent(ComponentType::MeshRenderer));
-			},
+				{
+					return static_cast<CMeshRenderer*>(a_GameObject->AddNewComponent(ComponentType::MeshRenderer));
+				},
 		
 			"AddCameraComponent", [](GameObject* a_GameObject)
-			{
-				return static_cast<CCamera*>(a_GameObject->AddNewComponent(ComponentType::Camera));
-			}
+				{
+					return static_cast<CCamera*>(a_GameObject->AddNewComponent(ComponentType::Camera));
+				},
+
+			"AddLightComponent", [](GameObject* a_GameObject)
+				{
+					return static_cast<CLight*>(a_GameObject->AddNewComponent(ComponentType::Light));
+				}
 
 			);
 

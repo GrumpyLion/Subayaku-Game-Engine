@@ -8,36 +8,7 @@ namespace Graphics
 {
 	void Material::AddShader(std::string a_FilePath)
 	{
-		std::string GLSLpath = GetShaderLocation(Core::RenderDevice::OpenGL, a_FilePath);
-
-		auto GLSLtemp = Core::FileSystem::StaticClass()->GetFile(GLSLpath);
-
-		std::string HLSLpath = GetShaderLocation(Core::RenderDevice::DirectX, a_FilePath);
-
-		auto HLSLtemp = Core::FileSystem::StaticClass()->GetFile(HLSLpath);
-
-		SShaderDesc desc{};
-		desc.FilePath = a_FilePath;
-		
-		if(GLSLtemp != nullptr)
-			desc.GLSLCode = reinterpret_cast<const char*>(GLSLtemp->Data.data());
-
-		if (HLSLtemp != nullptr)
-			desc.HLSLCode = reinterpret_cast<const char*>(HLSLtemp->Data.data());
-
-		std::string extension = GetExtension(a_FilePath);
-		ToLowerCase(extension);
-
-		if (extension == "vs")
-		{
-			desc.Type = EShaderType::VertexShader;
-			Shaders.Vertex = desc;
-		}
-		else if (extension == "fs")
-		{
-			desc.Type = EShaderType::FragmentShader;
-			Shaders.Fragment = desc;
-		}
+		Shaders.AddShader(a_FilePath);
 	}
 
 	void Material::AddTexture(STextureDesc &a_TextureInfo)

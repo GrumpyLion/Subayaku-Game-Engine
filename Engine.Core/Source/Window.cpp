@@ -3,6 +3,9 @@
 #include "Utilities\Utilities.h"
 #include "Input\InputManager.h"
 
+#include "Utilities\Event\SEventDesc.h"
+#include "Utilities\Event\EventHandler.h"
+
 namespace Core
 {
 	Window::~Window()
@@ -87,16 +90,6 @@ namespace Core
 	{
 		MSG msg{};
 
-		RECT rect
-		{
-			0, 0, Core::Engine::StaticClass()->GetContext().Width, Core::Engine::StaticClass()->GetContext().Height
-		};
-
-		AdjustWindowRect(&rect, m_Style, NULL);
-		
-		Core::Engine::StaticClass()->GetContext().AdjustedWidth = rect.right - rect.left;
-		Core::Engine::StaticClass()->GetContext().AdjustedHeight = rect.bottom - rect.top;
-
 		while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
@@ -111,8 +104,9 @@ namespace Core
 	void Window::Resize()
 	{
 		RECT rect;
-		if (GetWindowRect(m_Handle, &rect))
+		if (GetClientRect(m_Handle, &rect))
 		{
+			//AdjustWindowRect(&rect, m_Style, NULL);
 			Engine::StaticClass()->GetContext().Width = rect.right - rect.left;
 			Engine::StaticClass()->GetContext().Height = rect.bottom - rect.top;
 		}
@@ -125,6 +119,13 @@ namespace Core
 		case WM_SIZE:
 		{
 			static_cast<Window*>(Engine::StaticClass()->GetWindow())->Resize();
+
+			SEventDesc desc{};
+			
+			desc.Description = &Engine::StaticClass()->GetContext();
+			desc.Event = EEvents::WINDOW_RESIZE;
+
+			EventHandler::StaticClass()->ForceEvent(desc);
 			break;
 		}
 

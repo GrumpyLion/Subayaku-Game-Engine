@@ -21,6 +21,8 @@ namespace Graphics
 		int Width = 0;
 		int Height = 0;
 
+		bool IsFramebufferTexture = false;
+
 		bool operator==(const STextureDesc& a_Other) const
 		{
 			return (Filter == a_Other.Filter &&

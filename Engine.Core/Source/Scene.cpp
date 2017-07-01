@@ -6,16 +6,23 @@
 #include "Graphics\Material.h"
 #include "Graphics\Primitives.h"
 
+#include "Scene\GameObject\Components\CLight.h"
+
 namespace Scene
 {
 	bool Scene::Initialize()
 	{	
 		//Maybe replace this ?
 		auto ptr = InstantiateGameObject("Scene", true);
+		
+		ptr->Transform->Position = Vector3f(0, 1, 0);
 
 		auto script = static_cast<CScriptComponent*>(ptr->AddNewComponent(ComponentType::Script));
 		script->Initialize("Assets/Scripts/Scene.lua");
 		
+		auto light = static_cast<CLight*>(ptr->AddNewComponent(ComponentType::Light));
+		light->Initialize(Vector4f(1, 1, 1, 1), ELightType::Directional);
+
 		return true;
 	}
 
@@ -41,6 +48,9 @@ namespace Scene
 		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_ADDED);
 		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
 
+		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_LIGHT_ADDED);
+		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_LIGHT_REMOVED);
+
 		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_CLEAR);
 	}
 
@@ -55,6 +65,9 @@ namespace Scene
 		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_ADDED);
 		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED);
 	
+		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_LIGHT_ADDED);
+		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_LIGHT_REMOVED);
+
 		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_CLEAR);
 	}
 
@@ -175,11 +188,17 @@ namespace Scene
 			}
 		}
 
-		//Update Camera..
+		// Update Camera..
 		Core::SEventDesc eventDesc{};
 
 		eventDesc.Event = Core::EEvents::SCENE_CAMERACOMPONENT_ADDED;
 		eventDesc.Description = m_Camera;
+
+		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
+		
+		// Directional Light..
+		eventDesc.Event = Core::EEvents::SCENE_LIGHT_ADDED;
+		eventDesc.Description = m_DirectionalLight;
 
 		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
 	}
@@ -216,6 +235,14 @@ namespace Scene
 
 		case Core::EEvents::SCENE_CAMERACOMPONENT_REMOVED:
 			m_Camera = nullptr;
+			break;
+
+		case Core::EEvents::SCENE_LIGHT_ADDED:
+			m_DirectionalLight = (CLight*)a_Desc.Description;
+			break;
+
+		case Core::EEvents::SCENE_LIGHT_REMOVED:
+			m_DirectionalLight = nullptr;
 			break;
 
 		case Core::EEvents::SCENE_CLEAR:
