@@ -14,10 +14,12 @@ namespace Scene
 		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
 	}
 
-	bool CCamera::Initialize(GameObject *a_Parent, float a_FOV, float a_Near, float a_Far)
-	{
-		IComponent::Initialize(a_Parent);
+	CCamera::CCamera(GameObject *a_Parent)
+		: IComponent(a_Parent)
+	{	}
 
+	bool CCamera::Initialize(float a_FOV, float a_Near, float a_Far)
+	{
 		FOV = a_FOV;
 		Near = a_Near;
 		Far = a_Far;
@@ -30,7 +32,7 @@ namespace Scene
 		eventDesc.Description = this;
 
 		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
-
+		
 		return true;
 	}
 

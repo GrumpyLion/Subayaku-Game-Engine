@@ -40,10 +40,8 @@ namespace Scene
 		Core::EventHandler::StaticClass()->AddEvent(eventDesc);
 	}
 
-	bool CMeshRenderer::Initialize(GameObject *a_Parent, std::string a_ModelLocation, Graphics::Material &a_Material)
-	{
-		IComponent::Initialize(a_Parent);
-		
+	bool CMeshRenderer::Initialize(std::string a_ModelLocation, Graphics::Material &a_Material)
+	{		
 		// The model should have this attributes
 		m_Mesh.FilePath = a_ModelLocation;
 		m_Mesh.HasIndices = true;
@@ -57,10 +55,8 @@ namespace Scene
 		return true;
 	}
 
-	bool CMeshRenderer::Initialize(GameObject *a_Parent, Graphics::SMeshDesc &a_Desc, Graphics::Material &a_Material)
-	{
-		IComponent::Initialize(a_Parent);
-
+	bool CMeshRenderer::Initialize(Graphics::SMeshDesc &a_Desc, Graphics::Material &a_Material)
+	{		
 		m_Mesh = a_Desc;
 		m_Material = a_Material;
 		

@@ -27,17 +27,20 @@ namespace Scene
 		//
 		~CMeshRenderer();
 
+		CMeshRenderer(GameObject *a_Parent)
+			: IComponent(a_Parent) {	}
+
 		// Initialzes an Entity Description and fires an event
 		//
 		void InitializeEntity();
 
 		// Loads an model from memory
 		//
-		virtual bool Initialize(GameObject *a_Parent, std::string a_ModelLocation, Graphics::Material &a_Material);
+		virtual bool Initialize(std::string a_ModelLocation, Graphics::Material &a_Material);
 		
 		// You can load it yourself or create an primitive
 		//
-		virtual bool Initialize(GameObject *a_Parent, Graphics::SMeshDesc &a_Desc, Graphics::Material &a_Material);
+		virtual bool Initialize(Graphics::SMeshDesc &a_Desc, Graphics::Material &a_Material);
 
 		// Empty
 		virtual void Update() override;

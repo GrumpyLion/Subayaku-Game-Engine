@@ -13,10 +13,8 @@ namespace Scene
 		//Maybe replace this ?
 		auto ptr = InstantiateGameObject("Scene", true);
 
-		auto script = std::make_unique<CScriptComponent>();
-		script->Initialize(ptr, "Assets/Scripts/Scene.lua");
-		
-		ptr->AddComponent(std::move(script));
+		auto script = static_cast<CScriptComponent*>(ptr->AddNewComponent(ComponentType::Script));
+		script->Initialize("Assets/Scripts/Scene.lua");
 		
 		return true;
 	}

@@ -44,7 +44,7 @@ namespace Scene
 
 		case ComponentType::Camera:
 			{
-				auto temp = std::make_unique<CCamera>();
+				auto temp = std::make_unique<CCamera>(this);
 				auto ptr = temp.get();
 				AddComponent(std::move(temp));
 				return ptr;
@@ -52,14 +52,14 @@ namespace Scene
 
 		case ComponentType::MeshRenderer:
 			{
-				auto temp = std::make_unique<CMeshRenderer>();
+				auto temp = std::make_unique<CMeshRenderer>(this);
 				auto ptr = temp.get();
 				AddComponent(std::move(temp));
 				return ptr;
 			}
 		case ComponentType::Script:
 			{
-				auto temp = std::make_unique<CScriptComponent>();
+				auto temp = std::make_unique<CScriptComponent>(this);
 				auto ptr = temp.get();
 				AddComponent(std::move(temp));
 				return ptr;

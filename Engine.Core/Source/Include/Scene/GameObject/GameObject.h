@@ -28,6 +28,8 @@ namespace Scene
 		bool Initialize();
 		void Update();
 
+		Matrix4f GetModelTransform()		{			return *ModelTransform;		}
+
 		bool AddComponent(std::unique_ptr<IComponent> a_ToAdd);
 		IComponent* AddNewComponent(ComponentType a_Type);
 		void RemoveComponentByType(ComponentType &a_Type);

@@ -50,6 +50,7 @@
     <ClInclude Include="Source\Include\Math\Vector3f.h" />
     <ClInclude Include="Source\Include\Math\Vector4f.h" />
     <ClInclude Include="Source\Include\Scene\GameObject\Components\CCamera.h" />
+    <ClInclude Include="Source\Include\Scene\GameObject\Components\CLight.h" />
     <ClInclude Include="Source\Include\Scene\GameObject\Components\CMeshRenderer.h" />
     <ClInclude Include="Source\Include\Scene\GameObject\Components\CScriptComponent.h" />
     <ClInclude Include="Source\Include\Scene\GameObject\Components\CSprite.h" />

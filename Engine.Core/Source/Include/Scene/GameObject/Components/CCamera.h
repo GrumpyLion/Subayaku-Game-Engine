@@ -18,7 +18,8 @@ namespace Scene
 		float FOV, Near, Far;
 		bool CurrentCamera = false;
 		
-		bool Initialize(GameObject *a_Parent, float a_FOV, float a_Near, float a_Far);
+		CCamera(GameObject *a_Parent);
+		bool Initialize(float a_FOV, float a_Near, float a_Far);
 		void Update() override;
 	};
 }

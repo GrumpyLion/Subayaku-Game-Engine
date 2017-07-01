@@ -8,7 +8,8 @@ namespace Scene
 		MeshRenderer,
 		Camera,
 		Script,
-		Sprite
+		Sprite,
+		Light
 	};
 
 	class GameObject;
@@ -22,11 +23,8 @@ namespace Scene
 		virtual ~IComponent() {}
 
 		//Called once for initialization
-		virtual bool Initialize(GameObject *a_Parent)
-		{
-			Parent = a_Parent;	
-			return true;
-		}		
+		IComponent(GameObject *a_Parent)
+			: Parent(a_Parent) { }
 		
 		//Called 60 times a second
 		virtual void Update() = 0;

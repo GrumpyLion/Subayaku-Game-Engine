@@ -26,14 +26,20 @@
 
 namespace Scene
 {
-	bool CScriptComponent::Initialize(GameObject *a_Parent, std::string a_FilePath)
+	bool CScriptComponent::Initialize(std::string a_FilePath)
 	{
-		IComponent::Initialize(a_Parent);
-
 		m_Lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math,
 			sol::lib::table, sol::lib::string, sol::lib::bit32, sol::lib::io);
 
 		//Type declaration
+
+		m_Lua.new_usertype<Matrix4f>(
+			"Matrix",
+			"m11", &Matrix4f::m11, "m12", &Matrix4f::m12, "m13", &Matrix4f::m13, "m14", &Matrix4f::m14,
+			"m21", &Matrix4f::m21, "m22", &Matrix4f::m22, "m23", &Matrix4f::m23, "m24", &Matrix4f::m24,
+			"m31", &Matrix4f::m31, "m32", &Matrix4f::m32, "m33", &Matrix4f::m33, "m34", &Matrix4f::m34,
+			"m41", &Matrix4f::m41, "m42", &Matrix4f::m42, "m43", &Matrix4f::m43, "m34", &Matrix4f::m44
+			);
 
 		m_Lua.new_usertype<Vector4f>(
 			"Vector4f",
@@ -41,7 +47,8 @@ namespace Scene
 			"x", &Vector4f::x,
 			"y", &Vector4f::y,
 			"z", &Vector4f::z,
-			"w", &Vector4f::w
+			"w", &Vector4f::w,
+			"Normalize", &Vector4f::Normalize
 			);
 
 		m_Lua.new_usertype<Vector3f>(
@@ -49,14 +56,16 @@ namespace Scene
 			sol::constructors<sol::types<>, sol::types<float, float, float>>(),
 			"x", &Vector3f::x,
 			"y", &Vector3f::y,
-			"z", &Vector3f::z
+			"z", &Vector3f::z,
+			"Normalize", &Vector3f::Normalize
 			);
 
 		m_Lua.new_usertype<Vector2f>(
 			"Vector2f",
 			sol::constructors<sol::types<>, sol::types<float, float>>(),
 			"x", &Vector2f::x,
-			"y", &Vector2f::y
+			"y", &Vector2f::y,
+			"Normalize", &Vector2f::Normalize
 			);
 
 		auto overload = sol::overload(
@@ -83,9 +92,9 @@ namespace Scene
 		m_Lua.new_usertype<CScriptComponent>(
 			"ScriptComponent",
 
+			sol::constructors<sol::types<GameObject*>>(),
 			"Initialize", &CScriptComponent::Initialize
 			);
-
 
 		// MeshRenderer Stuff
 		m_Lua.new_usertype<Graphics::Primitives>(
@@ -125,12 +134,14 @@ namespace Scene
 			);
 
 		auto meshOverload = sol::overload(
-			sol::resolve<bool(GameObject *a_Parent, std::string a_ModelLocation, Graphics::Material &a_Material)>(&CMeshRenderer::Initialize),
-			sol::resolve<bool(GameObject *a_Parent, Graphics::SMeshDesc &a_Desc, Graphics::Material &a_Material)>(&CMeshRenderer::Initialize)
+			sol::resolve<bool(std::string a_ModelLocation, Graphics::Material &a_Material)>(&CMeshRenderer::Initialize),
+			sol::resolve<bool(Graphics::SMeshDesc &a_Desc, Graphics::Material &a_Material)>(&CMeshRenderer::Initialize)
 		);
 
 		m_Lua.new_usertype<CMeshRenderer>(
 			"MeshRenderer",
+
+			sol::constructors<sol::types<GameObject*>>(),
 
 			"Initialize", meshOverload,
 
@@ -148,7 +159,7 @@ namespace Scene
 
 		m_Lua.new_usertype<CCamera>(
 			"Camera",
-
+			sol::constructors<sol::types<GameObject*>>(),
 			"Initialize", &CCamera::Initialize
 			);
 
@@ -159,6 +170,7 @@ namespace Scene
 			"Name", &GameObject::Name,
 			"IsTicking", &GameObject::IsTicking,
 			"Transform", &GameObject::Transform,
+			"GetModelTransform", &GameObject::GetModelTransform,
 
 			//New Components
 			"AddScriptComponent", [](GameObject* a_GameObject)
@@ -188,6 +200,12 @@ namespace Scene
 			"RightButton", &Core::Mouse::RightButton
 			);
 
+		m_Lua.new_usertype<Core::Keyboard>(
+			"Keyboard",
+			"IsKeyDown", &Core::Keyboard::IsKeyDown,
+			"IsKeyJustDown", &Core::Keyboard::IsKeyJustDown
+			);
+
 		m_Lua.new_usertype<Graphics::Image>(
 			"Image", 
 			sol::constructors<sol::types<std::string>>(),
@@ -202,7 +220,7 @@ namespace Scene
 		m_Lua.set("Parent", Parent);
 		m_Lua.set("ParentTransform", Parent->Transform);
 		m_Lua.set("Mouse", Core::Engine::StaticClass()->GetInputManager()->GetMouse());
-
+		m_Lua.set("Keyboard", Core::Engine::StaticClass()->GetInputManager()->GetKeyboard());
 
 		//Run init
 		m_Lua["Init"]();

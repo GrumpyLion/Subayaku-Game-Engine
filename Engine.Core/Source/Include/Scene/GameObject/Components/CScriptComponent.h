@@ -11,7 +11,10 @@ namespace Scene
 		sol::state m_Lua;
 
 	public:
-		bool Initialize(GameObject *a_Parent, std::string a_FilePath);
+		CScriptComponent(GameObject *a_Parent)
+			: IComponent(a_Parent) {	}
+
+		bool Initialize(std::string a_FilePath);
 
 		void Update() override;
 	};

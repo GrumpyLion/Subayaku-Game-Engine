@@ -6,10 +6,8 @@
 
 namespace Scene
 {
-	bool CSprite::Initialize(GameObject *a_Parent, const char* a_TexturePath)
+	bool CSprite::Initialize(const char* a_TexturePath)
 	{
-		IComponent::Initialize(a_Parent);
-
 		Graphics::SMeshDesc mesh{};
 		Graphics::Primitives::GetQuad(mesh);
 		mesh.ShouldCull = false;

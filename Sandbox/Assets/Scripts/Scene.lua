@@ -2,28 +2,31 @@ index = 0
 
 function Init()
 	-- Camera Object
-	local trans = Transform.new();
-	local gameObject = Scene:InstantiateGameObject("Camera", trans, true)
+	trans = Transform.new();
+	trans.Rotation = Vector3f.new(-40, 40, 0)
 	
-	local script = gameObject:AddScriptComponent()
-	script:Initialize(gameObject, "Assets/Scripts/Camera.lua")
+	gameObject = Scene:InstantiateGameObject("Camera", trans, true)
 	
-	local camera = gameObject:AddCameraComponent();
-	camera:Initialize(gameObject, 80.0, 1, 5000.0)
+	script = gameObject:AddScriptComponent()
+	script:Initialize("Assets/Scripts/Camera.lua")
+	
+	camera = gameObject:AddCameraComponent();
+	camera:Initialize(80.0, 1, 5000.0)
 	
 	-- Test Mesh (Rotation Teapot)
 	
 	image = Image.new("Assets/Textures/TreeMap.tga");	
 	noiseImage = Image.new("Assets/Textures/Noise.tga");	
 	
-	-- Bank
+	-- Seating
 	
-	trans.Position = Vector3f.new(0, 15.5, 0)
+	trans.Position = Vector3f.new(0, 14.5, 0)
+	trans.Rotation = Vector3f.new(2,0,-2)
 	trans.Scale = Vector3f.new(0.1, 0.1, 0.1);
 	
 	gameObject = Scene:InstantiateGameObject("Seating", trans, false)
-	local mesh = gameObject:AddMeshRenderer()
-	local material = mesh:SetNewMaterial()
+	mesh = gameObject:AddMeshRenderer()
+	material = mesh:SetNewMaterial()
 	
 	material:AddShader("Small.vs")
 	material:AddShader("Small.fs")
@@ -34,17 +37,21 @@ function Init()
 	texDesc.FilePath = "Assets/Textures/Diffuse.tga"
 	material:AddTexture(texDesc)
 	
-	mesh:Initialize(gameObject, "Assets/Models/Seating.obj", material)
+	mesh:Initialize("Assets/Models/Seating.obj", material)
 	
 	-- Boat
 	
-	trans.Position = Vector3f.new(850, 1, 0)
+	trans.Position = Vector3f.new(850, 0.5, 0)
 	trans.Rotation = Vector3f.new(0, 30, 0)
 	trans.Scale = Vector3f.new(0.1, 0.1, 0.1);
 	
-	gameObject = Scene:InstantiateGameObject("Boat", trans, false)
-	local mesh = gameObject:AddMeshRenderer()
-	local material = mesh:SetNewMaterial()
+	gameObject = Scene:InstantiateGameObject("Boat", trans, true)
+	
+	script = gameObject:AddScriptComponent()
+	script:Initialize("Assets/Scripts/Boat.lua")
+	
+	mesh = gameObject:AddMeshRenderer()
+	material = mesh:SetNewMaterial()
 	
 	material:AddShader("Small.vs")
 	material:AddShader("Small.fs")
@@ -55,15 +62,17 @@ function Init()
 	texDesc.FilePath = "Assets/Textures/Diffuse.tga"
 	material:AddTexture(texDesc)
 	
-	mesh:Initialize(gameObject, "Assets/Models/Boat.obj", material)
+	mesh:Initialize("Assets/Models/Boat.obj", material)
+	
+	-- Planks
 	
 	trans.Position = Vector3f.new(790, 0, 0)
 	trans.Scale = Vector3f.new(0.15, 0.15, 0.15);
 	trans.Rotation = Vector3f.new(0, 0, 0)
 	
 	gameObject = Scene:InstantiateGameObject("Plank", trans, false)
-	local mesh = gameObject:AddMeshRenderer()
-	local material = mesh:SetNewMaterial()
+	mesh = gameObject:AddMeshRenderer()
+	material = mesh:SetNewMaterial()
 	
 	material:AddShader("Small.vs")
 	material:AddShader("Small.fs")
@@ -74,7 +83,7 @@ function Init()
 	texDesc.FilePath = "Assets/Textures/Diffuse.tga"
 	material:AddTexture(texDesc)
 	
-	mesh:Initialize(gameObject, "Assets/Models/Plank.obj", material)
+	mesh:Initialize("Assets/Models/Plank.obj", material)
 	
 	trans.Rotation = Vector3f.new(0, 0, 0)
 	for index=0, 1500, 1 do
@@ -88,8 +97,8 @@ function Init()
 			trans.Position.z = trans.Position.z - 1024
 			
 			gameObject = Scene:InstantiateGameObject(tostring(index), trans, false)
-			local mesh = gameObject:AddMeshRenderer()
-			local material = mesh:SetNewMaterial()
+			mesh = gameObject:AddMeshRenderer()
+			material = mesh:SetNewMaterial()
 			
 			material:AddShader("Small.vs")
 			material:AddShader("Small.fs")
@@ -99,7 +108,7 @@ function Init()
 			texDesc.FilePath = "Assets/Textures/Diffuse.tga"
 			material:AddTexture(texDesc)
 			
-			mesh:Initialize(gameObject, "Assets/Models/Tree.obj", material)
+			mesh:Initialize("Assets/Models/Tree.obj", material)
 			
 		end
 	end 
@@ -133,7 +142,7 @@ function Init()
 	meshDesc.HasIndices = true
 	meshDesc.FilePath = "Primitive"
 	
-	mesh:Initialize(gameObject, meshDesc, material)
+	mesh:Initialize(meshDesc, material)
 	
 	-- Water	
 	texDesc = TextureDesc.new()
@@ -164,7 +173,7 @@ function Init()
 	meshDesc.HasIndices = true
 	meshDesc.FilePath = "Primitive 200 200"
 	
-	mesh:Initialize(gameObject, meshDesc, material)
+	mesh:Initialize(meshDesc, material)
 	
 end
 
