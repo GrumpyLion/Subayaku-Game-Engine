@@ -28,15 +28,18 @@ namespace Graphics
 			m_DynamicGlobalBuffer->Initialize(desc, m_Renderer);
 		}
 
-		void GLShaderBufferContainer::Bind()
+		void GLShaderBufferContainer::Bind(Matrix4f &a_LightSpaceMatrix)
 		{
 			DynamicBuffer data{};
 
-			if (m_Renderer->GetCamera() != nullptr && m_Renderer->GetCamera()->Parent)
+			if (m_Renderer->GetCamera() != nullptr && m_Renderer->GetCamera())
 			{
-				data.CameraPos = Vector4f(m_Renderer->GetCamera()->Parent->Transform->Position);
+				data.CameraPos = Vector4f(m_Renderer->GetCamera()->Transform.Position);
 				data.Projection = m_Renderer->GetCamera()->ToProjectionMatrixLH;
 				data.View = m_Renderer->GetCamera()->ToViewMatrixLH;
+
+				//Shadow mapping
+				data.LightSpaceMatrix = a_LightSpaceMatrix;
 			}
 
 			//Direcitonal light stuff

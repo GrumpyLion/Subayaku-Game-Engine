@@ -13,7 +13,14 @@ namespace Graphics
 	{
 	protected:
 		Core::Engine *m_Engine = nullptr;
-		Scene::CCamera *m_Camera = nullptr;
+
+		// Current Camera
+		//
+		Camera *m_Camera = nullptr;
+
+		// The scene camera. Used to switch back 
+		//
+		Camera *m_SceneCamera = nullptr;
 
 		// Container for all entities
 		//
@@ -41,7 +48,12 @@ namespace Graphics
 
 		// Will be called at WINDOW_RESIZE EVENT
 		// Resize G-Buffer & so on
+		//
 		virtual void Resize() = 0;
+
+		// Current Shader Stage
+		//
+		EShaderStage m_CurrentShaderStage = EShaderStage::NORMAL;
 
 	public:
 		virtual ~BaseRenderer() 
@@ -82,9 +94,24 @@ namespace Graphics
 
 		GraphicsCache *GetCache()						{			return m_Cache.get();		}
 
-		Scene::CCamera *GetCamera()	final				{			return m_Camera;			}
+		Camera *GetCamera()	final						{			return m_Camera;			}
 
 		Scene::CLight *GetDirectionalLight()			{			return m_DirectionalLight;	}
+
+		SRendererDesc GetDescription()					{			return m_Desc;				}
+
+		EShaderStage GetShaderStage()  final				{			return m_CurrentShaderStage; }
+
+		void SetShaderStage(EShaderStage a_ShaderStage) { m_CurrentShaderStage = a_ShaderStage; }
+
+		void SetCurrentCamera(Camera *a_Camera) 
+		{
+			m_Camera = a_Camera;		
+		}
+
+		// Resets the camera back to the scene camera
+		//
+		void ResetCamera()								{			m_Camera = m_SceneCamera;	}
 
 		//Adds an renderer entity object that contains all information to render a certain object.
 		//
@@ -94,6 +121,12 @@ namespace Graphics
 		//
 		__declspec(dllexport) void RemoveRenderable(SEntityDesc &a_Desc) final;
 
+		// The events will be here catched and processed
+		//
 		__declspec(dllexport) void EventListener(Core::SEventDesc &a_Desc) final;
+
+		// Renders the scene. No Clearing will be called !
+		//
+		__declspec(dllexport) void RenderScene();
 	};
 }

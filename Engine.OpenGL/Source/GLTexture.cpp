@@ -11,7 +11,7 @@ namespace Graphics
 			glDeleteTextures(1, &TextureID);
 		}
 
-		bool GLTexture::InitializeFramebufferTexture(STextureDesc &a_Desc, GLenum a_Format, GLenum a_Type, GLenum a_Attachement)
+		bool GLTexture::InitializeFramebufferTexture(STextureDesc &a_Desc, GLenum a_Format, GLenum a_Format2, GLenum a_Type, GLenum a_Attachement)
 		{
 			Width = a_Desc.Width;
 			Height = a_Desc.Height;
@@ -25,13 +25,17 @@ namespace Graphics
 			glGenTextures(1, &TextureID);
 			glBindTexture(GL_TEXTURE_2D, TextureID);
 			// Set our texture parameters
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+			float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
 			// Set texture filtering
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, ETextureFilterToGL(a_Desc));
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, ETextureFilterToGL(a_Desc));
 
-			glTexImage2D(GL_TEXTURE_2D, 0, a_Format, a_Desc.Width, a_Desc.Height, 0, ETextureFormatToGL(a_Desc), a_Type, nullptr);
+			glTexImage2D(GL_TEXTURE_2D, 0, a_Format, a_Desc.Width, a_Desc.Height, 0, a_Format2, a_Type, nullptr);
 
 			glFramebufferTexture2D(GL_FRAMEBUFFER, a_Attachement, GL_TEXTURE_2D, TextureID, 0);
 

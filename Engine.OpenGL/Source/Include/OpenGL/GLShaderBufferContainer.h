@@ -22,6 +22,8 @@ namespace Graphics
 			//In the std140 Format everything is either 2 elements big or 4
 			//That means a float will be at the end a vec2
 			//A vec3 will be vec4 and so on
+
+#pragma pack(push, 1)
 			struct DynamicBuffer
 			{
 				Matrix4f Projection;
@@ -35,11 +37,15 @@ namespace Graphics
 				//Directional Light -- 
 				Vector4f LightDirection;
 				Vector4f LightColor;
+
+				//Shadow Mapping
+				Matrix4f LightSpaceMatrix;
 			};
+#pragma pack(pop)
 
 		public:
 			void Initialize(GLRenderer *a_Renderer);
-			void Bind();
+			void Bind(Matrix4f &a_LightSpaceMatrix);
 		};
 	}
 }

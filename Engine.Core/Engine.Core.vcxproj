@@ -27,6 +27,7 @@
     <ClInclude Include="Source\Include\Graphics\Descriptions\SShaderDesc.h" />
     <ClInclude Include="Source\Include\Graphics\Enums\GlobalIndices.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\SShaderBufferDesc.h" />
+    <ClInclude Include="Source\Include\Graphics\Enums\ShaderStages.h" />
     <ClInclude Include="Source\Include\Graphics\Image.h" />
     <ClInclude Include="Source\Include\Graphics\Loaders\AssimpLoader.h" />
     <ClInclude Include="Source\Include\Graphics\Descriptions\SMeshDesc.h" />

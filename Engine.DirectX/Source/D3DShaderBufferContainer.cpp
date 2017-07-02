@@ -33,7 +33,7 @@ namespace Graphics
 				temp.Transpose();
 				dynamicData.View = temp;
 
-				dynamicData.CameraPosition = m_Renderer->GetCamera()->Parent->Transform->Position;
+				dynamicData.CameraPosition = m_Renderer->GetCamera()->Transform.Position;
 			}
 
 			dynamicData.TimeSinceStart = (float)m_Renderer->GetEngine()->TimeSinceStart;

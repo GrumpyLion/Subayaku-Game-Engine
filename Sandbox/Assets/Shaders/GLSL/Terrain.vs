@@ -9,6 +9,7 @@ layout(location=5) in mat4 WMatrix;
 
 out flat vec3 oNormal;
 out vec3 oFragPos;
+out vec4 oFragPosLightSpace;
 out vec2 oTexCoord;
 out vec3 oDistancePos;
 
@@ -24,6 +25,9 @@ layout (std140, binding = 1) uniform GlobalDynamicBuffer
   //Directional Light
   vec4 uLightDirection;
   vec4 uLightColor;
+  
+  //Shadow mapping
+  mat4 uLightSpaceMatrix;
 };
 
 // Textures
@@ -41,9 +45,11 @@ void main()
 	
 	oTexCoord = Texcoord - vec2(0, 1);
 	
-	oFragPos = Pos.xyz;
 	oDistancePos = Position.xyz;
 	Pos.y += texture(uNoise, oTexCoord).y * clamp(uTime.x * 0.0005, 0.0, 1.0) * 50 - 25;	
+	
+	oFragPos = Pos.xyz;
+	oFragPosLightSpace = uLightSpaceMatrix * vec4(oFragPos, 1.0);
 	
 	gl_Position = uPMatrix * uVMatrix * Pos;
 		

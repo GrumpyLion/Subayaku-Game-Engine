@@ -2,10 +2,11 @@
 
 #include "Graphics\Descriptions\SRendererDesc.h"
 #include "Graphics\Descriptions\SEntityDesc.h"
+#include "Graphics\Enums\ShaderStages.h"
 
 #include "Core\Engine.h"
 #include "Utilities\Event\EventHandler.h"
-#include "Scene\GameObject\Components\CCamera.h"
+#include "Graphics\Camera.h"
 
 namespace Graphics
 {
@@ -20,9 +21,11 @@ namespace Graphics
 		virtual void AddRenderable(SEntityDesc &a_Desc) = 0;
 		virtual void RemoveRenderable(SEntityDesc &a_Desc) = 0;
 
-		virtual Scene::CCamera *GetCamera() = 0;
+		virtual Camera *GetCamera() = 0;
 		virtual Core::Engine *GetEngine() = 0;
 
 		virtual void EventListener(Core::SEventDesc &a_Desc) = 0;
+		
+		virtual EShaderStage GetShaderStage() = 0;
 	};
 }

@@ -32,7 +32,7 @@ namespace Graphics
 
 		public:
 			bool Initialize(Material *a_Material, IRenderer *a_Renderer) final;
-			void Bind() final;
+			bool Bind() final;
 			
 			D3DShaderContainer *GetContainer();
 		};

@@ -6,9 +6,19 @@
 
 namespace Graphics
 {
-	void Material::AddShader(std::string a_FilePath)
+	void Material::AddShader(EShaderStage a_Stage, std::string a_FilePath)
 	{
-		Shaders.AddShader(a_FilePath);
+		SShaderContainerDesc temp{};
+
+		if (Shaders.find(a_Stage) == Shaders.end())
+		{
+			temp.AddShader(a_FilePath);
+			Shaders.insert({ a_Stage, temp });
+		}
+		else
+		{
+			Shaders[a_Stage].AddShader(a_FilePath);
+		}
 	}
 
 	void Material::AddTexture(STextureDesc &a_TextureInfo)

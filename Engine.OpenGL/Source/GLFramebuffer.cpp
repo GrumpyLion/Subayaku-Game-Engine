@@ -10,32 +10,34 @@ namespace Graphics
 			glDeleteRenderbuffers(1, &m_RBO);
 		}
 
-		GLFramebuffer::GLFramebuffer(GLuint a_Width, GLuint a_Height)
+		GLFramebuffer::GLFramebuffer(GLuint a_Width, GLuint a_Height, bool a_GenRenderBuffer)
 		{
+			m_Width = a_Width;
+			m_Height = a_Height;
+
 			glGenFramebuffers(1, &m_FBO);
 			glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 
-			unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
-			glDrawBuffers(3, attachments);
-
-			glGenRenderbuffers(1, &m_RBO);
-			glBindRenderbuffer(GL_RENDERBUFFER, m_RBO);
-			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, a_Width, a_Height);
-			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
+			if (a_GenRenderBuffer)
+			{
+				glGenRenderbuffers(1, &m_RBO);
+				glBindRenderbuffer(GL_RENDERBUFFER, m_RBO);
+				glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, a_Width, a_Height);
+				glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
+			}
 
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 
 		void GLFramebuffer::AddAttachement(std::string a_Name, std::unique_ptr<GLTexture> a_Texture)
 		{
-			m_TextureCount++;
-
 			RenderTargets.insert({ a_Name, std::move(a_Texture) });
 		}
 
 		void GLFramebuffer::Bind()
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+			glViewport(0, 0, m_Width, m_Height);
 		}
 
 		void GLFramebuffer::Unbind()

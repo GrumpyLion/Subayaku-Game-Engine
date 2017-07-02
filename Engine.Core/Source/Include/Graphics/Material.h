@@ -6,6 +6,7 @@
 #include "Graphics\Descriptions\SShaderContainerDesc.h"
 #include "Graphics\Descriptions\STextureDesc.h"
 #include "Graphics\Enums\TextureEnums.h"
+#include "Graphics\Enums\ShaderStages.h"
 
 #include "Scene\GameObject\Components\Transformation.h"
 
@@ -17,10 +18,12 @@ namespace Graphics
 	{		
 	public:
 		std::unordered_map<std::string, STextureDesc> Textures;
-		Graphics::SShaderContainerDesc Shaders{};
+		
+		std::unordered_map<EShaderStage, Graphics::SShaderContainerDesc> Shaders{};
+
 		ETextureFilter TextureFilter = ETextureFilter::NEAREST;
 
-		void AddShader(std::string a_FilePath);
+		void AddShader(EShaderStage a_Stage, std::string a_FilePath);
 		void AddTexture(STextureDesc &a_TextureInfo);
 		void RemoveTexture(std::string a_FileName);
 
@@ -74,8 +77,11 @@ namespace std
 			if(k.Textures.size() > 0)
 				for(auto &temp : k.Textures)
 					result += 31 + hash<Graphics::STextureDesc>()(temp.second);
+			
+			if (k.Shaders.size() > 0)
+				for (auto &temp : k.Shaders)
+					result += 31 + hash<Graphics::SShaderContainerDesc>()(temp.second);
 
-			result += 31 + hash<Graphics::SShaderContainerDesc>()(k.Shaders);
 			result += 31 + hash<Graphics::ETextureFilter>()(k.TextureFilter);
 
 			return result;

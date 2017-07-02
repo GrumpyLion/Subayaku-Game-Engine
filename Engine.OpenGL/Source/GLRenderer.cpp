@@ -97,76 +97,21 @@ namespace Graphics
 			glDepthFunc(GL_LESS);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-			m_Container = std::make_unique<GLShaderBufferContainer>();
-			m_Container->Initialize(this);
-
-			m_GLGbuffer = std::make_unique<GLGbuffer>(a_Desc.Width, a_Desc.Height);
-
-			SShaderContainerDesc containerDesc {};
-
-			containerDesc.AddShader("GBufferFinal.vs");
-			containerDesc.AddShader("GBufferFinal.fs");
-
-			m_FinalShader = std::make_unique<GLShaderContainer>();
-			m_FinalShader->Initialize(containerDesc, this);
-
-			STextureDesc desc{};
-			desc.FilePath = "Assets/Textures/Vignette.tga";
-			m_Vignette = static_cast<GLTexture*>(GetCache()->LoadTexture(desc));
+			m_RenderPass = std::make_unique<GLRenderPassGBuffer>(this);
 
 			return true;
 		}
 
 		void GLRenderer::Render()
 		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glClearColor(1, 1, 1, 1);
-
-			glViewport(0, 0, m_Desc.Width, m_Desc.Height);
-
-			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			m_Container->Bind();
-
-			m_GLGbuffer->Bind();
-
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glClearColor(1, 1, 1, 1);
-
-			glViewport(0, 0, m_Desc.Width, m_Desc.Height);
-
-			for (auto &temp : m_Entities)
-				temp.second->Render();
-
-			m_GLGbuffer->Unbind();		
-			
-			m_FinalShader->BindProgram();
-
-			glActiveTexture(GL_TEXTURE0);
-			m_FinalShader->SetInt("uAlbedo", 0);
-			m_GLGbuffer->RenderTargets["Albedo"]->Bind();
-			
-			glActiveTexture(GL_TEXTURE1);
-			m_FinalShader->SetInt("uNormal", 1);
-			m_GLGbuffer->RenderTargets["Normal"]->Bind();
-
-			//glActiveTexture(GL_TEXTURE2);
-			//m_FinalShader->SetInt("uPosition", 2);
-			//m_GLGbuffer->RenderTargets["Position"]->Bind();
-
-			glActiveTexture(GL_TEXTURE3);
-			m_FinalShader->SetInt("uVignette", 3);
-			m_Vignette->Bind();
-
-			glDisable(GL_CULL_FACE);
-			RenderQuad();
-			glEnable(GL_CULL_FACE);
+			m_RenderPass->RenderPass();
 
 			SwapBuffers(m_HDC);
 		}
 
 		void GLRenderer::Resize()
 		{
-			m_GLGbuffer = std::make_unique<GLGbuffer>(m_Desc.Width, m_Desc.Height);
+			m_RenderPass->Resize();
 		}
 
 		GLRenderer::~GLRenderer()
@@ -184,33 +129,6 @@ namespace Graphics
 				wglDeleteContext(m_Context);
 				m_Context = nullptr;
 			}
-		}
-		
-		void GLRenderer::RenderQuad()
-		{
-			if (m_QuadVAO == 0)
-			{
-				float quadVertices[] = {
-					// positions        // texture Coords
-					-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-					-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-					1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-					1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-				};
-				// setup plane VAO
-				glGenVertexArrays(1, &m_QuadVAO);
-				glGenBuffers(1, &m_QuadVBO);
-				glBindVertexArray(m_QuadVAO);
-				glBindBuffer(GL_ARRAY_BUFFER, m_QuadVBO);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-				glEnableVertexAttribArray(0);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-			}
-			glBindVertexArray(m_QuadVAO);
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			glBindVertexArray(0);
 		}
 	}
 }

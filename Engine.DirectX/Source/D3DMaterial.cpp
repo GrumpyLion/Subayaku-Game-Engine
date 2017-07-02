@@ -10,10 +10,12 @@ namespace Graphics
 		{
 			m_Renderer = static_cast<D3DRenderer*>(a_Renderer);
 
-			m_Container = std::make_unique<D3DShaderContainer>();
+			//TODO
 
-			if (!m_Container->Initialize(a_Material->Shaders, a_Renderer))
-				return false;
+			//m_Container = std::make_unique<D3DShaderContainer>();
+
+			//if (!m_Container->Initialize(a_Material->Shaders, a_Renderer))
+			//	return false;
 
 			for (auto &temp : a_Material->Textures)
 			{
@@ -28,7 +30,7 @@ namespace Graphics
 			return true;
 		}
 
-		void D3DMaterial::Bind()
+		bool D3DMaterial::Bind()
 		{
 			for (auto &temp : m_Textures)
 			{
@@ -36,6 +38,8 @@ namespace Graphics
 			}
 
 			m_Container->BindProgram();
+			
+			return true;
 		}
 
 		D3DShaderContainer *D3DMaterial::GetContainer()

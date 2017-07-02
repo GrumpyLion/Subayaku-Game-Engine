@@ -11,6 +11,6 @@ namespace Graphics
 	public:
 		virtual bool Initialize(Material *a_Material, IRenderer *a_Renderer) = 0;
 
-		virtual void Bind() = 0;
+		virtual bool Bind() = 0;
 	};
 }

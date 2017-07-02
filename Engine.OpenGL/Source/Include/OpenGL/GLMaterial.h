@@ -18,16 +18,16 @@ namespace Graphics
 		class GLMaterial : public IMaterial
 		{
 		private:
-			std::unique_ptr<GLShaderContainer> m_Container = nullptr;
+			GLRenderer *m_Renderer = nullptr;
+			
 			Scene::Transformation *m_ParentTransform = nullptr;
 
-			GLRenderer *m_Renderer = nullptr;
-
+			std::unordered_map<EShaderStage, std::unique_ptr<GLShaderContainer>> m_ShaderContainers;
 			std::unordered_map<std::string, GLTexture*> m_Textures;
 
 		public:
 			bool Initialize(Material *a_Material, IRenderer *a_Renderer) final;
-			void Bind() final;
+			bool Bind() final;
 
 			GLShaderContainer *GetContainer();
 		};

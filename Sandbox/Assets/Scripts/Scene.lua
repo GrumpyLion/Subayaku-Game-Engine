@@ -26,8 +26,10 @@ function Init()
 	mesh = gameObject:AddMeshRenderer()
 	material = mesh:SetNewMaterial()
 	
-	material:AddShader("Small.vs")
-	material:AddShader("Small.fs")
+	material:AddShader(0, "Small.vs")
+	material:AddShader(0, "Small.fs")
+	material:AddShader(1, "Depth.vs")
+	material:AddShader(1, "Depth.fs")
 	
 	texDesc = TextureDesc.new()
 	texDesc.RegisterIndex = 0
@@ -51,8 +53,8 @@ function Init()
 	mesh = gameObject:AddMeshRenderer()
 	material = mesh:SetNewMaterial()
 	
-	material:AddShader("Small.vs")
-	material:AddShader("Small.fs")
+	material:AddShader(0, "Small.vs")
+	material:AddShader(0, "Small.fs")
 	
 	texDesc = TextureDesc.new()
 	texDesc.RegisterIndex = 0
@@ -72,8 +74,8 @@ function Init()
 	mesh = gameObject:AddMeshRenderer()
 	material = mesh:SetNewMaterial()
 	
-	material:AddShader("Small.vs")
-	material:AddShader("Small.fs")
+	material:AddShader(0, "Small.vs")
+	material:AddShader(0, "Small.fs")
 	
 	texDesc = TextureDesc.new()
 	texDesc.RegisterIndex = 0
@@ -98,8 +100,11 @@ function Init()
 			mesh = gameObject:AddMeshRenderer()
 			material = mesh:SetNewMaterial()
 			
-			material:AddShader("Small.vs")
-			material:AddShader("Small.fs")
+			material:AddShader(0, "Small.vs")
+			material:AddShader(0, "Small.fs")
+			
+			material:AddShader(1, "Depth.vs")
+			material:AddShader(1, "Depth.fs")
 			
 			texDesc.RegisterIndex = 0
 			texDesc.UniformName = "uTexture"
@@ -122,8 +127,8 @@ function Init()
 	mesh = gameObject:AddMeshRenderer()
 	material = mesh:SetNewMaterial()
 	
-	material:AddShader("Terrain.vs")
-	material:AddShader("Terrain.fs")
+	material:AddShader(0, "Terrain.vs")
+	material:AddShader(0, "Terrain.fs")
 	
 	texDesc.RegisterIndex = 0
 	texDesc.UniformName = "uNoise"
@@ -153,8 +158,8 @@ function Init()
 	mesh = gameObject:AddMeshRenderer()
 	material = mesh:SetNewMaterial()
 	
-	material:AddShader("Water.vs")
-	material:AddShader("Water.fs")
+	material:AddShader(0, "Water.vs")
+	material:AddShader(0, "Water.fs")
 	
 	texDesc.RegisterIndex = 0
 	texDesc.UniformName = "uNoise"

@@ -3,9 +3,12 @@
 layout (location = 0) out vec4 gPosition;
 layout (location = 1) out vec4 gNormal;
 layout (location = 2) out vec4 gAlbedo;
+layout (location = 3) out vec4 gSpecular;
+layout (location = 4) out vec4 gFragPosLightSpace;
 
 in flat vec3 oNormal;
 in vec3 oFragPos;
+in vec4 oFragPosLightSpace;
 in vec3 oDistancePos;
 in vec2 oTexCoord;
 
@@ -23,6 +26,9 @@ layout (std140, binding = 1) uniform GlobalDynamicBuffer
   //Directional Light
   vec4 uLightDirection;
   vec4 uLightColor;
+  
+  //Shadow mapping
+  mat4 uLightSpaceMatrix;
 };
 
 void main()
@@ -35,4 +41,6 @@ void main()
 	
 	gAlbedo = vec4(oColor, 1.0);
 	gAlbedo = mix(gAlbedo, vec4(1,1,1,1), clamp(dist * 0.5f, 0.0, 1.0));
+	gSpecular = vec4(0.0, 0.0, 0.0, 1.0);
+	gFragPosLightSpace = oFragPosLightSpace;
 }

@@ -229,7 +229,7 @@ struct Matrix4f
 		{
 			2 / (a_Right - a_Left), 0.0f, 0.0f, -(a_Right + a_Left) / (a_Right - a_Left),
 			0.0f, 2 / (a_Top - a_Bottom), 0.0f, -(a_Top + a_Bottom) / (a_Top - a_Bottom),
-			0.0f, 0.0f, -2 / (a_Far - a_Near),  -(a_Far + a_Near)   / (a_Far - a_Near), 
+			0.0f, 0.0f, 1 / (a_Far - a_Near),  -(a_Near)   / (a_Far - a_Near), 
 			0.0f, 0.0f, 0.0f, 1.0f
 		};
 

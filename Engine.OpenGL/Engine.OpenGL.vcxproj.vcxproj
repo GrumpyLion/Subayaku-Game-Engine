@@ -25,10 +25,12 @@
     <ClCompile Include="Source\GLMaterial.cpp" />
     <ClCompile Include="Source\GLMesh.cpp" />
     <ClCompile Include="Source\GLRenderer.cpp" />
+    <ClCompile Include="Source\GLRenderPassGBuffer.cpp" />
     <ClCompile Include="Source\GLShader.cpp" />
     <ClCompile Include="Source\GLShaderBuffer.cpp" />
     <ClCompile Include="Source\GLShaderBufferContainer.cpp" />
     <ClCompile Include="Source\GLShaderContainer.cpp" />
+    <ClCompile Include="Source\GLShadowbuffer.cpp" />
     <ClCompile Include="Source\GLTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -43,7 +45,10 @@
     <ClInclude Include="Source\Include\OpenGL\GLShaderBuffer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLShaderBufferContainer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLShaderContainer.h" />
+    <ClInclude Include="Source\Include\OpenGL\GLShadowbuffer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLTexture.h" />
+    <ClInclude Include="Source\Include\OpenGL\RenderPasses\GLRenderPass.h" />
+    <ClInclude Include="Source\Include\OpenGL\RenderPasses\GLRenderPassGBuffer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

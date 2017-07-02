@@ -46,7 +46,7 @@ namespace Scene
 		m_Mesh.FilePath = a_ModelLocation;
 		m_Mesh.HasIndices = true;
 		m_Mesh.NeedsToBeLoaded = true;
-		m_Mesh.ShouldCull = false;
+		m_Mesh.ShouldCull = true;
 		m_Mesh.Mode = Graphics::EMeshPrimitive::TRIANGLES;
 
 		m_Material = a_Material;

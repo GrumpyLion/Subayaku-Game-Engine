@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Include\Graphics\Bases\BaseRenderer.h" />
+    <ClInclude Include="Source\Include\Graphics\Camera.h" />
     <ClInclude Include="Source\Include\Graphics\Interfaces\IEntity.h" />
     <ClInclude Include="Source\Include\Graphics\Interfaces\IMaterial.h" />
     <ClInclude Include="Source\Include\Graphics\Interfaces\IMesh.h" />
@@ -38,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\BaseRenderer.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\EventHandler.cpp" />
     <ClCompile Include="Source\FileSystem.cpp" />
     <ClCompile Include="Source\GraphicsCache.cpp" />

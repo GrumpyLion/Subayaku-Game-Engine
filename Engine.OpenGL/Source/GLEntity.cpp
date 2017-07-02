@@ -49,7 +49,8 @@ namespace Graphics
 
 		void GLEntity::Render()
 		{
-			m_Material->Bind();
+			if (!m_Material->Bind())
+				return;
 
 			m_Mesh->Bind();
 

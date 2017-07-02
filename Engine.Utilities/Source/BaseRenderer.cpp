@@ -1,5 +1,7 @@
 #include "Graphics\Bases\BaseRenderer.h"
 
+#include "Scene\GameObject\Components\CCamera.h"
+
 namespace Graphics
 {
 	void BaseRenderer::AddRenderable(SEntityDesc &a_Desc)
@@ -50,6 +52,12 @@ namespace Graphics
 		}
 	}
 
+	void BaseRenderer::RenderScene()
+	{
+		for (auto &temp : m_Entities)
+			temp.second->Render();
+	}
+
 	void BaseRenderer::EventListener(Core::SEventDesc &a_Desc)
 	{
 		SEntityDesc *desc = static_cast<SEntityDesc*>(a_Desc.Description);
@@ -61,7 +69,8 @@ namespace Graphics
 			break;
 
 		case Core::EEvents::SCENE_CAMERACOMPONENT_ADDED:
-			m_Camera = (Scene::CCamera*)a_Desc.Description;
+			m_Camera = static_cast<Scene::CCamera*>(a_Desc.Description)->GetCamera();
+			m_SceneCamera = static_cast<Scene::CCamera*>(a_Desc.Description)->GetCamera();
 			break;
 
 		case Core::EEvents::SCENE_MESHCOMPONENT_REMOVED:

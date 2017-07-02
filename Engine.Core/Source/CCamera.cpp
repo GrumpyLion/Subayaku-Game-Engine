@@ -20,9 +20,7 @@ namespace Scene
 
 	bool CCamera::Initialize(float a_FOV, float a_Near, float a_Far)
 	{
-		FOV = a_FOV;
-		Near = a_Near;
-		Far = a_Far;
+		m_Camera = std::make_unique<Graphics::Camera>(a_FOV, a_Near, a_Far);
 
 		CurrentCamera = true;
 
@@ -38,23 +36,6 @@ namespace Scene
 
 	void CCamera::Update()
 	{
-		float aspect = (float)Core::Engine::StaticClass()->GetContext().Width / (float)Core::Engine::StaticClass()->GetContext().Height;
-		ToProjectionMatrixRH = Matrix4f::PerspectiveRH(FOV,
-			aspect, Near, Far);
-
-		ToProjectionMatrixLH = Matrix4f::PerspectiveLH(FOV,
-			aspect, Near, Far);
-
-		ToViewMatrixLH = Matrix4f::Identity();
-		ToViewMatrixLH *= Matrix4f::RotateX(Parent->Transform->Rotation.x * DEGTORAD);
-		ToViewMatrixLH *= Matrix4f::RotateY(Parent->Transform->Rotation.y * DEGTORAD);
-		ToViewMatrixLH *= Matrix4f::RotateZ(Parent->Transform->Rotation.z * DEGTORAD);
-		ToViewMatrixLH *= Matrix4f::Translate(Parent->Transform->Position * Vector3f(1, -1, 1));
-
-		ToViewMatrixRH = Matrix4f::Identity();
-		ToViewMatrixRH *= Matrix4f::Translate(Parent->Transform->Position);
-		ToViewMatrixRH *= Matrix4f::RotateX(Parent->Transform->Rotation.x * DEGTORAD);
-		ToViewMatrixRH *= Matrix4f::RotateY(Parent->Transform->Rotation.y * DEGTORAD);
-		ToViewMatrixRH *= Matrix4f::RotateZ(Parent->Transform->Rotation.z * DEGTORAD);
+		m_Camera->UpdatePerspective(*Parent->Transform, (float)Core::Engine::StaticClass()->GetContext().Width, (float)Core::Engine::StaticClass()->GetContext().Height);
 	}
 }
