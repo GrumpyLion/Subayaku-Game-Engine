@@ -5,6 +5,7 @@ namespace Graphics
 	enum EBufferIndex
 	{
 		StaticDynamicBuffer,
-		GlobalDynamicBuffer
+		GlobalDynamicBuffer,
+		ShadowBuffer
 	};
 }

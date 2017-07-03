@@ -5,8 +5,8 @@
 #include <GLEW\Include\wglew.h>
 #include <gl/gl.h>
 
-#include "GLShaderBufferContainer.h"
-#include "RenderPasses\GLRenderPassGBuffer.h"
+#include "OpenGL\BufferContainers\GLShaderBufferGlobal.h"
+#include "OpenGL\RenderPasses\GLRenderPass.h"
 
 #include <unordered_map>
 #include <memory>
@@ -23,10 +23,21 @@ namespace Graphics
 			HDC m_HDC{};
 			HGLRC m_Context{};
 
-			std::unique_ptr<GLRenderPassGBuffer> m_RenderPass;
+			// Used renderpasses
+			//
+			std::unordered_map<std::string, std::unique_ptr<GLRenderPass>> m_RenderPasses;
 
+			// Reacts on WINDOW_RESIZE event
+			//
 			void Resize() final;
+
 		public:
+			// Adds an render pass to the pipeline
+			// Be careful with the order
+			//
+			void AddRenderPass(std::string a_Name, std::unique_ptr<GLRenderPass> a_RenderPass);
+
+			GLRenderPass* GetRenderPass(std::string a_Name);
 
 			__declspec(dllexport) ~GLRenderer();
 			__declspec(dllexport) GLRenderer(Core::Engine *a_Engine);

@@ -15,20 +15,26 @@ out vec2 oTexCoord;
 
 out flat vec3 oColor;
 
+// BUFFERS ------------------------------
+
 layout (std140, binding = 1) uniform GlobalDynamicBuffer
 { 
-  mat4 uPMatrix;
-  mat4 uVMatrix;
-  vec4 uCameraPos;
-  vec2 uTime;
-  
-  //Directional Light
-  vec4 uLightDirection;
-  vec4 uLightColor;
-  
-  //Shadow mapping
-  mat4 uLightSpaceMatrix;
+	mat4 uPMatrix;
+	mat4 uVMatrix;
+	vec4 uCameraPos;
+	vec2 uTime;
+
+	//Directional Light
+	vec4 uLightDirection;
+	vec4 uLightColor;
 };
+
+layout (std140, binding = 2) uniform ShadowBuffer
+{
+	mat4 uLightSpaceMatrix;
+};
+
+// BUFFERS ------------------------------
 
 uniform sampler2D uNoise;
 uniform sampler2D uColor;

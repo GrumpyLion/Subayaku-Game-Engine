@@ -11,7 +11,7 @@ namespace Graphics
 			glDeleteTextures(1, &TextureID);
 		}
 
-		bool GLTexture::InitializeFramebufferTexture(STextureDesc &a_Desc, GLenum a_Format, GLenum a_Format2, GLenum a_Type, GLenum a_Attachement)
+		bool GLTexture::InitializeFramebufferTexture(STextureDesc &a_Desc, GLenum a_Format, GLenum a_Format2, GLenum a_Type, GLenum a_Attachement, float* a_BorderColor)
 		{
 			Width = a_Desc.Width;
 			Height = a_Desc.Height;
@@ -28,8 +28,7 @@ namespace Graphics
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-			float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
-			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, a_BorderColor);
 
 			// Set texture filtering
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, ETextureFilterToGL(a_Desc));
@@ -80,6 +79,13 @@ namespace Graphics
 		void GLTexture::Bind()
 		{
 			glBindTexture(GL_TEXTURE_2D, TextureID);
+		}
+
+		void GLTexture::BindAsFramebufferTexture(GLenum a_Attachement)
+		{
+			glBindTexture(GL_TEXTURE_2D, TextureID);
+
+			glFramebufferTexture2D(GL_FRAMEBUFFER, a_Attachement, GL_TEXTURE_2D, TextureID, 0);
 		}
 
 		void GLTexture::Unbind()

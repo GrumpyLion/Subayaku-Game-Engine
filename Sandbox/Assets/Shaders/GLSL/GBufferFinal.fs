@@ -13,50 +13,45 @@ uniform sampler2D uVignette;
 
 layout (std140, binding = 1) uniform GlobalDynamicBuffer
 { 
-  mat4 uPMatrix;
-  mat4 uVMatrix;
-  vec4 uCameraPos;
-  vec2 uTime;
-  
-  //Directional Light
-  vec4 uLightDirection;
-  vec4 uLightColor;
+	mat4 uPMatrix;
+	mat4 uVMatrix;
+	vec4 uCameraPos;
+	vec2 uTime;
+
+	//Directional Light
+	vec4 uLightDirection;
+	vec4 uLightColor;
 };
 
-float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal)
+float linstep(float low, float high, float v)
+{
+	return clamp((v-low)/(high-low), 0.0, 1.0);
+}
+
+float ShadowCalculation(vec4 fragPosLightSpace)
 {
     // perform perspective divide
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
-    // transform to [0,1] range
-    projCoords = projCoords * 0.5 + 0.5;
+   
+   // transform to [0,1] range  
+	projCoords = projCoords * 0.5 + 0.5;
     // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-    float closestDepth = texture(uShadow, projCoords.xy).r; 
-    // get depth of current fragment from light's perspective
-    float currentDepth = projCoords.z;
+    
+	float currentDepth = projCoords.z;
     // calculate bias (based on depth map resolution and slope)
 	
-    float bias = max(0.05 * (1.0 - dot(normal, uLightDirection.xyz)), 0.005);
+	vec2 moments = texture2D(uShadow, projCoords.xy).xy;
 	
-    // check whether current frag pos is in shadow
-    // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
-    // PCF
-    float shadow = 0.0;
-    vec2 texelSize = 1.0 / textureSize(uShadow, 0);
-    for(int x = -1; x <= 1; ++x)
-    {
-        for(int y = -1; y <= 1; ++y)
-        {
-            float pcfDepth = texture(uShadow, projCoords.xy + vec2(x, y) * texelSize).r; 
-            shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
-        }    
-    }
-    shadow /= 9.0;
-    
-    // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
-    if(projCoords.z > 1.0)
-        shadow = 0.0;
-        
-    return shadow;
+	float p = step(currentDepth, moments.x);
+	float variance = max(moments.y - moments.x * moments.x, 0.00002);
+	
+	float d = currentDepth - moments.x;
+	float pMax = linstep(0.2, 1.0, variance / (variance + d*d));
+	
+	if(projCoords.z > 1.0) 
+		return 1;
+	
+	return min(max(p, pMax), 1.0);
 }
 
 void main()
@@ -67,7 +62,7 @@ void main()
 	float Specular = texture(uSpecular, oTexcoord).x;
 	vec4 FragPosLightSpace = texture(uFragPosLightSpace, oTexcoord);
 	
-	vec4 ambient = 0.1 * uLightColor;
+	vec4 ambient = 0.3 * uLightColor;
 	float d = clamp(dot(Normal, uLightDirection.xyz), 0.0, 1.0);
 	vec4 diffuse = d * uLightColor;
 	
@@ -75,12 +70,16 @@ void main()
 	vec3 reflectDir = normalize(reflect(-uLightDirection.xyz, Normal));
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 4);
 	
-	float shadow = ShadowCalculation(FragPosLightSpace, Normal); 
+	float shadow = ShadowCalculation(FragPosLightSpace); 
 	
-	oColor = (ambient + (1-shadow) * diffuse) * Albedo;
+	if(length(FragPosLightSpace) == 0.0f) 
+		shadow = 1.0f;
+		
+	oColor = (ambient  + diffuse) * Albedo - (1-shadow)*0.35f;
 	oColor += vec4(vec3(spec * Specular), 1.0);
 	oColor -= vec4(vec3(texture(uVignette, oTexcoord).a * 0.5), 1.0);
 	oColor = vec4(oColor.xyz, 1.0);
-	//oColor = vec4(vec3(texture(uShadow, oTexcoord).r), 1.0);
-	//oColor += FragPosLightSpace;
+	//oColor = vec4(texture(uShadow, oTexcoord).xy, 0.0, 1.0);
+	//oColor = vec4(vec3(shadow), 1.0);
+	//oColor = FragPosLightSpace;
 }

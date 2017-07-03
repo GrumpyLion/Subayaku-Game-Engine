@@ -6,6 +6,9 @@
 #include "OpenGL\GLShaderBuffer.h"
 #include "OpenGL\GLShader.h"
 
+#include "OpenGL\RenderPasses\GLRenderPassGBuffer.h"
+#include "OpenGL\RenderPasses\GLRenderPassShadow.h"
+
 #include "Utilities\FileSystem.h"
 
 namespace Graphics
@@ -80,6 +83,7 @@ namespace Graphics
 			wglDeleteContext(temp);
 
 			// Create the real one
+			//
 			m_Context = wglCreateContextAttribsARB(m_HDC, 0, attribs);
 
 			if (!wglMakeCurrent(m_HDC, m_Context))
@@ -93,25 +97,64 @@ namespace Graphics
 			glEnable(GL_CULL_FACE);
 			glEnable(GL_DEPTH_TEST);
 
-			glEnable(GL_BLEND);
-			glDepthFunc(GL_LESS);
+			// Error while everything
+			// Use with care
+			//
+			//glEnable(GL_BLEND);
+			//glDepthFunc(GL_LESS);
+			//
+
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-			m_RenderPass = std::make_unique<GLRenderPassGBuffer>(this);
+			// RenderPasses Here
+			// Need to abstract this
+			//
+			AddRenderPass("Shadow", std::make_unique<GLRenderPassShadow>(this));
+			AddRenderPass("GBuffer", std::make_unique<GLRenderPassGBuffer>(this));
 
 			return true;
 		}
 
 		void GLRenderer::Render()
 		{
-			m_RenderPass->RenderPass();
+			for (auto &temp : m_RenderPasses)
+			{
+				temp.second->RenderPass();
+			}
 
 			SwapBuffers(m_HDC);
 		}
 
 		void GLRenderer::Resize()
 		{
-			m_RenderPass->Resize();
+			for (auto &temp : m_RenderPasses)
+			{
+				temp.second->Resize();
+			}
+		}
+
+		void GLRenderer::AddRenderPass(std::string a_Name, std::unique_ptr<GLRenderPass> a_RenderPass)
+		{
+			if (m_RenderPasses.find(a_Name) == m_RenderPasses.end())
+			{
+				m_RenderPasses.insert({ a_Name, std::move(a_RenderPass) });
+			}
+			else
+			{
+				LogErr("RenderPass already added");
+			}
+		}
+
+		GLRenderPass* GLRenderer::GetRenderPass(std::string a_Name)
+		{
+			auto temp = m_RenderPasses.find(a_Name);
+			
+			if (temp != m_RenderPasses.end())
+			{
+				return temp->second.get();
+			}
+
+			return nullptr;
 		}
 
 		GLRenderer::~GLRenderer()

@@ -1,4 +1,4 @@
-#include "OpenGL\GLShaderBufferContainer.h"
+#include "OpenGL\BufferContainers\GLShaderBufferGlobal.h"
 
 #include "OpenGL\GLRenderer.h"
 
@@ -10,9 +10,9 @@ namespace Graphics
 {
 	namespace OpenGL
 	{		
-		void GLShaderBufferContainer::Initialize(GLRenderer *a_Renderer)
+		GLShaderBufferGlobal::GLShaderBufferGlobal(GLRenderer *a_Renderer)
 		{
-			m_Renderer = static_cast<GLRenderer*>(a_Renderer);
+			m_Renderer = a_Renderer;
 
 			SShaderBufferDesc desc{};
 
@@ -28,18 +28,17 @@ namespace Graphics
 			m_DynamicGlobalBuffer->Initialize(desc, m_Renderer);
 		}
 
-		void GLShaderBufferContainer::Bind(Matrix4f &a_LightSpaceMatrix)
+		void GLShaderBufferGlobal::Bind()
 		{
 			DynamicBuffer data{};
 
+			// Camera data
+			//
 			if (m_Renderer->GetCamera() != nullptr && m_Renderer->GetCamera())
 			{
 				data.CameraPos = Vector4f(m_Renderer->GetCamera()->Transform.Position);
 				data.Projection = m_Renderer->GetCamera()->ToProjectionMatrixLH;
 				data.View = m_Renderer->GetCamera()->ToViewMatrixLH;
-
-				//Shadow mapping
-				data.LightSpaceMatrix = a_LightSpaceMatrix;
 			}
 
 			//Direcitonal light stuff
@@ -54,6 +53,8 @@ namespace Graphics
 				data.LightColor = Vector4f(0, 0, 0, 0);
 			}
 
+			// Time in milliseconds since start
+			//
 			data.Time = Vector2f((float)m_Renderer->GetEngine()->TimeSinceStart);
 
 			m_DynamicGlobalBuffer->Bind(&data);

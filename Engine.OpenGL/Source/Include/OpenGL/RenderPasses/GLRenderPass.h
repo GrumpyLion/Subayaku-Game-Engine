@@ -1,7 +1,5 @@
 #pragma once
 
-#include "OpenGL\GLShaderBufferContainer.h"
-
 namespace Graphics
 {
 	namespace OpenGL
@@ -12,8 +10,6 @@ namespace Graphics
 		{
 		protected:
 			GLRenderer *m_Renderer = nullptr;
-
-			std::unique_ptr<GLShaderBufferContainer> m_Container;
 
 			GLuint m_QuadVAO = 0;
 			GLuint m_QuadVBO = 0;
@@ -43,7 +39,11 @@ namespace Graphics
 					glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 				}
 				glBindVertexArray(m_QuadVAO);
+
+				glDisable(GL_CULL_FACE);
 				glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+				glEnable(GL_CULL_FACE);
+
 				glBindVertexArray(0);
 			}
 
@@ -53,10 +53,7 @@ namespace Graphics
 
 			GLRenderPass(GLRenderer * a_Renderer)
 				: m_Renderer(a_Renderer)
-			{
-				m_Container = std::make_unique<GLShaderBufferContainer>();
-				m_Container->Initialize(a_Renderer);
-			}
+			{	}
 
 			virtual void Resize() = 0;
 			virtual void RenderPass() = 0; 

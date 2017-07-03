@@ -55,6 +55,8 @@ function Init()
 	
 	material:AddShader(0, "Small.vs")
 	material:AddShader(0, "Small.fs")
+	material:AddShader(1, "Depth.vs")
+	material:AddShader(1, "Depth.fs")
 	
 	texDesc = TextureDesc.new()
 	texDesc.RegisterIndex = 0
@@ -76,6 +78,8 @@ function Init()
 	
 	material:AddShader(0, "Small.vs")
 	material:AddShader(0, "Small.fs")
+	material:AddShader(1, "Depth.vs")
+	material:AddShader(1, "Depth.fs")
 	
 	texDesc = TextureDesc.new()
 	texDesc.RegisterIndex = 0
@@ -86,7 +90,7 @@ function Init()
 	mesh:Initialize("Assets/Models/Plank.obj", material)
 	
 	trans.Rotation = Vector3f.new(0, 0, 0)
-	for index=0, 2500, 1 do
+	for index=0, 1500, 1 do
 		trans.Scale = Vector3f.new(0.25, 0.25, 0.25);
 		trans.Position = Vector3f.new(math.random(0, 2000), 35, math.random(0, 2000))
 		
@@ -129,6 +133,8 @@ function Init()
 	
 	material:AddShader(0, "Terrain.vs")
 	material:AddShader(0, "Terrain.fs")
+	material:AddShader(1, "Depth.vs")
+	material:AddShader(1, "Depth.fs")
 	
 	texDesc.RegisterIndex = 0
 	texDesc.UniformName = "uNoise"
@@ -144,6 +150,7 @@ function Init()
 	Primitives.GetPlaneTri(meshDesc, 150, 0, 150)
 	meshDesc.HasIndices = true
 	meshDesc.FilePath = "Primitive"
+	meshDesc.ShouldCull = false
 	
 	mesh:Initialize(meshDesc, material)
 	

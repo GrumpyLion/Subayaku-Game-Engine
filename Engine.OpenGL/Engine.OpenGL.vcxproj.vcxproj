@@ -26,14 +26,18 @@
     <ClCompile Include="Source\GLMesh.cpp" />
     <ClCompile Include="Source\GLRenderer.cpp" />
     <ClCompile Include="Source\GLRenderPassGBuffer.cpp" />
+    <ClCompile Include="Source\GLRenderPassShadow.cpp" />
     <ClCompile Include="Source\GLShader.cpp" />
     <ClCompile Include="Source\GLShaderBuffer.cpp" />
-    <ClCompile Include="Source\GLShaderBufferContainer.cpp" />
+    <ClCompile Include="Source\GLShaderBufferGlobal.cpp" />
+    <ClCompile Include="Source\GLShaderBufferShadows.cpp" />
     <ClCompile Include="Source\GLShaderContainer.cpp" />
     <ClCompile Include="Source\GLShadowbuffer.cpp" />
+    <ClCompile Include="Source\GLTempbuffer.cpp" />
     <ClCompile Include="Source\GLTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Include\OpenGL\BufferContainers\GLShaderBufferShadows.h" />
     <ClInclude Include="Source\Include\OpenGL\GLGBuffer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLEntity.h" />
     <ClInclude Include="Source\Include\OpenGL\GLFramebuffer.h" />
@@ -43,12 +47,14 @@
     <ClInclude Include="Source\Include\OpenGL\GLRenderer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLShader.h" />
     <ClInclude Include="Source\Include\OpenGL\GLShaderBuffer.h" />
-    <ClInclude Include="Source\Include\OpenGL\GLShaderBufferContainer.h" />
+    <ClInclude Include="Source\Include\OpenGL\BufferContainers\GLShaderBufferGlobal.h" />
     <ClInclude Include="Source\Include\OpenGL\GLShaderContainer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLShadowbuffer.h" />
+    <ClInclude Include="Source\Include\OpenGL\GLTempbuffer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLTexture.h" />
     <ClInclude Include="Source\Include\OpenGL\RenderPasses\GLRenderPass.h" />
     <ClInclude Include="Source\Include\OpenGL\RenderPasses\GLRenderPassGBuffer.h" />
+    <ClInclude Include="Source\Include\OpenGL\RenderPasses\GLRenderPassShadow.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -14,20 +14,26 @@ out vec2 oTexcoord;
 
 uniform mat4 uWMatrix = mat4(1.0);
 
+// BUFFERS ------------------------------
+
 layout (std140, binding = 1) uniform GlobalDynamicBuffer
 { 
-  mat4 uPMatrix;
-  mat4 uVMatrix;
-  vec4 uCameraPos;
-  vec2 uTime;
-  
-  //Directional Light
-  vec4 uLightDirection;
-  vec4 uLightColor;
-  
-  //Shadow mapping
-  mat4 uLightSpaceMatrix;
+	mat4 uPMatrix;
+	mat4 uVMatrix;
+	vec4 uCameraPos;
+	vec2 uTime;
+
+	//Directional Light
+	vec4 uLightDirection;
+	vec4 uLightColor;
 };
+
+layout (std140, binding = 2) uniform ShadowBuffer
+{
+	mat4 uLightSpaceMatrix;
+};
+
+// BUFFERS ------------------------------
 
 void main()
 {	

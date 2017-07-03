@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GLShaderBuffer.h"
+#include "OpenGL\GLShaderBuffer.h"
 
 #include <memory>
 
@@ -10,7 +10,7 @@ namespace Graphics
 	{
 		class GLRenderer;
 
-		class GLShaderBufferContainer
+		class GLShaderBufferGlobal
 		{
 		private:
 			GLRenderer *m_Renderer = nullptr;
@@ -37,15 +37,12 @@ namespace Graphics
 				//Directional Light -- 
 				Vector4f LightDirection;
 				Vector4f LightColor;
-
-				//Shadow Mapping
-				Matrix4f LightSpaceMatrix;
 			};
 #pragma pack(pop)
 
 		public:
-			void Initialize(GLRenderer *a_Renderer);
-			void Bind(Matrix4f &a_LightSpaceMatrix);
+			GLShaderBufferGlobal(GLRenderer *a_Renderer);
+			void Bind();
 		};
 	}
 }

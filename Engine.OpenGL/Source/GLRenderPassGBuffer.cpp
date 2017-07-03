@@ -1,5 +1,7 @@
 #include "Include\OpenGL\RenderPasses\GLRenderPassGBuffer.h"
 
+#include "Include\OpenGL\RenderPasses\GLRenderPassShadow.h"
+
 #include "Include\OpenGL\GLRenderer.h"
 
 namespace Graphics
@@ -10,8 +12,11 @@ namespace Graphics
 			: GLRenderPass(a_Renderer)
 		{
 			m_GBuffer = std::make_unique<GLGbuffer>(m_Renderer->GetDescription().Width, m_Renderer->GetDescription().Height);
-			m_Shadowbuffer = std::make_unique<GLShadowbuffer>(1024, 1024);
+			
+			m_Container = std::make_unique<GLShaderBufferGlobal>(a_Renderer);
 
+			// Final Shader. It combines all income textures boii
+			// 
 			SShaderContainerDesc containerDesc{};
 
 			containerDesc.AddShader("GBufferFinal.vs");
@@ -20,11 +25,13 @@ namespace Graphics
 			m_FinalShader = std::make_unique<GLShaderContainer>();
 			m_FinalShader->Initialize(containerDesc, a_Renderer);
 
+			// A little PostFX
+			//
 			STextureDesc desc{};
+			
 			desc.FilePath = "Assets/Textures/Vignette.tga";
+			
 			m_Vignette = static_cast<GLTexture*>(a_Renderer->GetCache()->LoadTexture(desc));
-
-			m_ShadowCamera = std::make_unique<Camera>(50.0f, 1.0f, 300.0f);
 		}
 
 		void GLRenderPassGBuffer::Resize()
@@ -34,29 +41,10 @@ namespace Graphics
 
 		void GLRenderPassGBuffer::RenderPass()
 		{
-			Scene::Transformation shadowPos = Scene::Transformation();
-			shadowPos.Position = Vector3f(0, 150, 0);
-			shadowPos.Rotation = Vector3f(-90,0, 0);
-			m_ShadowCamera->UpdateOrthographic(shadowPos, -200, 200, -200, 200);
-
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			glClearColor(1, 1, 1, 1);
 
-			m_Renderer->SetShaderStage(EShaderStage::DEPTH);
-
-			// Shadow PASS
-			m_Shadowbuffer->Bind();
-
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			m_Container->Bind(m_ShadowCamera->ToProjectionMatrixLH * m_ShadowCamera->ToViewMatrixLH);
-			
-			m_Renderer->RenderScene();
-
-			m_Shadowbuffer->Unbind();
-
-			// SHADOW END
-
-			m_Renderer->SetShaderStage(EShaderStage::NORMAL);
+			m_Container->Bind();
 
 			// GBUFFER PASS
 
@@ -70,9 +58,10 @@ namespace Graphics
 
 			// GBUFFER END 
 
-			glViewport(0, 0, m_Renderer->GetDescription().Width, m_Renderer->GetDescription().Height);
+			// END PASS
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glViewport(0, 0, m_Renderer->GetDescription().Width, m_Renderer->GetDescription().Height);
 
 			m_FinalShader->BindProgram();
 
@@ -98,15 +87,16 @@ namespace Graphics
 
 			glActiveTexture(GL_TEXTURE5);
 			m_FinalShader->SetInt("uShadow", 5);
-			m_Shadowbuffer->RenderTargets["Depth"]->Bind();
+			if(static_cast<GLRenderPassShadow*>(m_Renderer->GetRenderPass("Shadow")) != nullptr)
+				static_cast<GLRenderPassShadow*>(m_Renderer->GetRenderPass("Shadow"))->GetBuffer()->RenderTargets["Depth"]->Bind();
 
 			glActiveTexture(GL_TEXTURE6);
 			m_FinalShader->SetInt("uVignette", 6);
 			m_Vignette->Bind();
 
-			glDisable(GL_CULL_FACE);
+			// Display the Result [:
+			//
 			RenderQuad();
-			glEnable(GL_CULL_FACE);
 		}
 	}
 }
