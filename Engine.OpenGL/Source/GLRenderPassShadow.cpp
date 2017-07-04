@@ -13,22 +13,68 @@ namespace Graphics
 			//
 			m_ShadowSize = 1024;
 
-			m_Shadowbuffer = std::make_unique<GLShadowbuffer>(m_ShadowSize, m_ShadowSize);
-			m_Tempbuffer = std::make_unique<GLTempbuffer>(m_ShadowSize, m_ShadowSize);
+			// TEMPBUFFER
+			//
+			m_Tempbuffer = std::make_unique<GLFramebuffer>(m_ShadowSize, m_ShadowSize, false);
+			
+			m_Tempbuffer->Bind();
+
+			STextureDesc tempDesc{};
+			std::unique_ptr<GLTexture> temp = std::make_unique<GLTexture>();
+
+			tempDesc.Width = m_ShadowSize;
+			tempDesc.Height = m_ShadowSize;
+			tempDesc.Filter = ETextureFilter::LINEAR;
+			tempDesc.IsFramebufferTexture = true;
+
+			// Position data
+			float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+			temp->InitializeFramebufferTexture(tempDesc, GL_RG32F, GL_RGBA, GL_FLOAT, GL_COLOR_ATTACHMENT0, borderColor);
+
+			m_Tempbuffer->AddAttachement("Temp", std::move(temp));
+
+			unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0 };
+			glDrawBuffers(1, attachments);
+			glReadBuffer(GL_NONE);
+
+			m_Tempbuffer->Unbind();
+
+			// TEMPBUFFER
+			//
+
+			m_Depthbuffer = std::make_unique<GLFramebuffer>(m_ShadowSize, m_ShadowSize, true);
+			m_Depthbuffer->Bind();
+
+			tempDesc = STextureDesc();
+			temp = std::make_unique<GLTexture>();
+
+			tempDesc.Width = m_ShadowSize;
+			tempDesc.Height = m_ShadowSize;
+			tempDesc.Filter = ETextureFilter::LINEAR;
+			tempDesc.IsFramebufferTexture = true;
+
+			temp->InitializeFramebufferTexture(tempDesc, GL_RG32F, GL_RGBA, GL_FLOAT, GL_COLOR_ATTACHMENT0, borderColor);
+
+			m_Depthbuffer->AddAttachement("Depth", std::move(temp));
+
+			glDrawBuffers(1, attachments);
+			glReadBuffer(GL_NONE);
+
+			m_Depthbuffer->Unbind();
 
 			// Simple gaussian blur shader
 			//
 			SShaderContainerDesc containerDesc{};
 
-			containerDesc.AddShader("Filter.vs");
-			containerDesc.AddShader("Filter.fs");
+			containerDesc.AddShader("Shadow/Filter.vs");
+			containerDesc.AddShader("Shadow/Filter.fs");
 
 			m_BlurShader = std::make_unique<GLShaderContainer>();
 			m_BlurShader->Initialize(containerDesc, a_Renderer);
 
 			// FOV is not used here
 			//
-			m_ShadowCamera = std::make_unique<Camera>(0.0f, -50.0f, 500.0f);
+			m_ShadowCamera = std::make_unique<Camera>(0.0f, 100.0f, 500.0f);
 
 			// Buffer for LightSpaceMatrix 
 			m_ShaderBuffer = std::make_unique<GLShaderBufferShadows>(a_Renderer);
@@ -42,8 +88,11 @@ namespace Graphics
 		void GLRenderPassShadow::RenderPass()
 		{
 			Scene::Transformation shadowPos = Scene::Transformation();
-			shadowPos.Position = Vector3f(0, 0, 0);
-			shadowPos.Rotation = Vector3f(-65, 0, 0);
+			
+			//if(m_Renderer->GetCamera() != nullptr)
+			//	shadowPos.Position = Vector3f(m_Renderer->GetCamera()->Transform.Position * Vector3f(1, 0, 1));
+			
+			shadowPos.Rotation = Vector3f(280, 0, 0);
 			m_ShadowCamera->UpdateOrthographic(shadowPos, -900.0f, 900.0f, -900.0f, 900.0f);
 
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -52,20 +101,23 @@ namespace Graphics
 
 			// Shadow PASS
 			//
-			m_Shadowbuffer->Bind();
+			m_Depthbuffer->Bind();
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			m_ShaderBuffer->Bind(m_ShadowCamera->ToProjectionMatrixLH * m_ShadowCamera->ToViewMatrixLH);
 
 			// Invert Cull face 
 			//
-			glFrontFace(GL_BACK);
+			
+			//glFrontFace(GL_FRONT);
+			glDisable(GL_CULL_FACE);
 			
 			m_Renderer->RenderScene();
-			
-			glFrontFace(GL_FRONT);
 
-			m_Shadowbuffer->Unbind();
+			//glFrontFace(GL_BACK);
+			glEnable(GL_CULL_FACE);
+
+			m_Depthbuffer->Unbind();
 
 			// SHADOW END
 			//
@@ -90,7 +142,7 @@ namespace Graphics
 			
 			// Take the depth texture
 			//
-			m_Shadowbuffer->RenderTargets["Depth"]->Bind();
+			m_Depthbuffer->RenderTargets["Depth"]->Bind();
 
 			// Blur it horizontally
 			//
@@ -99,13 +151,12 @@ namespace Graphics
 			RenderQuad();
 			
 			// Switch back to depth texture
-			m_Shadowbuffer->RenderTargets["Depth"]->BindAsFramebufferTexture(GL_COLOR_ATTACHMENT0);
+			m_Depthbuffer->RenderTargets["Depth"]->BindAsFramebufferTexture(GL_COLOR_ATTACHMENT0);
 			m_BlurShader->SetVector2f("uBlur", Vector2f(0.0f, 1.0f / (m_ShadowSize)));
 
 			glActiveTexture(GL_TEXTURE0);
 			m_BlurShader->SetInt("uTexture", 0);
 			m_Tempbuffer->RenderTargets["Temp"]->Bind();
-
 
 			// Overwrite it and blur it vertically
 			//

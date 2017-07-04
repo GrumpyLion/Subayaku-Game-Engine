@@ -1,8 +1,7 @@
 #pragma once
 
 #include "OpenGL\GLShaderContainer.h"
-#include "OpenGL\GLShadowbuffer.h"
-#include "OpenGL\GLTempbuffer.h"
+#include "OpenGL\GLFramebuffer.h"
 #include "OpenGL\BufferContainers\GLShaderBufferShadows.h"
 
 #include "GLRenderPass.h"
@@ -20,11 +19,11 @@ namespace Graphics
 		private:
 			// Depth buffer
 			//
-			std::unique_ptr<GLShadowbuffer> m_Shadowbuffer;
-			
+			std::unique_ptr<GLFramebuffer> m_Depthbuffer;
+
 			// Used to blur the shadowmap for smooth shadows
 			// 
-			std::unique_ptr<GLTempbuffer> m_Tempbuffer;
+			std::unique_ptr<GLFramebuffer> m_Tempbuffer;
 
 			// Position of the shadows
 			std::unique_ptr<Camera> m_ShadowCamera;
@@ -47,7 +46,7 @@ namespace Graphics
 			void RenderPass() final;
 			void Resize() final;
 
-			GLShadowbuffer *GetBuffer() { return m_Shadowbuffer.get(); }
+			GLFramebuffer *GetBuffer() { return m_Depthbuffer.get(); }
 		};
 	}
 }

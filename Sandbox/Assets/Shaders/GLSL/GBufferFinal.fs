@@ -46,7 +46,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 	float variance = max(moments.y - moments.x * moments.x, 0.00002);
 	
 	float d = currentDepth - moments.x;
-	float pMax = linstep(0.2, 1.0, variance / (variance + d*d));
+	float pMax = linstep(0.1, 1.0, variance / (variance + d*d));
 	
 	if(projCoords.z > 1.0) 
 		return 1;
@@ -75,11 +75,11 @@ void main()
 	if(length(FragPosLightSpace) == 0.0f) 
 		shadow = 1.0f;
 		
-	oColor = (ambient  + diffuse) * Albedo - (1-shadow)*0.35f;
+	oColor = (ambient  + diffuse) * Albedo - (1-clamp(shadow, 0.0, 1.0))*0.35f;
 	oColor += vec4(vec3(spec * Specular), 1.0);
 	oColor -= vec4(vec3(texture(uVignette, oTexcoord).a * 0.5), 1.0);
 	oColor = vec4(oColor.xyz, 1.0);
 	//oColor = vec4(texture(uShadow, oTexcoord).xy, 0.0, 1.0);
-	//oColor = vec4(vec3(shadow), 1.0);
+	//oColor = vec4(Normal, 1.0);
 	//oColor = FragPosLightSpace;
 }

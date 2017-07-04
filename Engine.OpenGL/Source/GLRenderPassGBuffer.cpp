@@ -11,8 +11,10 @@ namespace Graphics
 		GLRenderPassGBuffer::GLRenderPassGBuffer(GLRenderer *a_Renderer)
 			: GLRenderPass(a_Renderer)
 		{
-			m_GBuffer = std::make_unique<GLGbuffer>(m_Renderer->GetDescription().Width, m_Renderer->GetDescription().Height);
-			
+			// Init GBuffer
+			//
+			InitGBuffer();
+
 			m_Container = std::make_unique<GLShaderBufferGlobal>(a_Renderer);
 
 			// Final Shader. It combines all income textures boii
@@ -34,9 +36,63 @@ namespace Graphics
 			m_Vignette = static_cast<GLTexture*>(a_Renderer->GetCache()->LoadTexture(desc));
 		}
 
+		void GLRenderPassGBuffer::InitGBuffer()
+		{
+			m_GBuffer = std::make_unique<GLFramebuffer>(m_Renderer->GetDescription().Width, m_Renderer->GetDescription().Height, true);
+
+			m_GBuffer->Bind();
+
+			unsigned int attachments[5] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
+			glDrawBuffers(5, attachments);
+			float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+
+			STextureDesc tempDesc{};
+			std::unique_ptr<GLTexture> temp = std::make_unique<GLTexture>();
+
+			tempDesc.Width = m_Renderer->GetDescription().Width;
+			tempDesc.Height = m_Renderer->GetDescription().Height;
+			tempDesc.Filter = ETextureFilter::NEAREST;
+			tempDesc.IsFramebufferTexture = true;
+
+			// Position data
+			temp->InitializeFramebufferTexture(tempDesc, GL_RGB16F, GL_RGB, GL_FLOAT, GL_COLOR_ATTACHMENT0, borderColor);
+
+			m_GBuffer->AddAttachement("Position", std::move(temp));
+
+			// Normal data
+			temp = std::make_unique<GLTexture>();
+
+			temp->InitializeFramebufferTexture(tempDesc, GL_RGB16F, GL_RGB, GL_FLOAT, GL_COLOR_ATTACHMENT1, borderColor);
+
+			m_GBuffer->AddAttachement("Normal", std::move(temp));
+
+			// Albedo data
+			temp = std::make_unique<GLTexture>();
+
+			temp->InitializeFramebufferTexture(tempDesc, GL_RGBA, GL_RGBA, GL_FLOAT, GL_COLOR_ATTACHMENT2, borderColor);
+
+			m_GBuffer->AddAttachement("Albedo", std::move(temp));
+
+			// Specularity data
+			temp = std::make_unique<GLTexture>();
+
+			temp->InitializeFramebufferTexture(tempDesc, GL_RG16F, GL_RG, GL_FLOAT, GL_COLOR_ATTACHMENT3, borderColor);
+
+			m_GBuffer->AddAttachement("Specular", std::move(temp));
+
+			// Fragpos in light space data
+			temp = std::make_unique<GLTexture>();
+
+			temp->InitializeFramebufferTexture(tempDesc, GL_RGBA32F, GL_RGBA, GL_FLOAT, GL_COLOR_ATTACHMENT4, borderColor);
+
+			m_GBuffer->AddAttachement("PositionLightSpace", std::move(temp));
+
+			m_GBuffer->Unbind();
+		}
+
 		void GLRenderPassGBuffer::Resize()
 		{
-			m_GBuffer = std::make_unique<GLGbuffer>(m_Renderer->GetDescription().Width, m_Renderer->GetDescription().Height);
+			InitGBuffer();
 		}
 
 		void GLRenderPassGBuffer::RenderPass()
