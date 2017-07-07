@@ -88,6 +88,8 @@ namespace Graphics
 
 			if (!wglMakeCurrent(m_HDC, m_Context))
 				return false;
+			
+			//wglSwapIntervalEXT(0);
 
 			printf("Initializing OpenGL Renderer..\n");
 			printf("%s\n", glGetString(GL_VERSION));
@@ -109,6 +111,7 @@ namespace Graphics
 			// RenderPasses Here
 			// Need to abstract this
 			//
+			
 			AddRenderPass("Shadow", std::make_unique<GLRenderPassShadow>(this));
 			AddRenderPass("GBuffer", std::make_unique<GLRenderPassGBuffer>(this));
 

@@ -13,8 +13,8 @@ function Init()
 	camera = gameObject:AddCameraComponent();
 	camera:Initialize(80.0, 1, 5000.0)
 	
-	image = Image.new("Assets/Textures/TreeMap.tga");	
-	noiseImage = Image.new("Assets/Textures/Noise.tga");	
+	--image = Image.new("Assets/Textures/TreeMap.tga");	
+	--noiseImage = Image.new("Assets/Textures/Noise.tga");	
 	
 	-- Seating
 	
@@ -90,16 +90,17 @@ function Init()
 	mesh:Initialize("Assets/Models/Plank.obj", material)
 	
 	trans.Rotation = Vector3f.new(0, 0, 0)
-	for index=0, 600, 1 do
+	for index=0, 500, 1 do
 	
 		scale = math.random() * 0.25 + 0.2
-		trans.Rotation = Vector3f.new(math.random(0, 10), math.random(0, 360), math.random(0, 10))
+		trans.Rotation = Vector3f.new(math.random(-2, 2), math.random(0, 360), math.random(-2, 2))
 		trans.Scale = Vector3f.new(scale, scale, scale);
 		trans.Position = Vector3f.new(math.random(0, 2000), 35, math.random(0, 2000))
 		
-		if image:GetPixelAt(trans.Position.x, trans.Position.z).x > 250 then
+		--if image:GetPixelAt(trans.Position.x, trans.Position.z).x > 250 then
 			
-			trans.Position.y = (noiseImage:GetPixelAt(trans.Position.x, trans.Position.z).x /255) * 50 - 26
+			--trans.Position.y = (noiseImage:GetPixelAt(trans.Position.x, trans.Position.z).x /255) * 50 - 26
+			trans.Position.y = 15
 			trans.Position.x = trans.Position.x - 1024
 			trans.Position.z = trans.Position.z - 1024
 			
@@ -125,7 +126,7 @@ function Init()
 			
 			mesh:Initialize("Assets/Models/Tree.obj", material)
 			
-		end
+		--end
 	end 
 	
 	-- Terrain	
@@ -156,7 +157,7 @@ function Init()
 	Primitives.GetPlaneTri(meshDesc, 150, 0, 150)
 	meshDesc.HasIndices = true
 	meshDesc.FilePath = "Primitive"
-	meshDesc.ShouldCull = false
+	meshDesc.ShouldCull = true
 	
 	mesh:Initialize(meshDesc, material)
 	
@@ -195,7 +196,7 @@ function Init()
 	trans.Position = Vector3f.new(0, -15, 0)
 	trans.Scale = Vector3f.new(15, 1, 15)
 	
-	gameObject = Scene:InstantiateGameObject("GROUND", trans, false)
+	gameObject = Scene:InstantiateGameObject("GROUND FOR SHADOW MAPPING", trans, false)
 	mesh = gameObject:AddMeshRenderer()
 	material = mesh:SetNewMaterial()
 	

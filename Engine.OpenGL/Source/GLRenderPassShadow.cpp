@@ -11,7 +11,10 @@ namespace Graphics
 		{
 			// Smaller values make better shadows
 			//
-			m_ShadowSize = 1024;
+			m_ShadowSize = 256;
+			
+			float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+			unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0 };
 
 			// TEMPBUFFER
 			//
@@ -28,14 +31,11 @@ namespace Graphics
 			tempDesc.IsFramebufferTexture = true;
 
 			// Position data
-			float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
 			temp->InitializeFramebufferTexture(tempDesc, GL_RG32F, GL_RGBA, GL_FLOAT, GL_COLOR_ATTACHMENT0, borderColor);
 
 			m_Tempbuffer->AddAttachement("Temp", std::move(temp));
 
-			unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0 };
 			glDrawBuffers(1, attachments);
-			glReadBuffer(GL_NONE);
 
 			m_Tempbuffer->Unbind();
 
@@ -45,20 +45,13 @@ namespace Graphics
 			m_Depthbuffer = std::make_unique<GLFramebuffer>(m_ShadowSize, m_ShadowSize, true);
 			m_Depthbuffer->Bind();
 
-			tempDesc = STextureDesc();
 			temp = std::make_unique<GLTexture>();
-
-			tempDesc.Width = m_ShadowSize;
-			tempDesc.Height = m_ShadowSize;
-			tempDesc.Filter = ETextureFilter::LINEAR;
-			tempDesc.IsFramebufferTexture = true;
 
 			temp->InitializeFramebufferTexture(tempDesc, GL_RG32F, GL_RGBA, GL_FLOAT, GL_COLOR_ATTACHMENT0, borderColor);
 
 			m_Depthbuffer->AddAttachement("Depth", std::move(temp));
 
 			glDrawBuffers(1, attachments);
-			glReadBuffer(GL_NONE);
 
 			m_Depthbuffer->Unbind();
 
@@ -92,8 +85,8 @@ namespace Graphics
 			//if(m_Renderer->GetCamera() != nullptr)
 			//	shadowPos.Position = Vector3f(m_Renderer->GetCamera()->Transform.Position * Vector3f(1, 0, 1));
 			
-			shadowPos.Rotation = Vector3f(280, 0, 0);
-			m_ShadowCamera->UpdateOrthographic(shadowPos, -900.0f, 900.0f, -900.0f, 900.0f);
+			shadowPos.Rotation = Vector3f(-90, 0, 0);
+			m_ShadowCamera->UpdateOrthographic(shadowPos, -200.0f, 200.0f, -200.0f, 200.0f);
 
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -146,13 +139,13 @@ namespace Graphics
 
 			// Blur it horizontally
 			//
-			m_BlurShader->SetVector2f("uBlur", Vector2f(1.0f / (m_ShadowSize), 0.0f));
+			m_BlurShader->SetVector2f("uBlur", Vector2f(1.0f / (m_ShadowSize * 0.8f), 0.0f));
 
 			RenderQuad();
 			
 			// Switch back to depth texture
 			m_Depthbuffer->RenderTargets["Depth"]->BindAsFramebufferTexture(GL_COLOR_ATTACHMENT0);
-			m_BlurShader->SetVector2f("uBlur", Vector2f(0.0f, 1.0f / (m_ShadowSize)));
+			m_BlurShader->SetVector2f("uBlur", Vector2f(0.0f, 1.0f / (m_ShadowSize * 0.8f)));
 
 			glActiveTexture(GL_TEXTURE0);
 			m_BlurShader->SetInt("uTexture", 0);
