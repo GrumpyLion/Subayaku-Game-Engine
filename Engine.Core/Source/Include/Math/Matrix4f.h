@@ -6,6 +6,7 @@
 
 #define PI 3.141593f
 #define DEGTORAD PI / 180.0f
+#define RADTODEG 180.0f / PI
 
 struct Matrix4f
 {
@@ -277,4 +278,7 @@ struct Matrix4f
 		mat *= a_MatrixLeft;
 		return mat;
 	}
+
+	// Inverse
+	//
 };

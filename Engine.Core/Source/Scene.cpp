@@ -7,11 +7,25 @@
 #include "Graphics\Primitives.h"
 
 #include "Scene\GameObject\Components\CLight.h"
+#include "Scene\GameObject\Components\CRigidbody.h"
 
 namespace Scene
 {
-	bool Scene::Initialize()
+	bool Scene::InitializeFromLua()
 	{	
+		// Physics
+		//
+
+		m_Broadphase = std::make_unique<btDbvtBroadphase>();
+		m_CollisionConfig = std::make_unique<btDefaultCollisionConfiguration>();
+		m_CollisionDispatcher = std::make_unique<btCollisionDispatcher>(m_CollisionConfig.get());
+		m_ConstraintSolver = std::make_unique<btSequentialImpulseConstraintSolver>();
+		m_PhysicsWorld = std::make_unique<btDiscreteDynamicsWorld>(m_CollisionDispatcher.get(), m_Broadphase.get(), m_ConstraintSolver.get(), m_CollisionConfig.get());
+
+		m_PhysicsWorld->setGravity(btVector3(0, -10, 0));
+
+		//
+
 		//Maybe replace this ?
 		auto ptr = InstantiateGameObject("Scene", true);
 		
@@ -28,6 +42,8 @@ namespace Scene
 
 	void Scene::Update()
 	{
+		m_PhysicsWorld->stepSimulation(1 / 60.0f, 10);
+
 		for (auto &temp : m_TickableGameObjects)
 		{
 			temp.second->Update();
@@ -51,6 +67,9 @@ namespace Scene
 		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_LIGHT_ADDED);
 		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_LIGHT_REMOVED);
 
+		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_RIGIDBODY_ADDED);
+		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_RIGIDBODY_REMOVED);
+
 		Core::EventHandler::StaticClass()->Subscribe(m_Callback, Core::EEvents::SCENE_CLEAR);
 	}
 
@@ -67,6 +86,9 @@ namespace Scene
 	
 		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_LIGHT_ADDED);
 		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_LIGHT_REMOVED);
+
+		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_RIGIDBODY_ADDED);
+		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_RIGIDBODY_REMOVED);
 
 		Core::EventHandler::StaticClass()->Unsubscribe(m_Callback, Core::EEvents::SCENE_CLEAR);
 	}
@@ -244,6 +266,22 @@ namespace Scene
 		case Core::EEvents::SCENE_LIGHT_REMOVED:
 			m_DirectionalLight = nullptr;
 			break;
+
+		case Core::EEvents::SCENE_RIGIDBODY_ADDED:
+		{
+			CRigidbody *body = static_cast<CRigidbody*>(a_Desc.Description);	
+			if(body != nullptr)
+				m_PhysicsWorld->addRigidBody(body->GetRigidbody());
+			break;
+		}
+
+		case Core::EEvents::SCENE_RIGIDBODY_REMOVED:
+		{
+			CRigidbody *body = static_cast<CRigidbody*>(a_Desc.Description);
+			if (body != nullptr)
+				m_PhysicsWorld->removeRigidBody(body->GetRigidbody());
+			break;
+		}
 
 		case Core::EEvents::SCENE_CLEAR:
 			ClearScene();

@@ -119,8 +119,11 @@ namespace Graphics
 		{
 			m_Renderer->GetDeviceContext()->IASetInputLayout(m_Layout);
 
-			m_VertexShader->Bind();
-			m_FragmentShader->Bind();
+			if(m_VertexShader != nullptr)
+				m_VertexShader->Bind();
+			
+			if (m_FragmentShader != nullptr)
+				m_FragmentShader->Bind();
 		}
 
 		void D3DShaderContainer::UnbindProgram() 
@@ -133,7 +136,6 @@ namespace Graphics
 			return true;
 		}
 
-		//Fuck
 		bool D3DShaderContainer::SetInt(const char* a_UniformName, const int a_Value) { return false; }
 		bool D3DShaderContainer::SetFloat(const char* a_UniformName, const float a_Value) { return false; }
 		bool D3DShaderContainer::SetVector2f(const char* a_UniformName, const Vector2f &a_Vec) { return false; }

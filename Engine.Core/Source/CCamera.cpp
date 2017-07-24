@@ -16,7 +16,9 @@ namespace Scene
 
 	CCamera::CCamera(GameObject *a_Parent)
 		: IComponent(a_Parent)
-	{	}
+	{
+		Type = ComponentType::Camera;
+	}
 
 	bool CCamera::Initialize(float a_FOV, float a_Near, float a_Far)
 	{

@@ -9,7 +9,12 @@ namespace Scene
 		Camera,
 		Script,
 		Sprite,
-		Light
+		Light,
+		Rigidbody,
+		BoxCollider,
+		SphereCollider,
+		MeshCollider,
+		CapsuleCollider
 	};
 
 	class GameObject;

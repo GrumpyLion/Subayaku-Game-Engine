@@ -9,6 +9,7 @@
 #include "Scene\GameObject\Components\Transformation.h"
 #include "Scene\GameObject\Components\CMeshRenderer.h"
 #include "Scene\GameObject\Components\CLight.h"
+#include "Scene\GameObject\Components\CRigidbody.h"
 #include "Scene\GameObject\GameObject.h"
 
 #include "Input\Mouse.h"
@@ -29,6 +30,8 @@ namespace Scene
 {
 	bool CScriptComponent::Initialize(std::string a_FilePath)
 	{
+		Type = ComponentType::Script;
+
 		m_Lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math,
 			sol::lib::table, sol::lib::string, sol::lib::bit32, sol::lib::io);
 
@@ -164,6 +167,11 @@ namespace Scene
 			"Initialize", &CCamera::Initialize
 			);
 
+		m_Lua.new_usertype<CRigidbody>(
+			"Rigidbody",
+			"Initialize", &CRigidbody::Initialize
+			);
+
 		m_Lua.new_usertype<GameObject>(
 			"GameObject",
 
@@ -192,8 +200,12 @@ namespace Scene
 			"AddLightComponent", [](GameObject* a_GameObject)
 				{
 					return static_cast<CLight*>(a_GameObject->AddNewComponent(ComponentType::Light));
-				}
+				},
 
+			"AddRigidbody", [](GameObject* a_GameObject)
+				{
+					return static_cast<CRigidbody*>(a_GameObject->AddNewComponent(ComponentType::Rigidbody));
+				}
 			);
 
 		m_Lua.new_usertype<Core::Mouse>(

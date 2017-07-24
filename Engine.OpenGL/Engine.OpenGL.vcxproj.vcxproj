@@ -28,13 +28,10 @@
     <ClCompile Include="Source\GLRenderPassShadow.cpp" />
     <ClCompile Include="Source\GLShader.cpp" />
     <ClCompile Include="Source\GLShaderBuffer.cpp" />
-    <ClCompile Include="Source\GLShaderBufferGlobal.cpp" />
-    <ClCompile Include="Source\GLShaderBufferShadows.cpp" />
     <ClCompile Include="Source\GLShaderContainer.cpp" />
     <ClCompile Include="Source\GLTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Include\OpenGL\BufferContainers\GLShaderBufferShadows.h" />
     <ClInclude Include="Source\Include\OpenGL\GLEntity.h" />
     <ClInclude Include="Source\Include\OpenGL\GLFramebuffer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLHelper.h" />
@@ -43,7 +40,6 @@
     <ClInclude Include="Source\Include\OpenGL\GLRenderer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLShader.h" />
     <ClInclude Include="Source\Include\OpenGL\GLShaderBuffer.h" />
-    <ClInclude Include="Source\Include\OpenGL\BufferContainers\GLShaderBufferGlobal.h" />
     <ClInclude Include="Source\Include\OpenGL\GLShaderContainer.h" />
     <ClInclude Include="Source\Include\OpenGL\GLTexture.h" />
     <ClInclude Include="Source\Include\OpenGL\RenderPasses\GLRenderPass.h" />
@@ -128,14 +124,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OPENGL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\;$(ProjectDir)Source\Include\;$(SolutionDir)Engine.Utilities\Source\Include\;$(SolutionDir)Engine.Core\Source\Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\;$(ProjectDir)Source\Include\;$(SolutionDir)Engine.Core\Source\Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Lib\x64\;$(SolutionDir)Bin\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;assimp.lib;Engine.Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;assimp.lib;Engine.Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -156,12 +152,12 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\;$(ProjectDir)Source\Include\;$(SolutionDir)Engine.Utilities\Source\Include\;$(SolutionDir)Engine.Core\Source\Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\;$(ProjectDir)Source\Include\;$(SolutionDir)Engine.Core\Source\Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Lib\x64\;$(SolutionDir)Bin\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;assimp.lib;Engine.Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;Engine.Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>

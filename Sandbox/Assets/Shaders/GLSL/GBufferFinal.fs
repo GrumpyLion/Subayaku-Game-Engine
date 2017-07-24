@@ -75,7 +75,7 @@ void main()
 	if(length(FragPosLightSpace) == 0.0f) 
 		shadow = 1.0f;
 		
-	oColor = (ambient  + diffuse) * Albedo - (1-clamp(shadow, 0.0, 1.0))*0.2f;
+	oColor = (ambient - (clamp(-shadow + d, 0.0, 0.3)) + diffuse) * Albedo;
 	oColor += vec4(vec3(spec * Specular), 1.0);
 	oColor -= vec4(vec3(texture(uVignette, oTexcoord).a * 0.5), 1.0);
 	oColor = vec4(oColor.xyz, 1.0);

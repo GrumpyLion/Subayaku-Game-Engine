@@ -16,7 +16,7 @@ namespace Scene
 	private:
 
 	public:
-		ELightType Type;
+		ELightType LightType;
 		Vector4f Color;
 		
 		CLight(GameObject *a_Parent)

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{59601D80-7178-4B52-AF89-5B0937797088}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -9,22 +9,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine.Core", "Engine.Core\Engine.Core.vcxproj", "{C075A9FA-FEE0-42F1-8164-485D9461FA9C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E4108F42-1849-4DAC-B8CB-F7BB63CAEF04} = {E4108F42-1849-4DAC-B8CB-F7BB63CAEF04}
-		{BA51799B-7523-44B1-AA40-F6663DC0D3EC} = {BA51799B-7523-44B1-AA40-F6663DC0D3EC}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine.OpenGL", "Engine.OpenGL\Engine.OpenGL.vcxproj.vcxproj", "{E4108F42-1849-4DAC-B8CB-F7BB63CAEF04}"
 	ProjectSection(ProjectDependencies) = postProject
-		{54FB2B54-BE88-4379-A0C7-C14B23DB3290} = {54FB2B54-BE88-4379-A0C7-C14B23DB3290}
+		{C075A9FA-FEE0-42F1-8164-485D9461FA9C} = {C075A9FA-FEE0-42F1-8164-485D9461FA9C}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine.DirectX", "Engine.DirectX\Engine.DirectX.vcxproj", "{BA51799B-7523-44B1-AA40-F6663DC0D3EC}"
 	ProjectSection(ProjectDependencies) = postProject
-		{54FB2B54-BE88-4379-A0C7-C14B23DB3290} = {54FB2B54-BE88-4379-A0C7-C14B23DB3290}
+		{C075A9FA-FEE0-42F1-8164-485D9461FA9C} = {C075A9FA-FEE0-42F1-8164-485D9461FA9C}
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine.Utilities", "Engine.Utilities\Engine.Utilities.vcxproj", "{54FB2B54-BE88-4379-A0C7-C14B23DB3290}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,14 +60,6 @@ Global
 		{BA51799B-7523-44B1-AA40-F6663DC0D3EC}.Release|x64.Build.0 = Release|x64
 		{BA51799B-7523-44B1-AA40-F6663DC0D3EC}.Release|x86.ActiveCfg = Release|Win32
 		{BA51799B-7523-44B1-AA40-F6663DC0D3EC}.Release|x86.Build.0 = Release|Win32
-		{54FB2B54-BE88-4379-A0C7-C14B23DB3290}.Debug|x64.ActiveCfg = Debug|x64
-		{54FB2B54-BE88-4379-A0C7-C14B23DB3290}.Debug|x64.Build.0 = Debug|x64
-		{54FB2B54-BE88-4379-A0C7-C14B23DB3290}.Debug|x86.ActiveCfg = Debug|Win32
-		{54FB2B54-BE88-4379-A0C7-C14B23DB3290}.Debug|x86.Build.0 = Debug|Win32
-		{54FB2B54-BE88-4379-A0C7-C14B23DB3290}.Release|x64.ActiveCfg = Release|x64
-		{54FB2B54-BE88-4379-A0C7-C14B23DB3290}.Release|x64.Build.0 = Release|x64
-		{54FB2B54-BE88-4379-A0C7-C14B23DB3290}.Release|x86.ActiveCfg = Release|Win32
-		{54FB2B54-BE88-4379-A0C7-C14B23DB3290}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

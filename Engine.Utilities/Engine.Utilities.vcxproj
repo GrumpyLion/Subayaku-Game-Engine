@@ -19,30 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Include\Graphics\Bases\BaseRenderer.h" />
-    <ClInclude Include="Source\Include\Graphics\Camera.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IEntity.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IMaterial.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IMesh.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IRenderer.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IShader.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IShaderBuffer.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\IShaderContainer.h" />
-    <ClInclude Include="Source\Include\Graphics\Interfaces\ITexture.h" />
-    <ClInclude Include="Source\Include\Graphics\Utilities\GraphicsCache.h" />
-    <ClInclude Include="Source\Include\Utilities\Event\EEvents.h" />
-    <ClInclude Include="Source\Include\Utilities\Event\EventHandler.h" />
     <ClInclude Include="Source\Include\Utilities\Event\IEvent.h" />
-    <ClInclude Include="Source\Include\Utilities\Event\SEventDesc.h" />
-    <ClInclude Include="Source\Include\Utilities\FileSystem.h" />
-    <ClInclude Include="Source\Include\Utilities\Utilities.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Source\BaseRenderer.cpp" />
-    <ClCompile Include="Source\Camera.cpp" />
-    <ClCompile Include="Source\EventHandler.cpp" />
-    <ClCompile Include="Source\FileSystem.cpp" />
-    <ClCompile Include="Source\GraphicsCache.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

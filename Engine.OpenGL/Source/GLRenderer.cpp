@@ -11,6 +11,16 @@
 
 #include "Utilities\FileSystem.h"
 
+extern "C"
+{
+	__declspec(dllexport) Graphics::IRenderer* __stdcall CreateRenderer(Core::Engine *a_Engine)
+	{
+		Graphics::OpenGL::GLRenderer *renderer = new Graphics::OpenGL::GLRenderer(a_Engine);
+
+		return renderer;
+	}
+}
+
 namespace Graphics
 {
 	namespace OpenGL
@@ -28,7 +38,7 @@ namespace Graphics
 			m_Cache->SetShaderBufferCreator(std::function<std::unique_ptr<IShaderBuffer>()>([]() { return std::make_unique<GLShaderBuffer>(); }));
 
 			m_CreateEntity = std::function<std::unique_ptr<IEntity>()>([]() { return std::make_unique<GLEntity>(); });
-
+			
 			m_Desc = a_Desc;
 			m_HDC = GetDC(a_Desc.Handle);
 
@@ -163,6 +173,9 @@ namespace Graphics
 		GLRenderer::~GLRenderer()
 		{
 			m_Entities.clear();
+			m_RenderPasses.clear();
+
+			wglMakeCurrent(nullptr, nullptr);
 
 			if (m_HDC != nullptr)
 			{

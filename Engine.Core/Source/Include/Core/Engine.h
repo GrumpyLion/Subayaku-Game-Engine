@@ -11,7 +11,6 @@
 namespace Graphics
 {
 	class IRenderer;
-	class IRenderFactory;
 }
 
 namespace Scene
@@ -34,11 +33,11 @@ namespace Core
 		Scene::Scene* m_Scene = nullptr;
 
 		Graphics::IRenderer* m_Renderer = nullptr;
-		Graphics::IRenderFactory* m_RenderFactory = nullptr;
 
 	private:
 		//Switches to the currently defined renderer in the render context
 		bool SwitchRenderer(SEngineContext &a_Context);
+		bool LoadSceneFromDLL();
 
 		long m_StartTime = 0;
 	public:

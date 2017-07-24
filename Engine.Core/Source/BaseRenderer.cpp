@@ -69,8 +69,9 @@ namespace Graphics
 			break;
 
 		case Core::EEvents::SCENE_CAMERACOMPONENT_ADDED:
-			m_Camera = static_cast<Scene::CCamera*>(a_Desc.Description)->GetCamera();
-			m_SceneCamera = static_cast<Scene::CCamera*>(a_Desc.Description)->GetCamera();
+			if(static_cast<Scene::CCamera*>(a_Desc.Description)->GetCamera() != nullptr)
+				m_Camera = static_cast<Scene::CCamera*>(a_Desc.Description)->GetCamera();
+			//m_SceneCamera = static_cast<Scene::CCamera*>(a_Desc.Description)->GetCamera();
 			break;
 
 		case Core::EEvents::SCENE_MESHCOMPONENT_REMOVED:

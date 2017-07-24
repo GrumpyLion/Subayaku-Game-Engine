@@ -3,6 +3,7 @@
 #include "Include\OpenGL\RenderPasses\GLRenderPassShadow.h"
 
 #include "Include\OpenGL\GLRenderer.h"
+#include "Graphics\Enums\GlobalIndices.h"
 
 namespace Graphics
 {
@@ -15,7 +16,13 @@ namespace Graphics
 			//
 			InitGBuffer();
 
-			m_Container = std::make_unique<GLShaderBufferGlobal>(a_Renderer);
+			SShaderBufferDesc bufferDesc{};
+			bufferDesc.BufferIndex = EBufferIndex::GlobalDynamicBuffer;
+			bufferDesc.BufferSize = sizeof(DynamicBuffer);
+			bufferDesc.IsDynamic = true;
+
+			m_Container = std::make_unique<GLShaderBuffer>();
+			m_Container->Initialize(bufferDesc, a_Renderer);
 
 			// Final Shader. It combines all income textures boii
 			// 
@@ -95,12 +102,44 @@ namespace Graphics
 			InitGBuffer();
 		}
 
+		void GLRenderPassGBuffer::DynamicBufferPass()
+		{
+			DynamicBuffer data{};
+
+			// Camera data
+			//
+			if (m_Renderer->GetCamera() != nullptr && m_Renderer->GetCamera())
+			{
+				data.CameraPos = Vector4f(m_Renderer->GetCamera()->Transform.Position);
+				data.Projection = m_Renderer->GetCamera()->ToProjectionMatrixLH;
+				data.View = m_Renderer->GetCamera()->ToViewMatrixLH;
+			}
+
+			//Direcitonal light stuff
+			if (m_Renderer->GetDirectionalLight() != nullptr)
+			{
+				data.LightDirection = m_Renderer->GetDirectionalLight()->Parent->Transform->Position;
+				data.LightColor = m_Renderer->GetDirectionalLight()->Color;
+			}
+			else
+			{
+				data.LightDirection = Vector4f(0, 0, 0, 0);
+				data.LightColor = Vector4f(0, 0, 0, 0);
+			}
+
+			// Time in milliseconds since start
+			//
+			data.Time = Vector2f((float)m_Renderer->GetEngine()->TimeSinceStart);
+
+			m_Container->Bind(&data);
+		}
+
 		void GLRenderPassGBuffer::RenderPass()
 		{
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			glClearColor(1, 1, 1, 1);
 
-			m_Container->Bind();
+			DynamicBufferPass();
 
 			// GBUFFER PASS
 

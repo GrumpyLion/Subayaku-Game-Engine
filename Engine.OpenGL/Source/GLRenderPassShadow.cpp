@@ -1,6 +1,6 @@
 #include "Include\OpenGL\RenderPasses\GLRenderPassShadow.h"
-
 #include "Include\OpenGL\GLRenderer.h"
+#include "Graphics\Enums\GlobalIndices.h"
 
 namespace Graphics
 {
@@ -11,7 +11,7 @@ namespace Graphics
 		{
 			// Smaller values make better shadows
 			//
-			m_ShadowSize = 256;
+			m_ShadowSize = 512;
 			
 			float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
 			unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0 };
@@ -70,7 +70,13 @@ namespace Graphics
 			m_ShadowCamera = std::make_unique<Camera>(0.0f, 100.0f, 500.0f);
 
 			// Buffer for LightSpaceMatrix 
-			m_ShaderBuffer = std::make_unique<GLShaderBufferShadows>(a_Renderer);
+			SShaderBufferDesc bufferDesc{};
+			bufferDesc.IsDynamic = true;
+			bufferDesc.BufferIndex = EBufferIndex::ShadowBuffer;
+			bufferDesc.BufferSize = sizeof(ShadowBuffer);
+			
+			m_ShaderBuffer = std::make_unique<GLShaderBuffer>();
+			m_ShaderBuffer->Initialize(bufferDesc, m_Renderer);
 		}
 
 		void GLRenderPassShadow::Resize()
@@ -86,7 +92,11 @@ namespace Graphics
 			//	shadowPos.Position = Vector3f(m_Renderer->GetCamera()->Transform.Position * Vector3f(1, 0, 1));
 			
 			shadowPos.Rotation = Vector3f(-90, 0, 0);
-			m_ShadowCamera->UpdateOrthographic(shadowPos, -200.0f, 200.0f, -200.0f, 200.0f);
+			m_ShadowCamera->UpdateOrthographic(shadowPos, -900.0f, 900.0f, -900.0f, 900.0f);
+
+			ShadowBuffer buffer{};
+			buffer.LightSpaceMatrix = m_ShadowCamera->ToProjectionMatrixLH * m_ShadowCamera->ToViewMatrixLH;
+			m_ShaderBuffer->Bind(&buffer);
 
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -97,7 +107,6 @@ namespace Graphics
 			m_Depthbuffer->Bind();
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			m_ShaderBuffer->Bind(m_ShadowCamera->ToProjectionMatrixLH * m_ShadowCamera->ToViewMatrixLH);
 
 			// Invert Cull face 
 			//

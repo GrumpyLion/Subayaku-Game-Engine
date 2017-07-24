@@ -7,8 +7,9 @@ namespace Scene
 {
 	bool CLight::Initialize(Vector4f &a_Color, ELightType a_Type)
 	{
+		Type = ComponentType::Light;
 		Color = a_Color;
-		Type = a_Type;
+		LightType = a_Type;
 
 		Core::SEventDesc eventDesc{};
 		eventDesc.Event = Core::EEvents::SCENE_LIGHT_ADDED;

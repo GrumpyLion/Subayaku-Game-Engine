@@ -7,6 +7,16 @@
 #include "DirectX\D3DShader.h"
 #include "DirectX\D3DShaderBuffer.h"
 
+extern "C"
+{
+	__declspec(dllexport) Graphics::IRenderer* __stdcall CreateRenderer(Core::Engine *a_Engine)
+	{
+		Graphics::DirectX::D3DRenderer *renderer = new Graphics::DirectX::D3DRenderer(a_Engine);
+
+		return renderer;
+	}
+}
+
 namespace Graphics
 {
 	namespace DirectX
@@ -188,7 +198,7 @@ namespace Graphics
 		
 		void D3DRenderer::Render()
 		{
-			float color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			float color[4] = { 1.0f, 0.0f, 1.0f, 1.0f };
 			m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, color);
 			m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 

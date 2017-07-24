@@ -42,6 +42,8 @@ namespace Scene
 
 	bool CMeshRenderer::Initialize(std::string a_ModelLocation, Graphics::Material &a_Material)
 	{		
+		Type = ComponentType::MeshRenderer;
+
 		// The model should have this attributes
 		m_Mesh.FilePath = a_ModelLocation;
 		m_Mesh.HasIndices = true;
@@ -56,7 +58,9 @@ namespace Scene
 	}
 
 	bool CMeshRenderer::Initialize(Graphics::SMeshDesc &a_Desc, Graphics::Material &a_Material)
-	{		
+	{
+		Type = ComponentType::MeshRenderer;
+
 		m_Mesh = a_Desc;
 		m_Material = a_Material;
 		

@@ -23,7 +23,7 @@ namespace Graphics
 		class D3DMaterial : public IMaterial
 		{
 		private:
-			std::unique_ptr<D3DShaderContainer> m_Container = nullptr;
+			std::unordered_map<EShaderStage, std::unique_ptr<D3DShaderContainer>> m_ShaderContainers;
 			Scene::Transformation *m_ParentTransform = nullptr;
 
 			D3DRenderer *m_Renderer = nullptr;

@@ -13,6 +13,8 @@
 
 #include "Utilities\Event\EventHandler.h"
 
+#include <Bullet\btBulletDynamicsCommon.h>
+
 #include <memory>
 
 namespace Graphics
@@ -43,11 +45,23 @@ namespace Scene
 
 		Callback m_Callback = nullptr;
 
+		// Physics
+		//
+
+		std::unique_ptr<btDiscreteDynamicsWorld> m_PhysicsWorld;
+		std::unique_ptr<btDbvtBroadphase> m_Broadphase;
+		std::unique_ptr<btDefaultCollisionConfiguration> m_CollisionConfig;
+		std::unique_ptr<btCollisionDispatcher> m_CollisionDispatcher;
+		std::unique_ptr<btSequentialImpulseConstraintSolver> m_ConstraintSolver;
+
 	public:
 		~Scene();
 		Scene();
 
-		bool Initialize();
+		// Loads the scene from a lua file
+		//
+		bool InitializeFromLua();
+		
 		void Update();
 
 		GameObject* InstantiateGameObject(std::string a_Name, bool a_IsTicking);

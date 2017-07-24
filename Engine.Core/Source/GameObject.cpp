@@ -6,6 +6,7 @@
 #include "Scene\GameObject\Components\CMeshRenderer.h"
 #include "Scene\GameObject\Components\CLight.h"
 #include "Scene\GameObject\Components\CScriptComponent.h"
+#include "Scene\GameObject\Components\CRigidbody.h"
 
 #include <memory>
 
@@ -73,6 +74,14 @@ namespace Scene
 				AddComponent(std::move(temp));
 				return ptr;
 			}
+
+		case ComponentType::Rigidbody:
+		{
+			auto temp = std::make_unique<CRigidbody>(this);
+			auto ptr = temp.get();
+			AddComponent(std::move(temp));
+			return ptr;
+		}
 
 		}
 

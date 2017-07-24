@@ -2,13 +2,15 @@
 #include <chrono>
 #include <thread>
 
-#include "DirectX\D3DRenderer.h"
-#include "OpenGL\GLRenderer.h"
-
 #include "Core\SubayakuCore.h"
 #include "Input\Keyboard.h"
+#include "Graphics\Interfaces\IRenderer.h"
 
 #include "Utilities\FileSystem.h"
+#include "Bullet\btBulletDynamicsCommon.h"
+
+typedef Graphics::IRenderer*(__stdcall *CreateRenderer)(Core::Engine *a_Engine);
+typedef Scene::Scene *(__stdcall *CreateScene)();
 
 using namespace std::chrono_literals;
 
@@ -29,6 +31,30 @@ namespace Core
 		Shutdown();
 	}
 	
+	bool Engine::LoadSceneFromDLL()
+	{
+		HINSTANCE hGetProcIDDLL = nullptr;
+
+		hGetProcIDDLL = LoadLibrary(L"SceneAsembly.dll");
+
+		if (hGetProcIDDLL == nullptr)
+			return false;
+
+		CreateScene funci = (CreateScene)GetProcAddress(hGetProcIDDLL, "CreateScene");
+		if (!funci)
+		{
+			std::cout << "Could not find CreateScene method" << std::endl;
+			return false;
+		}
+
+		m_Scene = funci();
+
+		if (m_Scene == nullptr)
+			return false;
+
+		return true;
+	}
+
 	bool Engine::Initialize(SEngineContext& a_Context)
 	{	
 		m_Context = a_Context;
@@ -51,12 +77,15 @@ namespace Core
 
 		m_InputManager->Initialize();
 
-		m_Scene = new Scene::Scene();
-
-		if (!m_Scene->Initialize())
+		if (!LoadSceneFromDLL())
 		{
-			ErrorBox(L"Scene Init Failure");
-			return false;
+			m_Scene = new Scene::Scene();
+			
+			if (!m_Scene->InitializeFromLua())
+			{
+				ErrorBox(L"Scene Init Failure");
+				return false;
+			}
 		}
 
 		return true;
@@ -124,7 +153,7 @@ namespace Core
 
 					Core::EventHandler::StaticClass()->ForceEvent(desc);
 					SwitchRenderer(m_Context);
-					m_Scene->Initialize();
+					m_Scene->InitializeFromLua();
 				}
 				
 				TimeSinceStart = (long)(std::chrono::duration_cast<std::chrono::milliseconds>
@@ -182,20 +211,43 @@ namespace Core
 		rendererDesc.Width = a_Context.Width;
 		rendererDesc.Height = a_Context.Height;
 
+		HINSTANCE hGetProcIDDLL = nullptr;
+
 		switch (a_Context.RDevice)
 		{
 		case RenderDevice::OpenGL:
-			m_Renderer = new Graphics::OpenGL::GLRenderer(this);
+			hGetProcIDDLL = LoadLibrary(L"Engine.OpenGL.dll");
+
+			if (!hGetProcIDDLL)
+			{
+				LogErr("Graphics DLL not found");
+				return false;
+			}
 			break;
 
 		case RenderDevice::DirectX:
-			m_Renderer = new Graphics::DirectX::D3DRenderer(this);
+			hGetProcIDDLL = LoadLibrary(L"Engine.DirectX.dll");
+
+			if (!hGetProcIDDLL)
+			{
+				LogErr("Graphics DLL not found");
+				return false;
+			}
 			break;
 		
 		default:
 			ErrorBox(L"Unknown Renderer");
 			return false;
 		}
+
+		CreateRenderer funci = (CreateRenderer)GetProcAddress(hGetProcIDDLL, "CreateRenderer");
+		if (!funci)
+		{
+			std::cout << "could not locate the function" << std::endl;
+			return false;
+		}
+
+		m_Renderer = funci(this);
 
 		if (!m_Renderer->Initialize(rendererDesc))
 		{

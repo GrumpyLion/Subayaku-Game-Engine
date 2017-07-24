@@ -5,7 +5,6 @@
 #include <GLEW\Include\wglew.h>
 #include <gl/gl.h>
 
-#include "OpenGL\BufferContainers\GLShaderBufferGlobal.h"
 #include "OpenGL\RenderPasses\GLRenderPass.h"
 
 #include <unordered_map>
@@ -39,12 +38,11 @@ namespace Graphics
 
 			GLRenderPass* GetRenderPass(std::string a_Name);
 
-			__declspec(dllexport) ~GLRenderer();
-			__declspec(dllexport) GLRenderer(Core::Engine *a_Engine);
+			~GLRenderer();
+			GLRenderer(Core::Engine *a_Engine);
 
-			__declspec(dllexport) bool Initialize(SRendererDesc &a_Desc) final;
-			__declspec(dllexport) void Render() final;
-
+			bool Initialize(SRendererDesc &a_Desc) final;
+			void Render() final;
 		};
 	}
 }

@@ -2,7 +2,7 @@
 
 #include "OpenGL\GLShaderContainer.h"
 #include "OpenGL\GLFramebuffer.h"
-#include "OpenGL\BufferContainers\GLShaderBufferShadows.h"
+#include "OpenGL\GLShaderBuffer.h"
 
 #include "GLRenderPass.h"
 
@@ -34,7 +34,14 @@ namespace Graphics
 			
 			// LightSpaceMatrix
 			//
-			std::unique_ptr<GLShaderBufferShadows> m_ShaderBuffer;
+			std::unique_ptr<GLShaderBuffer> m_ShaderBuffer;
+
+#pragma pack(push, 1)
+			struct ShadowBuffer
+			{
+				Matrix4f LightSpaceMatrix;
+			};
+#pragma pack(pop)
 
 			// Shadowmap Resolution
 			//
