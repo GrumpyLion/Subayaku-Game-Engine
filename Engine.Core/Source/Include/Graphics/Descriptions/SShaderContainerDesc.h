@@ -19,9 +19,9 @@ namespace Graphics
 
 			auto GLSLtemp = Core::FileSystem::StaticClass()->GetFile(GLSLpath);
 
-			std::string HLSLpath = GetShaderLocation(Core::RenderDevice::DirectX, a_FilePath);
+			//std::string HLSLpath = GetShaderLocation(Core::RenderDevice::DirectX, a_FilePath);
 
-			auto HLSLtemp = Core::FileSystem::StaticClass()->GetFile(HLSLpath);
+			//auto HLSLtemp = Core::FileSystem::StaticClass()->GetFile(HLSLpath);
 
 			SShaderDesc desc{};
 			desc.FilePath = a_FilePath;
@@ -29,8 +29,8 @@ namespace Graphics
 			if (GLSLtemp != nullptr)
 				desc.GLSLCode = reinterpret_cast<const char*>(GLSLtemp->Data.data());
 
-			if (HLSLtemp != nullptr)
-				desc.HLSLCode = reinterpret_cast<const char*>(HLSLtemp->Data.data());
+			//if (HLSLtemp != nullptr)
+			//	desc.HLSLCode = reinterpret_cast<const char*>(HLSLtemp->Data.data());
 
 			std::string extension = GetExtension(a_FilePath);
 			ToLowerCase(extension);
