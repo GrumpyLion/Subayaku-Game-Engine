@@ -9,8 +9,6 @@
 Used Windows SDK Version 10.0.10240.0 and Visual Studio 2015 (v140)
 
 ### How to use
-
-Extract Dependencies into the Solution Folder
      
 Set to x64 and Release for best performance. And set the Sandbox project as your start project.
 
