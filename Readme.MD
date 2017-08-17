@@ -6,7 +6,7 @@
 
 ## Work in progress, 3D Game Engine with OpenGL and DirectX.
 
-Used Windows SDK Version 10.0.14393.0 and Visual Studio 2015 (v140)
+Used Windows SDK Version 10.0.10240.0 and Visual Studio 2015 (v140)
 
 ### How to use
 
