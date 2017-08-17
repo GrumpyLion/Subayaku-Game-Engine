@@ -10,7 +10,7 @@ Used Windows SDK Version 10.0.14393.0 and Visual Studio 2015 (v140)
 
 ### How to use
 
-Extract Dependencies.rar into the Solution Folder
+Extract Dependencies into the Solution Folder
      
 Set to x64 and Release for best performance. And set the Sandbox project as your start project.
 

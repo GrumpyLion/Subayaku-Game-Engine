@@ -13,8 +13,8 @@ function Init()
 	camera = gameObject:AddCameraComponent();
 	camera:Initialize(80.0, 1, 5000.0)
 	
-	--image = Image.new("Assets/Textures/TreeMap.tga");	
-	--noiseImage = Image.new("Assets/Textures/Noise.tga");	
+	image = Image.new("Assets/Textures/TreeMap.tga");	
+	noiseImage = Image.new("Assets/Textures/Noise.tga");	
 	
 	-- Seating
 	
@@ -90,6 +90,7 @@ function Init()
 	mesh:Initialize("Assets/Models/Plank.obj", material)
 	
 	trans.Rotation = Vector3f.new(0, 0, 0)
+
 	for index=0, 500, 1 do
 	
 		scale = math.random() * 0.25 + 0.2
@@ -97,9 +98,9 @@ function Init()
 		trans.Scale = Vector3f.new(scale, scale, scale);
 		trans.Position = Vector3f.new(math.random(0, 2000), 35, math.random(0, 2000))
 		
-		--if image:GetPixelAt(trans.Position.x, trans.Position.z).x > 250 then
+		if image:GetPixelAt(trans.Position.x, trans.Position.z).x > 250 then
 			
-			--trans.Position.y = (noiseImage:GetPixelAt(trans.Position.x, trans.Position.z).x /255) * 50 - 26
+			trans.Position.y = (noiseImage:GetPixelAt(trans.Position.x, trans.Position.z).x /255) * 50 - 26
 			trans.Position.y = 15
 			trans.Position.x = trans.Position.x - 1024
 			trans.Position.z = trans.Position.z - 1024
@@ -126,7 +127,7 @@ function Init()
 			
 			mesh:Initialize("Assets/Models/Tree.obj", material)
 			
-		--end
+		end
 	end 
 	
 	-- Terrain	

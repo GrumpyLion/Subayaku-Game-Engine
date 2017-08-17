@@ -68,7 +68,7 @@ namespace Core
 		}
 
 		// Disable this for debug loading
-		//FileSystem::StaticClass()->InitializeZipFile("Assets.pak");
+		FileSystem::StaticClass()->InitializeZipFile("Assets.pak");
 
 		if (!SwitchRenderer(a_Context))
 			return false;
