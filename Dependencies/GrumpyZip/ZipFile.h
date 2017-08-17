@@ -194,7 +194,7 @@ namespace GrumpyZip
 
 						int ret = inflate(&stream, Z_NO_FLUSH);
 
-						if (ret != Z_STREAM_END)
+						if (ret != Z_STREAM_END && ret != Z_OK)
 						{
 							printf("Error: inflate %d\n", ret);
 							return false;
