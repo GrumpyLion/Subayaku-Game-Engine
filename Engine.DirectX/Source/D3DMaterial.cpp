@@ -14,7 +14,7 @@ namespace Graphics
 			{
 				auto container = std::make_unique<D3DShaderContainer>();
 
-				if (!container->Initialize(temp.second, a_Renderer))
+				if (!container->Initialize(temp.second, a_Renderer) && m_ShaderContainers.size() == 0)
 					return false;
 
 				m_ShaderContainers.insert({ temp.first, std::move(container) });

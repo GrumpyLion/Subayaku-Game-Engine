@@ -35,7 +35,7 @@ PixelInputType VS_Main(VertexInput input)
     output.Position = mul(output.Position, uVMatrix);
 	output.Position = mul(output.Position, uPMatrix);
 
-	output.Texcoord = input.Texcoord;
+	output.Texcoord = input.Texcoord - float2(0, 1);
 		
 	//FragPos for calculating specular
 	output.FragPos = input.Position;

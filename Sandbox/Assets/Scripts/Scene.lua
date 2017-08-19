@@ -94,7 +94,7 @@ function Init()
 	for index=0, 500, 1 do
 	
 		scale = math.random() * 0.25 + 0.2
-		trans.Rotation = Vector3f.new(math.random(-2, 2), math.random(0, 360), math.random(-2, 2))
+		trans.Rotation = Vector3f.new(math.random(-5, 5), math.random(0, 360), math.random(-5, 5))
 		trans.Scale = Vector3f.new(scale, scale, scale);
 		trans.Position = Vector3f.new(math.random(0, 2000), 35, math.random(0, 2000))
 		

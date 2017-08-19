@@ -14,9 +14,9 @@ namespace Graphics
 	struct SShaderDesc
 	{
 		EShaderType Type = EShaderType::VertexShader;
-		std::string FilePath = "NO DATA";
-		std::string GLSLCode = "NO DATA";
-		std::string HLSLCode = "NO DATA";
+		std::string FilePath = "";
+		std::string GLSLCode = "";
+		std::string HLSLCode = "";
 
 		// Added for std::unordered_map
 		//

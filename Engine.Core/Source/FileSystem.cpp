@@ -15,7 +15,7 @@ namespace Core
 			
 			if (file == nullptr)
 			{
-				LogErr("File not found [%s]", a_FilePath.c_str());
+				//LogErr("File not found [%s]", a_FilePath.c_str());
 				return nullptr;
 			}
 
@@ -32,7 +32,7 @@ namespace Core
 			
 			if (!file)
 			{
-				LogErr("File not found [%s]", a_FilePath.c_str());
+				//LogErr("File not found [%s]", a_FilePath.c_str());
 				return nullptr;
 			}
 			

@@ -149,8 +149,7 @@ void main()
 	float heightU = snoise(vec2(waveCoords.x , waveCoords.y+1));
 	
 	normal = vec3(heightL - heightR, 2, heightD - heightU);
-	normal = normalize(normal);
-	
+	normal = normalize(normal);	
 	
 	oNormal = normal;
 }

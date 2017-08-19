@@ -1,3 +1,6 @@
+Texture2D uColor : register(t0);
+SamplerState Sampler;
+
 cbuffer DynamicBuffer : register(b1)
 {
 	float4x4 uVMatrix;
@@ -12,12 +15,18 @@ struct PixelInputType
 	nointerpolation float3 Normal : NORMAL;
 	float2 Texcoord : TEXCOORD;
 	float3 FragPos : TEXCOORD2;
-	
-	nointerpolation  float3 Color : TEXCOORD3;
 };
 
 // Pixel Shader
 float4 PS_Main(PixelInputType input):SV_TARGET
 {	
-	return float4(0,1,0, 1);
+	float4 Albedo = uColor.Sample(Sampler, input.Texcoord);
+	
+	float3 lightDir = float3(1,1,1);
+	
+	float4 ambient = 0.4 * float4(1,1,1,1);
+	float d = clamp(dot(input.Normal, lightDir), 0.0, 1.0);
+	float4 diffuse = d * float4(1,1,1,1);
+	
+	return float4((ambient + diffuse) * Albedo);
 }
